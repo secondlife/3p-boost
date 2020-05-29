@@ -64,6 +64,16 @@ fiber::detach() {
     impl_.reset();
 }
 
+void
+fiber::cancel( const std::function<void()>& cancelfn ) {
+    if ( BOOST_UNLIKELY( ! joinable() ) ) {
+        throw fiber_error{ std::make_error_code( std::errc::invalid_argument),
+                           "boost fiber: fiber not joinable" };
+    }
+    impl_->cancel(cancelfn);
+    impl_.reset();
+}
+
 }}
 
 #ifdef BOOST_HAS_ABI_HEADERS

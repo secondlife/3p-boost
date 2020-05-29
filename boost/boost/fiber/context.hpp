@@ -200,6 +200,9 @@ private:
         policy_{ policy } {
     }
 
+    template <typename Fn>
+    boost::context::fiber resume_and(Fn&& fn) noexcept;
+
 public:
     class id {
     private:
@@ -293,6 +296,8 @@ public:
     boost::context::fiber terminate() noexcept;
 
     void join();
+
+    void cancel( const std::function<void()> & cancelfn);
 
     void yield() noexcept;
 

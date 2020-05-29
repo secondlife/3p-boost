@@ -9,6 +9,7 @@
 
 #include <algorithm>
 #include <exception>
+#include <functional>
 #include <memory>
 #include <utility>
 
@@ -149,6 +150,8 @@ public:
     void join();
 
     void detach();
+
+    void cancel( const std::function<void()> & cancelfn );
 
     template< typename PROPS >
     PROPS & properties() {

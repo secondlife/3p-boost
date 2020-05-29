@@ -140,45 +140,35 @@ context::get_id() const noexcept {
     return id{ const_cast< context * >( this) };
 }
 
-void
-context::resume() noexcept {
+template< typename Fn >
+boost::context::fiber
+context::resume_and(Fn && fn) noexcept {
     context * prev = this;
     // context_initializer::active_ will point to `this`
     // prev will point to previous active context
     std::swap( context_initializer::active_, prev);
     // pass pointer to the context that resumes `this`
-    std::move( c_).resume_with([prev](boost::context::fiber && c){
+    return std::move( c_).resume_with(
+        [prev,fn=std::forward<Fn>(fn)](boost::context::fiber && c){
                 prev->c_ = std::move( c);
+                fn();
                 return boost::context::fiber{};
             });
+}
+
+void
+context::resume() noexcept {
+    resume_and([](){});
 }
 
 void
 context::resume( detail::spinlock_lock & lk) noexcept {
-    context * prev = this;
-    // context_initializer::active_ will point to `this`
-    // prev will point to previous active context
-    std::swap( context_initializer::active_, prev);
-    // pass pointer to the context that resumes `this`
-    std::move( c_).resume_with([prev,&lk](boost::context::fiber && c){
-                prev->c_ = std::move( c);
-                lk.unlock();
-                return boost::context::fiber{};
-            });
+    resume_and([&lk](){ lk.unlock(); });
 }
 
 void
 context::resume( context * ready_ctx) noexcept {
-    context * prev = this;
-    // context_initializer::active_ will point to `this`
-    // prev will point to previous active context
-    std::swap( context_initializer::active_, prev);
-    // pass pointer to the context that resumes `this`
-    std::move( c_).resume_with([prev,ready_ctx](boost::context::fiber && c){
-                prev->c_ = std::move( c);
-                context::active()->schedule( ready_ctx);
-                return boost::context::fiber{};
-            });
+    resume_and([ready_ctx](){ context::active()->schedule( ready_ctx); });
 }
 
 void
@@ -211,6 +201,11 @@ context::join() {
 }
 
 void
+context::cancel( const std::function<void()>& cancelfn ) {
+    resume_and([cancelfn=std::move(cancelfn)](){ cancelfn(); });
+}
+
+void
 context::yield() noexcept {
     // yield active context
     get_scheduler()->yield( context::active() );
@@ -218,15 +213,7 @@ context::yield() noexcept {
 
 boost::context::fiber
 context::suspend_with_cc() noexcept {
-    context * prev = this;
-    // context_initializer::active_ will point to `this`
-    // prev will point to previous active context
-    std::swap( context_initializer::active_, prev);
-    // pass pointer to the context that resumes `this`
-    return std::move( c_).resume_with([prev](boost::context::fiber && c){
-                prev->c_ = std::move( c);
-                return boost::context::fiber{};
-            });
+    return resume_and([](){});
 }
 
 boost::context::fiber
