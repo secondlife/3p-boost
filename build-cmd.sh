@@ -55,6 +55,8 @@ source_environment_tempfile="$stage/source_environment.sh"
 "$autobuild" source_environment > "$source_environment_tempfile"
 . "$source_environment_tempfile"
 
+exit 0
+
 # Explicitly request each of the libraries named in BOOST_LIBS.
 # Use magic bash syntax to prefix each entry in BOOST_LIBS with "--with-".
 BOOST_BJAM_OPTIONS="address-model=$AUTOBUILD_ADDRSIZE architecture=x86 --layout=tagged -sNO_BZIP2=1 \
@@ -203,8 +205,6 @@ case "$AUTOBUILD_PLATFORM" in
                 echo "Unrecognized AUTOBUILD_VSVER='$AUTOBUILD_VSVER'" 1>&2 ; exit 1
                 ;;
         esac
-
-        echo "PATH=$PATH"
 
         sep "bootstrap"
         # Odd things go wrong with the .bat files:  branch targets
