@@ -55,8 +55,6 @@ source_environment_tempfile="$stage/source_environment.sh"
 "$autobuild" source_environment > "$source_environment_tempfile"
 . "$source_environment_tempfile"
 
-exit 0
-
 # Explicitly request each of the libraries named in BOOST_LIBS.
 # Use magic bash syntax to prefix each entry in BOOST_LIBS with "--with-".
 BOOST_BJAM_OPTIONS="address-model=$AUTOBUILD_ADDRSIZE architecture=x86 --layout=tagged -sNO_BZIP2=1 \
