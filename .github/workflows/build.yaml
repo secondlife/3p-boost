@@ -11,7 +11,7 @@ jobs:
             addrsize: "32"
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: secondlife/action-autobuild@release/v3
+      - uses: secondlife/action-autobuild@v3
         with:
           addrsize: ${{ matrix.addrsize }}
   release:
