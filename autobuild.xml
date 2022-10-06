@@ -168,6 +168,8 @@
       <string>LICENSES/boost.txt</string>
       <key>name</key>
       <string>boost</string>
+      <key>use_scm_version</key>
+      <boolean>true</boolean>
       <key>platforms</key>
       <map>
         <key>common</key>
@@ -270,10 +272,6 @@
       </map>
       <key>source_directory</key>
       <string>boost</string>
-      <key>version</key>
-      <string>1.72.0</string>
-      <key>version_file</key>
-      <string>version.txt</string>
     </map>
     <key>type</key>
     <string>autobuild</string>
