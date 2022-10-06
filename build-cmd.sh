@@ -60,6 +60,7 @@ source_environment_tempfile="$stage/source_environment.sh"
 BOOST_BJAM_OPTIONS="address-model=$AUTOBUILD_ADDRSIZE architecture=x86 --layout=tagged -sNO_BZIP2=1 \
                     ${BOOST_LIBS[*]/#/--with-}"
 
+
 # Turn these into a bash array: it's important that all of cxxflags (which
 # we're about to add) go into a single array entry.
 BOOST_BJAM_OPTIONS=($BOOST_BJAM_OPTIONS)
@@ -203,6 +204,8 @@ case "$AUTOBUILD_PLATFORM" in
                 ;;
         esac
 
+        echo "PATH=$PATH"
+
         sep "bootstrap"
         # Odd things go wrong with the .bat files:  branch targets
         # not recognized, file tests incorrect.  Inexplicable but
@@ -225,7 +228,7 @@ case "$AUTOBUILD_PLATFORM" in
         # https://www.boost.org/doc/libs/release/doc/html/stacktrace/configuration_and_build.html
         # This helps avoid macro collisions in consuming source files:
         # https://github.com/boostorg/stacktrace/issues/76#issuecomment-489347839
-        WINDOWS_BJAM_OPTIONS=("--toolset=$bjamtoolset" -j2 \
+        WINDOWS_BJAM_OPTIONS=("--toolset=$bjamtoolset" -j$(nproc) \
             --abbreviate-paths 
             "include=$INCLUDE_PATH" "-sICU_PATH=$ICU_PATH" \
             "-sZLIB_INCLUDE=$INCLUDE_PATH/zlib-ng" \
