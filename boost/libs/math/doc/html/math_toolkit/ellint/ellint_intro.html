@@ -1,10 +1,10 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Elliptic Integral Overview</title>
 <link rel="stylesheet" href="../../math.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
-<link rel="home" href="../../index.html" title="Math Toolkit 2.11.0">
+<link rel="home" href="../../index.html" title="Math Toolkit 3.3.0">
 <link rel="up" href="../ellint.html" title="Elliptic Integrals">
 <link rel="prev" href="../ellint.html" title="Elliptic Integrals">
 <link rel="next" href="ellint_carlson.html" title="Elliptic Integrals - Carlson Form">
@@ -113,13 +113,13 @@
 </tr>
 <tr><td align="left" valign="top">
 <p>
-          <span class="emphasis"><em>&#966;</em></span> is called the amplitude.
+          <span class="emphasis"><em>φ</em></span> is called the amplitude.
         </p>
 <p>
           <span class="emphasis"><em>k</em></span> is called the elliptic modulus or eccentricity.
         </p>
 <p>
-          <span class="emphasis"><em>&#945;</em></span> is called the modular angle.
+          <span class="emphasis"><em>α</em></span> is called the modular angle.
         </p>
 <p>
           <span class="emphasis"><em>n</em></span> is called the characteristic.
@@ -136,33 +136,33 @@
           Perhaps more than any other special functions the elliptic integrals are
           expressed in a variety of different ways. In particular, the final parameter
           <span class="emphasis"><em>k</em></span> (the modulus) may be expressed using a modular angle
-          &#945;, or a parameter <span class="emphasis"><em>m</em></span>. These are related by:
+          α, or a parameter <span class="emphasis"><em>m</em></span>. These are related by:
         </p>
 <div class="blockquote"><blockquote class="blockquote"><p>
-            <span class="serif_italic">k = sin &#8201;&#945;</span>
+            <span class="serif_italic">k = sin  α</span>
           </p></blockquote></div>
 <div class="blockquote"><blockquote class="blockquote"><p>
-            <span class="serif_italic">m = k<sup>2</sup> = sin<sup>2</sup>&#945;</span>
+            <span class="serif_italic">m = k<sup>2</sup> = sin<sup>2</sup>α</span>
           </p></blockquote></div>
 <p>
           So that the integral of the third kind (for example) may be expressed as
           either:
         </p>
 <div class="blockquote"><blockquote class="blockquote"><p>
-            <span class="serif_italic">&#928;(n, &#966;, k)</span>
+            <span class="serif_italic">Π(n, φ, k)</span>
           </p></blockquote></div>
 <div class="blockquote"><blockquote class="blockquote"><p>
-            <span class="serif_italic">&#928;(n, &#966; \ &#945;)</span>
+            <span class="serif_italic">Π(n, φ \ α)</span>
           </p></blockquote></div>
 <div class="blockquote"><blockquote class="blockquote"><p>
-            <span class="serif_italic">&#928;(n, &#966; | m)</span>
+            <span class="serif_italic">Π(n, φ | m)</span>
           </p></blockquote></div>
 <p>
           To further complicate matters, some texts refer to the <span class="emphasis"><em>complement
           of the parameter m</em></span>, or 1 - m, where:
         </p>
 <div class="blockquote"><blockquote class="blockquote"><p>
-            <span class="serif_italic">1 - m = 1 - k<sup>2</sup> = cos<sup>2</sup>&#945;</span>
+            <span class="serif_italic">1 - m = 1 - k<sup>2</sup> = cos<sup>2</sup>α</span>
           </p></blockquote></div>
 <p>
           This implementation uses <span class="emphasis"><em>k</em></span> throughout: this matches
@@ -190,7 +190,7 @@
         is <a href="../../../../example/jacobi_zeta_example.cpp" target="_top">jacobi_zeta_example.cpp</a>.
       </p>
 <p>
-        When <span class="emphasis"><em>&#966;</em></span> = <span class="emphasis"><em>&#960;</em></span> / 2, the elliptic integrals
+        When <span class="emphasis"><em>φ</em></span> = <span class="emphasis"><em>π</em></span> / 2, the elliptic integrals
         are called <span class="emphasis"><em>complete</em></span>.
       </p>
 <p>
@@ -215,7 +215,7 @@
 
         </p></blockquote></div>
 <p>
-        Legendre also defined a fourth integral /D(&#966;,k)/ which is a combination of
+        Legendre also defined a fourth integral /D(φ,k)/ which is a combination of
         the other three:
       </p>
 <div class="blockquote"><blockquote class="blockquote"><p>
@@ -383,7 +383,7 @@
         Special mention goes to:
       </p>
 <div class="blockquote"><blockquote class="blockquote"><p>
-          A. M. Legendre, <span class="emphasis"><em>Trait&#233; des Fonctions Elliptiques et des Integrales
+          A. M. Legendre, <span class="emphasis"><em>Traité des Fonctions Elliptiques et des Integrales
           Euleriennes</em></span>, Vol. 1. Paris (1825).
         </p></blockquote></div>
 <p>
@@ -418,7 +418,7 @@
 <li class="listitem">
             <a name="ellint_ref_carlson81"></a>B.C. Carlson and E.M. Notis, <span class="emphasis"><em>ALGORITHM
             577: Algorithms for Incomplete Elliptic Integrals</em></span>, ACM Transactions
-            on Mathematmal Software, vol 7, 398 (1981).
+            on Mathematical Software, vol 7, 398 (1981).
           </li>
 <li class="listitem">
             B. C. Carlson, <span class="emphasis"><em>On computing elliptic integrals and functions</em></span>.
@@ -457,12 +457,12 @@
           </li>
 </ol></div>
 <p>
-        The following references, while not directly relevent to our implementation,
+        The following references, while not directly relevant to our implementation,
         may also be of interest:
       </p>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-            R. Burlisch, <span class="emphasis"><em>Numerical Compuation of Elliptic Integrals and
+            R. Burlisch, <span class="emphasis"><em>Numerical Computation of Elliptic Integrals and
             Elliptic Functions.</em></span> Numerical Mathematik 7, 78-90.
           </li>
 <li class="listitem">
@@ -471,7 +471,7 @@
             13, 266-284.
           </li>
 <li class="listitem">
-            R. Burlisch, <span class="emphasis"><em>Numerical Compuation of Elliptic Integrals and
+            R. Burlisch, <span class="emphasis"><em>Numerical Computation of Elliptic Integrals and
             Elliptic Functions. III</em></span>. Numerical Mathematik 13, 305-315.
           </li>
 <li class="listitem">
@@ -484,11 +484,11 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2006-2019 Nikhar
-      Agrawal, Anton Bikineev, Paul A. Bristow, Marco Guazzone, Christopher Kormanyos,
-      Hubert Holin, Bruno Lalande, John Maddock, Jeremy Murphy, Matthew Pulver, Johan
-      R&#229;de, Gautam Sewani, Benjamin Sobotta, Nicholas Thompson, Thijs van den Berg,
-      Daryle Walker and Xiaogang Zhang<p>
+<td align="right"><div class="copyright-footer">Copyright © 2006-2021 Nikhar Agrawal, Anton Bikineev, Matthew Borland,
+      Paul A. Bristow, Marco Guazzone, Christopher Kormanyos, Hubert Holin, Bruno
+      Lalande, John Maddock, Evan Miller, Jeremy Murphy, Matthew Pulver, Johan Råde,
+      Gautam Sewani, Benjamin Sobotta, Nicholas Thompson, Thijs van den Berg, Daryle
+      Walker and Xiaogang Zhang<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

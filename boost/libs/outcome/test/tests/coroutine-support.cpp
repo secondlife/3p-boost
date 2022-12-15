@@ -1,5 +1,5 @@
 /* Unit testing for outcomes
-(C) 2013-2019 Niall Douglas <http://www.nedproductions.biz/> (6 commits)
+(C) 2013-2022 Niall Douglas <http://www.nedproductions.biz/> (6 commits)
 
 
 Boost Software License - Version 1.0 - August 17th, 2003
@@ -27,11 +27,12 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-#if defined(__cpp_coroutines)
-
+#include <boost/outcome.hpp>
 #include <boost/outcome/coroutine_support.hpp>
-#include <boost/outcome/outcome.hpp>
 #include <boost/outcome/try.hpp>
+
+#if BOOST_OUTCOME_FOUND_COROUTINE_HEADER
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/unit_test_monitor.hpp>
 
@@ -39,6 +40,7 @@ namespace coroutines
 {
   template <class T> using eager = BOOST_OUTCOME_V2_NAMESPACE::awaitables::eager<T>;
   template <class T> using lazy = BOOST_OUTCOME_V2_NAMESPACE::awaitables::lazy<T>;
+  template <class T> using generator = BOOST_OUTCOME_V2_NAMESPACE::awaitables::generator<T>;
   template <class T, class E = boost::system::error_code> using result = BOOST_OUTCOME_V2_NAMESPACE::result<T, E>;
 
   inline eager<result<int>> eager_int(int x) { co_return x + 1; }
@@ -47,15 +49,27 @@ namespace coroutines
   inline lazy<result<int>> lazy_error() { co_return boost::system::errc::not_enough_memory; }
   inline eager<result<void>> eager_void() { co_return boost::system::errc::not_enough_memory; }
   inline lazy<result<void>> lazy_void() { co_return boost::system::errc::not_enough_memory; }
+  inline generator<result<int>> generator_int(int x)
+  {
+    co_yield x;
+    co_yield x + 1;
+    co_yield x + 2;
+  }
+  inline generator<result<int>> generator_error(int x)
+  {
+    co_yield x;
+    co_yield x + 1;
+    co_yield boost::system::errc::not_enough_memory;
+  }
 
   template <class U, class... Args> inline eager<result<std::string>> eager_coawait(U &&f, Args... args)
   {
-    BOOST_OUTCOME_CO_TRY(co_await f(args...));
+    BOOST_OUTCOME_CO_TRYV2(auto &&, co_await f(args...));
     co_return "hi";
   }
   template <class U, class... Args> inline lazy<result<std::string>> lazy_coawait(U &&f, Args... args)
   {
-    BOOST_OUTCOME_CO_TRY(co_await f(args...));
+    BOOST_OUTCOME_CO_TRYV2(auto &&, co_await f(args...));
     co_return "hi";
   }
 
@@ -74,6 +88,13 @@ namespace coroutines
     boost::rethrow_exception(e);
     co_return 5;
   }
+
+  inline generator<BOOST_OUTCOME_V2_NAMESPACE::outcome<int>> generator_exception(boost::exception_ptr e)
+  {
+    co_yield 5;
+    co_yield 6;
+    boost::rethrow_exception(e);
+  }
 #endif
 
   inline eager<int> eager_int2(int x) { co_return x + 1; }
@@ -82,35 +103,94 @@ namespace coroutines
   inline lazy<void> lazy_void2() { co_return; }
 }  // namespace coroutines
 
-BOOST_OUTCOME_AUTO_TEST_CASE(works_result_coroutine, "Tests that results are eager and lazy awaitable")
+BOOST_OUTCOME_AUTO_TEST_CASE(works_coroutine_eager_lazy, "Tests that results are eager and lazy awaitable")
 {
   using namespace coroutines;
-  auto eager_await = [](auto t) { return t.await_resume(); };
-  auto lazy_await = [](auto t) {
-    t.await_suspend({});
-    return t.await_resume();
+  auto ensure_coroutine_completed_immediately = [](auto t)
+  {
+    BOOST_CHECK(t.await_ready());  // must have eagerly evaluated
+    return t.await_resume();       // fetch the value returned into the promise by the coroutine
+  };
+  auto ensure_coroutine_needs_resuming_once = [](auto t)
+  {
+    BOOST_CHECK(!t.await_ready());  // must not have eagerly evaluated
+#if BOOST_OUTCOME_HAVE_NOOP_COROUTINE
+    t.await_suspend({}).resume();  // resume execution, which sets the promise
+#else
+    t.await_suspend({});  // resume execution, which sets the promise
+#endif
+    BOOST_CHECK(t.await_ready());  // must now be ready
+    return t.await_resume();       // fetch the value returned into the promise by the coroutine
   };
 
-  BOOST_CHECK(eager_await(eager_int(5)).value() == 6);
-  BOOST_CHECK(lazy_await(lazy_int(5)).value() == 6);
-  BOOST_CHECK(eager_await(eager_error()).error() == boost::system::errc::not_enough_memory);
-  BOOST_CHECK(lazy_await(lazy_error()).error() == boost::system::errc::not_enough_memory);
-  BOOST_CHECK(eager_await(eager_void()).error() == boost::system::errc::not_enough_memory);
-  BOOST_CHECK(lazy_await(lazy_void()).error() == boost::system::errc::not_enough_memory);
+  // eager_int never suspends, sets promise immediately, must be able to retrieve immediately
+  BOOST_CHECK(ensure_coroutine_completed_immediately(eager_int(5)).value() == 6);
+  // lazy_int suspends before execution, needs resuming to set the promise
+  BOOST_CHECK(ensure_coroutine_needs_resuming_once(lazy_int(5)).value() == 6);
+  BOOST_CHECK(ensure_coroutine_completed_immediately(eager_error()).error() == boost::system::errc::not_enough_memory);
+  BOOST_CHECK(ensure_coroutine_needs_resuming_once(lazy_error()).error() == boost::system::errc::not_enough_memory);
+  BOOST_CHECK(ensure_coroutine_completed_immediately(eager_void()).error() == boost::system::errc::not_enough_memory);
+  BOOST_CHECK(ensure_coroutine_needs_resuming_once(lazy_void()).error() == boost::system::errc::not_enough_memory);
 
-  BOOST_CHECK(eager_await(eager_coawait(eager_int, 5)).value() == "hi");
-  BOOST_CHECK(lazy_await(lazy_coawait(lazy_int, 5)).value() == "hi");
+  // co_await eager_int realises it has already completed, does not suspend.
+  BOOST_CHECK(ensure_coroutine_completed_immediately(eager_coawait(eager_int, 5)).value() == "hi");
+  // co_await lazy_int resumes the suspended coroutine.
+  BOOST_CHECK(ensure_coroutine_needs_resuming_once(lazy_coawait(lazy_int, 5)).value() == "hi");
 
 #ifndef BOOST_NO_EXCEPTIONS
   auto e = boost::copy_exception(custom_exception_type());
-  BOOST_CHECK_THROW(lazy_await(result_exception(e)).value(), custom_exception_type);
-  BOOST_CHECK_THROW(lazy_await(outcome_exception(e)).value(), custom_exception_type);
+  BOOST_CHECK_THROW(ensure_coroutine_needs_resuming_once(result_exception(e)).value(), custom_exception_type);
+  BOOST_CHECK_THROW(ensure_coroutine_needs_resuming_once(outcome_exception(e)).value(), custom_exception_type);
 #endif
 
-  BOOST_CHECK(eager_await(eager_int2(5)) == 6);
-  BOOST_CHECK(lazy_await(lazy_int2(5)) == 6);
-  eager_await(eager_void2());
-  lazy_await(lazy_void2());
+  BOOST_CHECK(ensure_coroutine_completed_immediately(eager_int2(5)) == 6);
+  BOOST_CHECK(ensure_coroutine_needs_resuming_once(lazy_int2(5)) == 6);
+  ensure_coroutine_completed_immediately(eager_void2());
+  ensure_coroutine_needs_resuming_once(lazy_void2());
+}
+
+BOOST_OUTCOME_AUTO_TEST_CASE(works_coroutine_generator, "Tests that results can be generated")
+{
+  using namespace coroutines;
+  auto check_generator = [](auto t) -> BOOST_OUTCOME_V2_NAMESPACE::outcome<int>
+  {
+#ifndef BOOST_NO_EXCEPTIONS
+    try
+#endif
+    {
+      int count = 0, ret = 0;
+      while(t)
+      {
+        auto r = t();
+        count++;
+        if(r)
+        {
+          ret = r.value();
+          BOOST_CHECK(ret == 4 + count);
+        }
+        else
+        {
+          BOOST_CHECK(count == 3);
+          BOOST_OUTCOME_TRY(std::move(r));
+        }
+      }
+      return ret;
+    }
+#ifndef BOOST_NO_EXCEPTIONS
+    catch(...)
+    {
+      BOOST_CHECK(false);  // exception must be put into outcome, nothing must throw here
+      throw;
+    }
+#endif
+  };
+  BOOST_CHECK(check_generator(generator_int(5)).value() == 7);
+  BOOST_CHECK(check_generator(generator_error(5)).error() == boost::system::errc::not_enough_memory);
+
+#ifndef BOOST_NO_EXCEPTIONS
+  auto e = boost::copy_exception(custom_exception_type());
+  BOOST_CHECK_THROW(check_generator(generator_exception(e)).value(), custom_exception_type);
+#endif
 }
 #else
 int main(void)

@@ -11,6 +11,10 @@
 #  define BOOST_MATH_ASSERT_UNDEFINED_POLICY false
 #endif
 
+#include <boost/math/tools/config.hpp>
+
+#ifndef BOOST_MATH_NO_DISTRIBUTION_CONCEPT_TESTS
+
 #include <boost/math/distributions.hpp>
 
 #include <boost/math/special_functions.hpp>
@@ -35,8 +39,8 @@ BOOST_MATH_DECLARE_DISTRIBUTIONS(double, test_policy)
 #endif
 
 #if !defined(TEST_GROUP_1) && !defined(TEST_GROUP_2) && !defined(TEST_GROUP_3) \
-   && !defined(TEST_GROUP_4) && !defined(TEST_GROUP_5) && !defined(TEST_GROUP_6) \
-   && !defined(TEST_GROUP_7) && !defined(TEST_GROUP_8) && !defined(TEST_GROUP_9)
+   && !defined(TEST_GROUP_4) && !defined(TEST_GROUP_5) && !defined(TEST_GROUP_6) && !defined(TEST_GROUP_7) && !defined(TEST_GROUP_8) && !defined(TEST_GROUP_9) \
+   && !defined(TEST_GROUP_10) && !defined(TEST_GROUP_11) && !defined(TEST_GROUP_12) && !defined(TEST_GROUP_13) && !defined(TEST_GROUP_14) && !defined(TEST_GROUP_15)
 #  define TEST_GROUP_1
 #  define TEST_GROUP_2
 #  define TEST_GROUP_3
@@ -46,6 +50,12 @@ BOOST_MATH_DECLARE_DISTRIBUTIONS(double, test_policy)
 #  define TEST_GROUP_7
 #  define TEST_GROUP_8
 #  define TEST_GROUP_9
+#  define TEST_GROUP_10
+#  define TEST_GROUP_11
+#  define TEST_GROUP_12
+#  define TEST_GROUP_13
+#  define TEST_GROUP_14
+#  define TEST_GROUP_15
 #endif
 
 template <class RealType>
@@ -54,6 +64,13 @@ void instantiate(RealType)
    using namespace boost;
    using namespace boost::math;
    using namespace boost::math::concepts;
+
+   long l;
+   (void)l;
+#ifdef BOOST_HAS_LONG_LONG
+   boost::long_long_type ll;
+   (void)ll;
+#endif
 #ifdef TEST_GROUP_1
    function_requires<DistributionConcept<arcsine_distribution<RealType> > >();
    function_requires<DistributionConcept<bernoulli_distribution<RealType> > >();
@@ -71,6 +88,7 @@ void instantiate(RealType)
    function_requires<DistributionConcept<inverse_chi_squared_distribution<RealType> > >();
    function_requires<DistributionConcept<inverse_gamma_distribution<RealType> > >();
    function_requires<DistributionConcept<inverse_gaussian_distribution<RealType> > >();
+   function_requires<DistributionConcept<kolmogorov_smirnov_distribution<RealType> > >();
    function_requires<DistributionConcept<laplace_distribution<RealType> > >();
    function_requires<DistributionConcept<logistic_distribution<RealType> > >();
    function_requires<DistributionConcept<lognormal_distribution<RealType> > >();
@@ -106,6 +124,7 @@ void instantiate(RealType)
    function_requires<DistributionConcept<inverse_chi_squared_distribution<RealType, test_policy> > >();
    function_requires<DistributionConcept<inverse_gamma_distribution<RealType, test_policy> > >();
    function_requires<DistributionConcept<inverse_gaussian_distribution<RealType, test_policy> > >();
+   function_requires<DistributionConcept<kolmogorov_smirnov_distribution<RealType, test_policy> > >();
    function_requires<DistributionConcept<laplace_distribution<RealType, test_policy> > >();
    function_requires<DistributionConcept<logistic_distribution<RealType, test_policy> > >();
    function_requires<DistributionConcept<lognormal_distribution<RealType, test_policy> > >();
@@ -221,6 +240,8 @@ void instantiate(RealType)
    boost::math::cbrt(v1);
    boost::math::sqrt1pm1(v1);
    boost::math::powm1(v1, v2);
+#endif
+#ifdef TEST_GROUP_5
    boost::math::legendre_p(1, v1);
    boost::math::legendre_p(1, 0, v1);
    boost::math::legendre_q(1, v1);
@@ -269,6 +290,18 @@ void instantiate(RealType)
    boost::math::jacobi_sc(v1, v2);
    boost::math::jacobi_sd(v1, v2);
    boost::math::jacobi_sn(v1, v2);
+   boost::math::jacobi_theta1(v1, v2);
+   boost::math::jacobi_theta1tau(v1, v2);
+   boost::math::jacobi_theta2(v1, v2);
+   boost::math::jacobi_theta2tau(v1, v2);
+   boost::math::jacobi_theta3(v1, v2);
+   boost::math::jacobi_theta3tau(v1, v2);
+   boost::math::jacobi_theta3m1(v1, v2);
+   boost::math::jacobi_theta3m1tau(v1, v2);
+   boost::math::jacobi_theta4(v1, v2);
+   boost::math::jacobi_theta4tau(v1, v2);
+   boost::math::jacobi_theta4m1(v1, v2);
+   boost::math::jacobi_theta4m1tau(v1, v2);
    boost::math::hypot(v1, v2);
    boost::math::sinc_pi(v1);
    boost::math::sinhc_pi(v1);
@@ -277,6 +310,8 @@ void instantiate(RealType)
    boost::math::atanh(v1);
    boost::math::sin_pi(v1);
    boost::math::cos_pi(v1);
+#endif
+#ifdef TEST_GROUP_6
    boost::math::cyl_neumann(v1, v2);
    boost::math::cyl_neumann(i, v2);
    boost::math::cyl_bessel_j(v1, v2);
@@ -318,6 +353,8 @@ void instantiate(RealType)
    boost::math::sph_hankel_2(v1, v2);
    boost::math::sph_hankel_2(i, v2);
 #endif
+#endif
+#ifdef TEST_GROUP_7
    boost::math::airy_ai(v1);
    boost::math::airy_bi(v1);
    boost::math::airy_ai_prime(v1);
@@ -353,12 +390,10 @@ void instantiate(RealType)
    boost::math::lround(v1);
    boost::math::modf(v1, &v1);
    boost::math::modf(v1, &i);
-   long l;
    boost::math::modf(v1, &l);
 #ifdef BOOST_HAS_LONG_LONG
    boost::math::lltrunc(v1);
    boost::math::llround(v1);
-   boost::long_long_type ll;
    boost::math::modf(v1, &ll);
 #endif
    boost::math::pow<2>(v1);
@@ -377,7 +412,7 @@ void instantiate(RealType)
    boost::math::tangent_t2n<RealType>(i, i, &v1);
 
 #endif
-#ifdef TEST_GROUP_9
+#ifdef TEST_GROUP_12
    //
    // Over again, but arguments may be expression templates:
    //
@@ -435,6 +470,8 @@ void instantiate(RealType)
    boost::math::cbrt(v1 * 1);
    boost::math::sqrt1pm1(v1 * 1);
    boost::math::powm1(v1 * 1, v2 + 0);
+#endif
+#ifdef TEST_GROUP_13
    boost::math::legendre_p(1, v1 * 1);
    boost::math::legendre_p(1, 0, v1 * 1);
    boost::math::legendre_p_prime(1, v1 * 1);
@@ -483,6 +520,18 @@ void instantiate(RealType)
    boost::math::jacobi_sc(v1 * 1, v2 + 0);
    boost::math::jacobi_sd(v1 * 1, v2 + 0);
    boost::math::jacobi_sn(v1 * 1, v2 + 0);
+   boost::math::jacobi_theta1(v1 * 1, v2 + 0);
+   boost::math::jacobi_theta1tau(v1 * 1, v2 + 0);
+   boost::math::jacobi_theta2(v1 * 1, v2 + 0);
+   boost::math::jacobi_theta2tau(v1 * 1, v2 + 0);
+   boost::math::jacobi_theta3(v1 * 1, v2 + 0);
+   boost::math::jacobi_theta3tau(v1 * 1, v2 + 0);
+   boost::math::jacobi_theta3m1(v1 * 1, v2 + 0);
+   boost::math::jacobi_theta3m1tau(v1 * 1, v2 + 0);
+   boost::math::jacobi_theta4(v1 * 1, v2 + 0);
+   boost::math::jacobi_theta4tau(v1 * 1, v2 + 0);
+   boost::math::jacobi_theta4m1(v1 * 1, v2 + 0);
+   boost::math::jacobi_theta4m1tau(v1 * 1, v2 + 0);
    boost::math::hypot(v1 * 1, v2 + 0);
    boost::math::sinc_pi(v1 * 1);
    boost::math::sinhc_pi(v1 * 1);
@@ -491,6 +540,8 @@ void instantiate(RealType)
    boost::math::atanh(v1 * 1);
    boost::math::sin_pi(v1 * 1);
    boost::math::cos_pi(v1 * 1);
+#endif
+#ifdef TEST_GROUP_14
    boost::math::cyl_neumann(v1 * 1, v2 + 0);
    boost::math::cyl_neumann(i, v2 * 1);
    boost::math::cyl_bessel_j(v1 * 1, v2 + 0);
@@ -532,6 +583,8 @@ void instantiate(RealType)
    boost::math::sph_hankel_2(v1, v2);
    boost::math::sph_hankel_2(i, v2);
 #endif
+#endif
+#ifdef TEST_GROUP_15
    boost::math::airy_ai(v1 * 1);
    boost::math::airy_bi(v1 * 1);
    boost::math::airy_ai_prime(v1 * 1);
@@ -569,7 +622,7 @@ void instantiate(RealType)
    boost::math::epsilon_difference(v1 * 1, v2 * 1);
 #endif
 #ifndef BOOST_MATH_INSTANTIATE_MINIMUM
-#ifdef TEST_GROUP_5
+#ifdef TEST_GROUP_8
    //
    // All over again, with a policy this time:
    //
@@ -665,6 +718,18 @@ void instantiate(RealType)
    boost::math::jacobi_sc(v1, v2, pol);
    boost::math::jacobi_sd(v1, v2, pol);
    boost::math::jacobi_sn(v1, v2, pol);
+   boost::math::jacobi_theta1(v1, v2, pol);
+   boost::math::jacobi_theta1tau(v1, v2, pol);
+   boost::math::jacobi_theta2(v1, v2, pol);
+   boost::math::jacobi_theta2tau(v1, v2, pol);
+   boost::math::jacobi_theta3(v1, v2, pol);
+   boost::math::jacobi_theta3tau(v1, v2, pol);
+   boost::math::jacobi_theta3m1(v1, v2, pol);
+   boost::math::jacobi_theta3m1tau(v1, v2, pol);
+   boost::math::jacobi_theta4(v1, v2, pol);
+   boost::math::jacobi_theta4tau(v1, v2, pol);
+   boost::math::jacobi_theta4m1(v1, v2, pol);
+   boost::math::jacobi_theta4m1tau(v1, v2, pol);
    boost::math::hypot(v1, v2, pol);
    boost::math::sinc_pi(v1, pol);
    boost::math::sinhc_pi(v1, pol);
@@ -778,7 +843,7 @@ void instantiate(RealType)
    boost::math::tangent_t2n<RealType>(i, pol);
    boost::math::tangent_t2n<RealType>(i, i, &v1, pol);
 #endif
-#ifdef TEST_GROUP_6
+#ifdef TEST_GROUP_9
    //
    // All over again with the versions in test::
    //
@@ -884,6 +949,18 @@ void instantiate(RealType)
    test::jacobi_sc(v1, v2);
    test::jacobi_sd(v1, v2);
    test::jacobi_sn(v1, v2);
+   test::jacobi_theta1(v1, v2);
+   test::jacobi_theta1tau(v1, v2);
+   test::jacobi_theta2(v1, v2);
+   test::jacobi_theta2tau(v1, v2);
+   test::jacobi_theta3(v1, v2);
+   test::jacobi_theta3tau(v1, v2);
+   test::jacobi_theta3m1(v1, v2);
+   test::jacobi_theta3m1tau(v1, v2);
+   test::jacobi_theta4(v1, v2);
+   test::jacobi_theta4tau(v1, v2);
+   test::jacobi_theta4m1(v1, v2);
+   test::jacobi_theta4m1tau(v1, v2);
    test::hypot(v1, v2);
    test::sinc_pi(v1);
    test::sinhc_pi(v1);
@@ -1004,7 +1081,7 @@ void instantiate_mixed(RealType)
    double lr = 0.5L;
    (void)lr;
 #endif
-#ifdef TEST_GROUP_7
+#ifdef TEST_GROUP_10
    boost::math::tgamma(i);
    boost::math::tgamma1pm1(i);
    boost::math::lgamma(i);
@@ -1122,6 +1199,18 @@ void instantiate_mixed(RealType)
    boost::math::jacobi_sc(i, fr);
    boost::math::jacobi_sd(i, fr);
    boost::math::jacobi_sn(i, fr);
+   boost::math::jacobi_theta1(i, fr);
+   boost::math::jacobi_theta1tau(i, fr);
+   boost::math::jacobi_theta2(i, fr);
+   boost::math::jacobi_theta2tau(i, fr);
+   boost::math::jacobi_theta3(i, fr);
+   boost::math::jacobi_theta3tau(i, fr);
+   boost::math::jacobi_theta3m1(i, fr);
+   boost::math::jacobi_theta3m1tau(i, fr);
+   boost::math::jacobi_theta4(i, fr);
+   boost::math::jacobi_theta4tau(i, fr);
+   boost::math::jacobi_theta4m1(i, fr);
+   boost::math::jacobi_theta4m1tau(i, fr);
    boost::math::hypot(i, s);
    boost::math::hypot(fr, lr);
    boost::math::sinc_pi(i);
@@ -1273,6 +1362,18 @@ void instantiate_mixed(RealType)
    boost::math::jacobi_sc(i, fr, pol);
    boost::math::jacobi_sd(i, fr, pol);
    boost::math::jacobi_sn(i, fr, pol);
+   boost::math::jacobi_theta1(i, fr, pol);
+   boost::math::jacobi_theta1tau(i, fr, pol);
+   boost::math::jacobi_theta2(i, fr, pol);
+   boost::math::jacobi_theta2tau(i, fr, pol);
+   boost::math::jacobi_theta3(i, fr, pol);
+   boost::math::jacobi_theta3tau(i, fr, pol);
+   boost::math::jacobi_theta3m1(i, fr, pol);
+   boost::math::jacobi_theta3m1tau(i, fr, pol);
+   boost::math::jacobi_theta4(i, fr, pol);
+   boost::math::jacobi_theta4tau(i, fr, pol);
+   boost::math::jacobi_theta4m1(i, fr, pol);
+   boost::math::jacobi_theta4m1tau(i, fr, pol);
    boost::math::hypot(i, s, pol);
    boost::math::hypot(fr, lr, pol);
    boost::math::sinc_pi(i, pol);
@@ -1312,7 +1413,7 @@ void instantiate_mixed(RealType)
    boost::math::lambert_wm1(i, pol);
    boost::math::lambert_w0_prime(i, pol);
 #endif
-#ifdef TEST_GROUP_8
+#ifdef TEST_GROUP_11
    test::tgamma(i);
    test::tgamma1pm1(i);
    test::lgamma(i);
@@ -1464,5 +1565,14 @@ void instantiate_mixed(RealType)
 #endif
 }
 
+#else // Standalone mode
+
+template <typename T>
+void instantiate(T) {}
+
+template <typename T>
+void instantiate_mixed(T) {}
+
+#endif // Standalone mode
 
 #endif // BOOST_LIBS_MATH_TEST_INSTANTIATE_HPP

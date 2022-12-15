@@ -1,10 +1,10 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
-# Copyright Hans Dembinski 2019
+# Copyright 2019 Hans Dembinski
+#
 # Distributed under the Boost Software License, Version 1.0.
 # See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt
 
-from __future__ import print_function
 import sys
 import glob
 import os
@@ -25,7 +25,7 @@ for dir in (pj(project_path, "test"), pj(project_path, "examples")):
         filename = os.path.join(dir, build_file)
         if not os.path.exists(filename):
             continue
-        run = set(re.findall("([a-zA-Z0-9_]+\.cpp)", open(filename).read()))
+        run = set(re.findall(r"([a-zA-Z0-9_]+\.cpp)", open(filename).read()))
 
         diff = cpp - run
         diff.discard("check_cmake_version.cpp")  # ignore

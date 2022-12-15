@@ -21,6 +21,8 @@
 #include <boost/spirit/home/karma/detail/get_casetag.hpp>
 #include <boost/spirit/home/karma/detail/string_generate.hpp>
 #include <boost/config.hpp>
+#include <boost/proto/extends.hpp>
+#include <boost/proto/traits.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/mpl/if.hpp>
 #include <map>
@@ -383,6 +385,10 @@ namespace boost { namespace spirit { namespace karma
         }
 
         ///////////////////////////////////////////////////////////////////////
+#ifdef _MSC_VER
+#  pragma warning(push)
+#  pragma warning(disable: 4512) // assignment operator could not be generated.
+#endif
         struct adder
         {
             template <typename, typename = unused_type>
@@ -410,9 +416,6 @@ namespace boost { namespace spirit { namespace karma
             }
 
             symbols& sym;
-
-            // silence MSVC warning C4512: assignment operator could not be generated
-            BOOST_DELETED_FUNCTION(adder& operator= (adder const&))
         };
 
         struct remover
@@ -442,10 +445,10 @@ namespace boost { namespace spirit { namespace karma
             }
 
             symbols& sym;
-
-            // silence MSVC warning C4512: assignment operator could not be generated
-            BOOST_DELETED_FUNCTION(remover& operator= (remover const&))
         };
+#ifdef _MSC_VER
+#  pragma warning(pop)
+#endif
 
         adder add;
         remover remove;
@@ -640,6 +643,10 @@ namespace boost { namespace spirit { namespace karma
         }
 
         ///////////////////////////////////////////////////////////////////////
+#ifdef _MSC_VER
+#  pragma warning(push)
+#  pragma warning(disable: 4512) // assignment operator could not be generated.
+#endif
         struct adder
         {
             template <typename, typename = unused_type>
@@ -667,9 +674,6 @@ namespace boost { namespace spirit { namespace karma
             }
 
             symbols& sym;
-
-            // silence MSVC warning C4512: assignment operator could not be generated
-            BOOST_DELETED_FUNCTION(adder& operator= (adder const&))
         };
 
         struct remover
@@ -699,10 +703,10 @@ namespace boost { namespace spirit { namespace karma
             }
 
             symbols& sym;
-
-            // silence MSVC warning C4512: assignment operator could not be generated
-            BOOST_DELETED_FUNCTION(remover& operator= (remover const&))
         };
+#ifdef _MSC_VER
+#  pragma warning(pop)
+#endif
 
         adder add;
         remover remove;

@@ -3,6 +3,8 @@
 //  Boost Software License, Version 1.0. (See accompanying file
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+// Contains Quickbook markup, using in Boost.Multiprecision.qbk section on Literals and constexpr, penultimate section on factorials.
+
 #include "constexpr_arithmetric_test.hpp"
 #include "boost/multiprecision/cpp_int.hpp"
 #include "boost/multiprecision/integer.hpp"
@@ -199,25 +201,25 @@ int main()
    }
    // lsb:
    {
-      constexpr int     i1 = lsb(si1);
+      constexpr std::size_t i1 = lsb(si1);
       small_int_backend nc(si1);
-      int               nci = lsb(nc);
+      std::size_t nci = lsb(nc);
       BOOST_CHECK_EQUAL(nci, i1);
 
-      constexpr std::int32_t k = boost::multiprecision::lsb(i);
-      std::int32_t           ii(i);
+      constexpr std::size_t k = boost::multiprecision::lsb(i);
+      std::size_t ii(i);
       ii = boost::multiprecision::lsb(ii);
       BOOST_CHECK_EQUAL(ii, k);
    }
    // msb:
    {
-      constexpr int     i1 = msb(si1);
+      constexpr std::size_t i1 = msb(si1);
       small_int_backend nc(si1);
-      int               nci = msb(nc);
+      std::size_t nci = msb(nc);
       BOOST_CHECK_EQUAL(nci, i1);
 
-      constexpr std::int32_t k = boost::multiprecision::msb(i);
-      std::int32_t           ii(i);
+      constexpr std::size_t k = boost::multiprecision::msb(i);
+      std::size_t ii(i);
       ii = boost::multiprecision::msb(ii);
       BOOST_CHECK_EQUAL(ii, k);
    }
@@ -261,6 +263,8 @@ int main()
       small_int_backend     nc(si1);
       nc = sqrt(nc);
       BOOST_CHECK_EQUAL(nc, r);
+      constexpr int_backend r2 = sqrt(si1 * 1);
+      BOOST_CHECK_EQUAL(nc, r2);
 
       constexpr int jj = boost::multiprecision::sqrt(i);
       int           k  = i;

@@ -8,7 +8,8 @@
 message(STATUS "Boost.GIL: Configuring tests in test/core")
 
 foreach(_name
-  promote_integral)
+  promote_integral
+  test_fixture)
   set(_test t_utility_${_name})
   set(_target test_utility_${_name})
 
@@ -34,7 +35,9 @@ add_subdirectory(color_base)
 add_subdirectory(pixel)
 add_subdirectory(iterator)
 add_subdirectory(locator)
+add_subdirectory(virtual_2d_locator)
 add_subdirectory(image)
 add_subdirectory(image_view)
 add_subdirectory(algorithm)
 add_subdirectory(image_processing)
+add_subdirectory(histogram)

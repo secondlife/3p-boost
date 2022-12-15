@@ -20,8 +20,8 @@ project boost/fiber
       <library>/boost/filesystem//boost_filesystem
       <target-os>solaris:<linkflags>"-llgrp"
       <target-os>windows:<define>_WIN32_WINNT=0x0601
-      <toolset>gcc,<segmented-stacks>on:<cxxflags>-fsplit-stack
-      <toolset>gcc,<segmented-stacks>on:<cxxflags>-DBOOST_USE_SEGMENTED_STACKS
+      <target-os>linux,<toolset>gcc,<segmented-stacks>on:<cxxflags>-fsplit-stack
+      <target-os>linux,<toolset>gcc,<segmented-stacks>on:<cxxflags>-DBOOST_USE_SEGMENTED_STACKS
       <toolset>clang,<segmented-stacks>on:<cxxflags>-fsplit-stack
       <toolset>clang,<segmented-stacks>on:<cxxflags>-DBOOST_USE_SEGMENTED_STACKS
       <link>shared:<define>BOOST_FIBERS_DYN_LINK=1
@@ -57,6 +57,7 @@ lib boost_fiber
       condition_variable.cpp
       context.cpp
       fiber.cpp
+      waker.cpp
       future.cpp
       mutex.cpp
       properties.cpp
@@ -127,8 +128,9 @@ explicit numa_sources ;
 lib boost_fiber_numa
     : numa_sources
       numa/algo/work_stealing.cpp
-    : 
+    :
     <conditional>@numa
+    <library>boost_fiber
     [ requires cxx11_auto_declarations
                cxx11_constexpr
                cxx11_defaulted_functions
