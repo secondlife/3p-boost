@@ -12,9 +12,9 @@
 //
 #include <fstream>
 
+#include "mp_t.hpp"
 #include <boost/math/tools/test_data.hpp>
 #include <boost/math/special_functions/bessel.hpp>
-#include "mp_t.hpp"
 
 using namespace boost::math::tools;
 using namespace boost::math;
@@ -302,7 +302,7 @@ int main(int argc, char* argv[])
          letter = "y";
       }
       else
-         BOOST_ASSERT(0);
+         BOOST_MATH_ASSERT(0);
    }
 
    bool cont;
@@ -327,7 +327,7 @@ int main(int argc, char* argv[])
       else if(functype == func_y)
          fp = sph_bessel_y_bare;
       else
-         BOOST_ASSERT(0);
+         BOOST_MATH_ASSERT(0);
 
       data.insert(fp, arg1, arg2);
 

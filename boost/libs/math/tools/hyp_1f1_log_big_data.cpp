@@ -5,16 +5,16 @@
 
 #define BOOST_MATH_MAX_SERIES_ITERATION_POLICY 10000000
 
-#include <boost/math/special_functions/hypergeometric_1f1.hpp>
-#include <boost/math/special_functions/hypergeometric_pfq.hpp>
+#define BOOST_MATH_USE_MPFR
+#include "mp_t.hpp"
+#include <boost/math/special_functions/hypergeometric_1F1.hpp>
+#include <boost/math/special_functions/hypergeometric_pFq.hpp>
 #include <boost/math/constants/constants.hpp>
 #include <boost/lexical_cast.hpp>
 #include <fstream>
 #include <map>
 #include <boost/math/tools/test_data.hpp>
 #include <boost/random.hpp>
-#define BOOST_MATH_USE_MPFR
-#include "mp_t.hpp"
 
 #include <boost/multiprecision/mpfr.hpp>
 

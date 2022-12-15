@@ -7,9 +7,10 @@
 #pragma warning(disable : 4244)
 #endif
 
+#include <cstdlib>
 #include <boost/polygon/detail/voronoi_predicates.hpp>
 #include <boost/polygon/detail/voronoi_structures.hpp>
-#include <boost/polygon/detail/skeleton_predicates.hpp>
+#include <boost/polygon/detail/voronoi_ctypes.hpp>
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_int_distribution.hpp>
 #include <vector>
@@ -26,7 +27,7 @@
 
 #include "arithmetic_backend.hpp"
 
-typedef boost::polygon::detail::point_2d<boost::int32_t> i_point;
+typedef boost::polygon::detail::point_2d<std::int32_t> i_point;
 
 template <class Clock>
 struct stopwatch
@@ -55,9 +56,9 @@ boost::random::mt19937 gen;
 template <class Big>
 struct cpp_int_voronoi_traits
 {
-   typedef boost::int32_t                                          int_type;
-   typedef boost::int64_t                                          int_x2_type;
-   typedef boost::uint64_t                                         uint_x2_type;
+   typedef std::int32_t                                          int_type;
+   typedef std::int64_t                                          int_x2_type;
+   typedef std::uint64_t                                         uint_x2_type;
    typedef Big                                                     big_int_type;
    typedef double                                                  fpt_type;
    typedef boost::polygon::detail::extended_exponent_fpt<fpt_type> efpt_type;
@@ -97,7 +98,7 @@ struct cpp_int_voronoi_traits
          return efpt_type(val, 0);
       }
       template <class tag, class Arg1, class Arg2, class Arg3, class Arg4>
-      double operator()(const boost::multiprecision::detail::expression<tag, Arg1, Arg2, Arg3, Arg4>& e)
+      efpt_type operator()(const boost::multiprecision::detail::expression<tag, Arg1, Arg2, Arg3, Arg4>& e)
       {
          typedef typename boost::multiprecision::detail::expression<tag, Arg1, Arg2, Arg3, Arg4>::result_type r_t;
          r_t                                                                                                  r(e);
@@ -109,9 +110,9 @@ struct cpp_int_voronoi_traits
 template <class Big>
 struct native_int_voronoi_traits
 {
-   typedef boost::int32_t                                          int_type;
-   typedef boost::int64_t                                          int_x2_type;
-   typedef boost::uint64_t                                         uint_x2_type;
+   typedef std::int32_t                                          int_type;
+   typedef std::int64_t                                          int_x2_type;
+   typedef std::uint64_t                                         uint_x2_type;
    typedef Big                                                     big_int_type;
    typedef double                                                  fpt_type;
    typedef boost::polygon::detail::extended_exponent_fpt<fpt_type> efpt_type;
@@ -145,8 +146,8 @@ template <class Traits>
 double test(const char* name)
 {
    typedef boost::polygon::detail::voronoi_predicates<Traits>                             preds;
-   typedef boost::polygon::detail::circle_event<boost::int32_t>                           circle_event;
-   typedef boost::polygon::detail::site_event<boost::int32_t>                             site_event;
+   typedef boost::polygon::detail::circle_event<std::int32_t>                           circle_event;
+   typedef boost::polygon::detail::site_event<std::int32_t>                             site_event;
    typedef typename preds::template mp_circle_formation_functor<site_event, circle_event> circle_pred;
 
    boost::random::uniform_int_distribution<> dist(0, points.size() - 1);
@@ -191,14 +192,14 @@ void generate_quickbook()
 
 int main()
 {
-   boost::random::uniform_int_distribution<> dist((std::numeric_limits<boost::int32_t>::min)() / 2, (std::numeric_limits<boost::int32_t>::max)() / 2);
+   boost::random::uniform_int_distribution<> dist((std::numeric_limits<std::int32_t>::min)() / 2, (std::numeric_limits<std::int32_t>::max)() / 2);
 
    for (unsigned i = 0; i < 100; ++i)
    {
       points.push_back(i_point(dist(gen), dist(gen)));
    }
 
-   test<boost::polygon::detail::voronoi_ctype_traits<boost::int32_t> >("extended_int");
+   test<boost::polygon::detail::voronoi_ctype_traits<std::int32_t> >("extended_int");
 
    test<cpp_int_voronoi_traits<boost::multiprecision::int256_t> >("int256_t");
    test<cpp_int_voronoi_traits<boost::multiprecision::int512_t> >("int512_t");
@@ -219,9 +220,9 @@ int main()
 
    generate_quickbook();
 
-   test<native_int_voronoi_traits<boost::int64_t> >("int64_t");
-   test<cpp_int_voronoi_traits<boost::multiprecision::number<boost::multiprecision::arithmetic_backend<boost::int64_t>, boost::multiprecision::et_off> > >("number<arithmetic_backend<boost::int64_t>, et_off>");
-   //test<cpp_int_voronoi_traits<boost::multiprecision::number<boost::multiprecision::arithmetic_backend<boost::int64_t>, boost::multiprecision::et_on> > >("number<arithmetic_backend<boost::int64_t>, et_on>");
+   test<native_int_voronoi_traits<std::int64_t> >("int64_t");
+   test<cpp_int_voronoi_traits<boost::multiprecision::number<boost::multiprecision::arithmetic_backend<std::int64_t>, boost::multiprecision::et_off> > >("number<arithmetic_backend<std::int64_t>, et_off>");
+   //test<cpp_int_voronoi_traits<boost::multiprecision::number<boost::multiprecision::arithmetic_backend<std::int64_t>, boost::multiprecision::et_on> > >("number<arithmetic_backend<std::int64_t>, et_on>");
 
    return 0;
 }

@@ -6,8 +6,11 @@
 // or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include <boost/core/lightweight_test.hpp>
+#include <boost/histogram/accumulators/count.hpp>
 #include <boost/histogram/accumulators/mean.hpp>
 #include <boost/histogram/accumulators/ostream.hpp>
+#include <boost/histogram/accumulators/sum.hpp>
+#include <boost/histogram/accumulators/weighted_sum.hpp>
 #include <boost/histogram/axis/category.hpp>
 #include <boost/histogram/axis/integer.hpp>
 #include <boost/histogram/axis/option.hpp>
@@ -17,8 +20,8 @@
 #include <limits>
 #include <sstream>
 #include <string>
+#include "histogram.hpp"
 #include "throw_exception.hpp"
-#include "utility_histogram.hpp"
 
 using namespace boost::histogram;
 
@@ -49,16 +52,16 @@ void run_tests() {
     const auto expected =
         "BEGIN\n"
         "histogram(regular(3, -0.5, 1, options=underflow | overflow))\n"
-        "                +------------------------------------------------------------+\n"
-        "[-inf, -0.5) 0  |                                                            |\n"
-        "[-0.5,    0) 1  |======                                                      |\n"
-        "[   0,  0.5) 10 |=========================================================== |\n"
-        "[ 0.5,    1) 5  |==============================                              |\n"
-        "[   1,  inf) 0  |                                                            |\n"
-        "                +------------------------------------------------------------+\n"
+        "                ┌────────────────────────────────────────────────────────────┐\n"
+        "[-inf, -0.5) 0  │                                                            │\n"
+        "[-0.5,    0) 1  │█████▉                                                      │\n"
+        "[   0,  0.5) 10 │███████████████████████████████████████████████████████████ │\n"
+        "[ 0.5,    1) 5  │█████████████████████████████▌                              │\n"
+        "[   1,  inf) 0  │                                                            │\n"
+        "                └────────────────────────────────────────────────────────────┘\n"
         "END";
 
-    BOOST_TEST_CSTR_EQ(expected, str(h).c_str());
+    BOOST_TEST_CSTR_EQ(str(h).c_str(), expected);
   }
 
   // regular, narrow
@@ -66,23 +69,102 @@ void run_tests() {
     auto h = make(Tag(), R2(3, -0.5, 1.0));
     h.at(0) = 1;
     h.at(1) = 10;
-    h.at(2) = 2;
+    h.at(2) = 5;
 
     const auto expected = "BEGIN\n"
                           "histogram(regular(3, -0.5, 1, options=none))\n"
-                          "               +-----------------------+\n"
-                          "[-0.5,   0) 1  |==                     |\n"
-                          "[   0, 0.5) 10 |====================== |\n"
-                          "[ 0.5,   1) 2  |====                   |\n"
-                          "               +-----------------------+\n"
+                          "               ┌───────────────────────┐\n"
+                          "[-0.5,   0) 1  │██▎                    │\n"
+                          "[   0, 0.5) 10 │██████████████████████ │\n"
+                          "[ 0.5,   1) 5  │███████████            │\n"
+                          "               └───────────────────────┘\n"
                           "END";
 
-    BOOST_TEST_CSTR_EQ(expected, str(h, 40).c_str());
+    BOOST_TEST_CSTR_EQ(str(h, 40).c_str(), expected);
 
     // too narrow
-    BOOST_TEST_CSTR_EQ("BEGIN\n"
-                       "histogram(regular(3, -0.5, 1, options=none))END",
-                       str(h, 10).c_str());
+    BOOST_TEST_CSTR_EQ(str(h, 10).c_str(),
+                       "BEGIN\n"
+                       "histogram(regular(3, -0.5, 1, options=none))END");
+  }
+
+  // regular with accumulators::count
+  {
+    auto h =
+        make_s(Tag(), dense_storage<accumulators::count<double>>(), R2(3, -0.5, 1.0));
+    h.at(0) = 1;
+    h.at(1) = 10;
+    h.at(2) = 5;
+
+    const auto expected = "BEGIN\n"
+                          "histogram(regular(3, -0.5, 1, options=none))\n"
+                          "               ┌───────────────────────┐\n"
+                          "[-0.5,   0) 1  │██▎                    │\n"
+                          "[   0, 0.5) 10 │██████████████████████ │\n"
+                          "[ 0.5,   1) 5  │███████████            │\n"
+                          "               └───────────────────────┘\n"
+                          "END";
+
+    BOOST_TEST_CSTR_EQ(str(h, 40).c_str(), expected);
+  }
+
+  // regular with thread-safe accumulators::count
+  {
+    auto h = make_s(Tag(), dense_storage<accumulators::count<double, true>>(),
+                    R2(3, -0.5, 1.0));
+    h.at(0) = 1;
+    h.at(1) = 10;
+    h.at(2) = 5;
+
+    const auto expected = "BEGIN\n"
+                          "histogram(regular(3, -0.5, 1, options=none))\n"
+                          "               ┌───────────────────────┐\n"
+                          "[-0.5,   0) 1  │██▎                    │\n"
+                          "[   0, 0.5) 10 │██████████████████████ │\n"
+                          "[ 0.5,   1) 5  │███████████            │\n"
+                          "               └───────────────────────┘\n"
+                          "END";
+
+    BOOST_TEST_CSTR_EQ(str(h, 40).c_str(), expected);
+  }
+
+  // regular with accumulators::sum
+  {
+    auto h = make_s(Tag(), dense_storage<accumulators::sum<double>>(), R2(3, -0.5, 1.0));
+    h.at(0) = 1;
+    h.at(1) = 10;
+    h.at(2) = 5;
+
+    const auto expected = "BEGIN\n"
+                          "histogram(regular(3, -0.5, 1, options=none))\n"
+                          "               ┌───────────────────────┐\n"
+                          "[-0.5,   0) 1  │██▎                    │\n"
+                          "[   0, 0.5) 10 │██████████████████████ │\n"
+                          "[ 0.5,   1) 5  │███████████            │\n"
+                          "               └───────────────────────┘\n"
+                          "END";
+
+    BOOST_TEST_CSTR_EQ(str(h, 40).c_str(), expected);
+  }
+
+  // regular with accumulators::weighted_sum
+  {
+    auto h = make_s(Tag(), dense_storage<accumulators::weighted_sum<double>>(),
+                    R2(3, -0.5, 1.0));
+    h.at(0) = 1;
+    h.at(1) = 10;
+    h.at(2) = 5;
+
+    const auto expected = "BEGIN\n"
+                          "histogram(regular(3, -0.5, 1, options=none))\n"
+                          "               ┌───────────────────────┐\n"
+                          "[-0.5,   0) 1  │██▎                    │\n"
+                          "[   0, 0.5) 10 │██████████████████████ │\n"
+                          "[ 0.5,   1) 5  │███████████            │\n"
+                          "               └───────────────────────┘\n"
+                          "END";
+
+    BOOST_TEST_CSTR_EQ(str(h, 40).c_str(), expected);
   }
 
   // regular2
@@ -95,14 +177,14 @@ void run_tests() {
     const auto expected =
         "BEGIN\n"
         "histogram(regular(3, -0.5, 1, options=none))\n"
-        "               +-------------------------------------------------------------+\n"
-        "[-0.5,   0) 1  |                                           =========         |\n"
-        "[   0, 0.5) -5 |===========================================                  |\n"
-        "[ 0.5,   1) 2  |                                           ================= |\n"
-        "               +-------------------------------------------------------------+\n"
+        "               ┌─────────────────────────────────────────────────────────────┐\n"
+        "[-0.5,   0) 1  │                                           ████████▋         │\n"
+        "[   0, 0.5) -5 │███████████████████████████████████████████                  │\n"
+        "[ 0.5,   1) 2  │                                           █████████████████▏│\n"
+        "               └─────────────────────────────────────────────────────────────┘\n"
         "END";
 
-    BOOST_TEST_CSTR_EQ(expected, str(h).c_str());
+    BOOST_TEST_CSTR_EQ(str(h).c_str(), expected);
   }
 
   // regular with log
@@ -111,43 +193,91 @@ void run_tests() {
 
     const auto expected =
         "BEGIN\n"
-        "histogram(regular_log(6, 0.001, 1000, metadata=\"foo\", options=underflow | "
-        "overflow))\n"
-        "                 +-----------------------------------------------------------+\n"
-        "[    0, 0.001) 0 |                                                           |\n"
-        "[0.001,  0.01) 0 |                                                           |\n"
-        "[ 0.01,   0.1) 0 |                                                           |\n"
-        "[  0.1,     1) 0 |                                                           |\n"
-        "[    1,    10) 0 |                                                           |\n"
-        "[   10,   100) 0 |                                                           |\n"
-        "[  100,  1000) 0 |                                                           |\n"
-        "[ 1000,   inf) 0 |                                                           |\n"
-        "                 +-----------------------------------------------------------+\n"
+        "histogram(regular(transform::log{}, 6, 0.001, 1000, metadata=\"foo\", "
+        "options=underflow | overflow))\n"
+        "                 ┌───────────────────────────────────────────────────────────┐\n"
+        "[    0, 0.001) 0 │                                                           │\n"
+        "[0.001,  0.01) 0 │                                                           │\n"
+        "[ 0.01,   0.1) 0 │                                                           │\n"
+        "[  0.1,     1) 0 │                                                           │\n"
+        "[    1,    10) 0 │                                                           │\n"
+        "[   10,   100) 0 │                                                           │\n"
+        "[  100,  1000) 0 │                                                           │\n"
+        "[ 1000,   inf) 0 │                                                           │\n"
+        "                 └───────────────────────────────────────────────────────────┘\n"
         "END";
 
-    BOOST_TEST_CSTR_EQ(expected, str(h).c_str());
+    BOOST_TEST_CSTR_EQ(str(h).c_str(), expected);
+  }
+
+  // subsampling
+  {
+    auto h = make(Tag(), I(-8, 9));
+    for (int i = -8; i < 9; ++i) h.at(i + 8) = i;
+
+    const auto expected = "BEGIN\n"
+                          "histogram(integer(-8, 9, options=underflow | overflow))\n"
+                          "      ┌───┐\n"
+                          "-9 0  │   │\n"
+                          "-8 -8 │█  │\n"
+                          "-7 -7 │█  │\n"
+                          "-6 -6 │█  │\n"
+                          "-5 -5 │█  │\n"
+                          "-4 -4 │█  │\n"
+                          "-3 -3 │   │\n"
+                          "-2 -2 │   │\n"
+                          "-1 -1 │   │\n"
+                          " 0 0  │   │\n"
+                          " 1 1  │ ▏ │\n"
+                          " 2 2  │ ▎ │\n"
+                          " 3 3  │ ▍ │\n"
+                          " 4 4  │ ▌ │\n"
+                          " 5 5  │ ▋ │\n"
+                          " 6 6  │ ▊ │\n"
+                          " 7 7  │ ▉ │\n"
+                          " 8 8  │ █ │\n"
+                          " 9 0  │   │\n"
+                          "      └───┘\n"
+                          "END";
+
+    BOOST_TEST_CSTR_EQ(str(h, 11).c_str(), expected);
   }
 
   // integer
   {
-    auto h = make(Tag(), I(0, 1));
-    h.at(0) = -10;
-    h.at(1) = 5;
+    auto h = make(Tag(), I(-8, 9));
+    for (int i = -8; i < 9; ++i) h.at(i + 8) = i;
 
     const auto expected =
         "BEGIN\n"
-        "histogram(integer(0, 1, options=underflow | overflow))\n"
-        "       +---------------------------------------------------------------------+\n"
-        "-1 0   |                                                                     |\n"
-        " 0 -10 |=============================================                        |\n"
-        " 1 5   |                                             ======================= |\n"
-        "       +---------------------------------------------------------------------+\n"
+        "histogram(integer(-8, 9, options=underflow | overflow))\n"
+        "      ┌──────────────────────────────────────────────────────────────────────┐\n"
+        "-9 0  │                                                                      │\n"
+        "-8 -8 │███████████████████████████████████                                   │\n"
+        "-7 -7 │     ██████████████████████████████                                   │\n"
+        "-6 -6 │         ██████████████████████████                                   │\n"
+        "-5 -5 │             ██████████████████████                                   │\n"
+        "-4 -4 │                  █████████████████                                   │\n"
+        "-3 -3 │                      █████████████                                   │\n"
+        "-2 -2 │                          █████████                                   │\n"
+        "-1 -1 │                               ████                                   │\n"
+        " 0 0  │                                                                      │\n"
+        " 1 1  │                                   ████▍                              │\n"
+        " 2 2  │                                   ████████▋                          │\n"
+        " 3 3  │                                   ████████████▉                      │\n"
+        " 4 4  │                                   █████████████████▎                 │\n"
+        " 5 5  │                                   █████████████████████▌             │\n"
+        " 6 6  │                                   █████████████████████████▉         │\n"
+        " 7 7  │                                   ██████████████████████████████▎    │\n"
+        " 8 8  │                                   ██████████████████████████████████▌│\n"
+        " 9 0  │                                                                      │\n"
+        "      └──────────────────────────────────────────────────────────────────────┘\n"
         "END";
 
-    BOOST_TEST_CSTR_EQ(expected, str(h).c_str());
+    BOOST_TEST_CSTR_EQ(str(h).c_str(), expected);
   }
 
-  // catorgy<string>
+  // category<string>
   {
     auto h = make(Tag(), C({"a", "bb", "ccc", "dddd"}));
     h.at(0) = 1.23;
@@ -159,16 +289,16 @@ void run_tests() {
     const auto expected =
         "BEGIN\n"
         "histogram(category(\"a\", \"bb\", \"ccc\", \"dddd\", options=overflow))\n"
-        "                +------------------------------------------------------------+\n"
-        "    a 1.23      |=========================================================== |\n"
-        "   bb 1         |================================================            |\n"
-        "  ccc 0.001235  |                                                            |\n"
-        " dddd 1.235e-12 |                                                            |\n"
-        "other nan       |                                                            |\n"
-        "                +------------------------------------------------------------+\n"
+        "                ┌────────────────────────────────────────────────────────────┐\n"
+        "    a 1.23      │███████████████████████████████████████████████████████████ │\n"
+        "   bb 1         │████████████████████████████████████████████████            │\n"
+        "  ccc 0.001235  │                                                            │\n"
+        " dddd 1.235e-12 │                                                            │\n"
+        "other nan       │                                                            │\n"
+        "                └────────────────────────────────────────────────────────────┘\n"
         "END";
 
-    BOOST_TEST_CSTR_EQ(expected, str(h).c_str());
+    BOOST_TEST_CSTR_EQ(str(h).c_str(), expected);
   }
 
   // histogram with axis that has no value method
@@ -184,14 +314,16 @@ void run_tests() {
 
     const auto expected =
         "BEGIN\n"
-        "histogram(<unstreamable>)\n"
-        "    +------------------------------------------------------------------------+\n"
-        "0 3 |=====================================================                   |\n"
-        "1 4 |======================================================================= |\n"
-        "    +------------------------------------------------------------------------+\n"
+        "histogram(" +
+        detail::type_name<minimal_axis>() +
+        ")\n"
+        "    ┌────────────────────────────────────────────────────────────────────────┐\n"
+        "0 3 │█████████████████████████████████████████████████████▎                  │\n"
+        "1 4 │███████████████████████████████████████████████████████████████████████ │\n"
+        "    └────────────────────────────────────────────────────────────────────────┘\n"
         "END";
 
-    BOOST_TEST_CSTR_EQ(expected, str(h).c_str());
+    BOOST_TEST_CSTR_EQ(str(h).c_str(), expected.c_str());
   }
 
   // fallback for 2D
@@ -212,7 +344,7 @@ void run_tests() {
         "  ( 1  1): 0     (-1  2): nan   ( 0  2): 0     ( 1  2): 0    \n"
         ")END";
 
-    BOOST_TEST_CSTR_EQ(expected, str(h).c_str());
+    BOOST_TEST_CSTR_EQ(str(h).c_str(), expected);
   }
 
   // fallback for profile
@@ -227,7 +359,7 @@ void run_tests() {
                           "  ( 1): mean(0, 0, -0)     \n"
                           ")END";
 
-    BOOST_TEST_CSTR_EQ(expected, str(h).c_str());
+    BOOST_TEST_CSTR_EQ(str(h).c_str(), expected);
   }
 }
 
@@ -242,7 +374,7 @@ int main() {
     const auto expected = "BEGIN\n"
                           "histogram()END";
 
-    BOOST_TEST_CSTR_EQ(expected, str(h).c_str());
+    BOOST_TEST_CSTR_EQ(str(h).c_str(), expected);
   }
 
   return boost::report_errors();

@@ -21,112 +21,14 @@
 #include <unordered_map>
 #include <utility>
 #include <vector>
+#include "allocator.hpp"
 #include "std_ostream.hpp"
 #include "throw_exception.hpp"
-#include "utility_allocator.hpp"
 
 using namespace boost::histogram;
 using namespace boost::histogram::detail;
 
 int main() {
-  // has_method_value*
-  {
-    struct A {};
-    struct B {
-      A value(int) const { return {}; }
-    };
-    struct C {
-      char value(int) const { return 0; }
-    };
-
-    BOOST_TEST_TRAIT_FALSE((has_method_value<A>));
-    BOOST_TEST_TRAIT_TRUE((has_method_value<B>));
-    BOOST_TEST_TRAIT_TRUE((has_method_value<C>));
-  }
-
-  // has_method_options
-  {
-    struct A {};
-    struct B {
-      void options() {}
-    };
-
-    BOOST_TEST_TRAIT_FALSE((has_method_options<A>));
-    BOOST_TEST_TRAIT_TRUE((has_method_options<B>));
-  }
-
-  // has_method_metadata
-  {
-    struct A {};
-    struct B {
-      void metadata();
-    };
-
-    BOOST_TEST_TRAIT_FALSE((has_method_metadata<A>));
-    BOOST_TEST_TRAIT_TRUE((has_method_metadata<B>));
-  }
-
-  // has_method_update
-  {
-    struct A {};
-    struct B {
-      void update(int) {}
-    };
-    using C = axis::integer<int, axis::null_type, use_default>;
-
-    BOOST_TEST_TRAIT_FALSE((has_method_update<A>));
-    BOOST_TEST_TRAIT_TRUE((has_method_update<B>));
-    BOOST_TEST_TRAIT_TRUE((has_method_update<C>));
-  }
-
-  // has_method_resize
-  {
-    struct A {};
-    using B = std::vector<int>;
-    using C = std::map<int, int>;
-
-    BOOST_TEST_TRAIT_FALSE((has_method_resize<A>));
-    BOOST_TEST_TRAIT_TRUE((has_method_resize<B>));
-    BOOST_TEST_TRAIT_FALSE((has_method_resize<C>));
-  }
-
-  // has_method_size
-  {
-    struct A {};
-    using B = std::vector<int>;
-    using C = std::map<int, int>;
-
-    BOOST_TEST_TRAIT_FALSE((has_method_size<A>));
-    BOOST_TEST_TRAIT_TRUE((has_method_size<B>));
-    BOOST_TEST_TRAIT_TRUE((has_method_size<C>));
-  }
-
-  // has_method_clear
-  {
-    struct A {};
-    using B = std::vector<int>;
-    using C = std::map<int, int>;
-    using D = std::array<int, 10>;
-
-    BOOST_TEST_TRAIT_FALSE((has_method_clear<A>));
-    BOOST_TEST_TRAIT_TRUE((has_method_clear<B>));
-    BOOST_TEST_TRAIT_TRUE((has_method_clear<C>));
-    BOOST_TEST_TRAIT_FALSE((has_method_clear<D>));
-  }
-
-  // has_allocator
-  {
-    struct A {};
-    using B = std::vector<int>;
-    using C = std::map<int, int>;
-    using D = std::array<int, 10>;
-
-    BOOST_TEST_TRAIT_FALSE((has_method_clear<A>));
-    BOOST_TEST_TRAIT_TRUE((has_method_clear<B>));
-    BOOST_TEST_TRAIT_TRUE((has_method_clear<C>));
-    BOOST_TEST_TRAIT_FALSE((has_method_clear<D>));
-  }
-
   // is_storage
   {
     struct A {};
@@ -293,6 +195,38 @@ int main() {
     BOOST_TEST_TRAIT_FALSE((has_operator_radd<B, A>));
     BOOST_TEST_TRAIT_TRUE((has_operator_radd<B, B>));
     BOOST_TEST_TRAIT_TRUE((has_operator_radd<B&, const B&>));
+  }
+
+  // is_explicitly_convertible
+  {
+    struct A {};
+    struct B {
+      operator A() { return A{}; }
+    };
+    struct C {
+      explicit operator A();
+    };
+    struct D {
+      D(A);
+    };
+    struct E {
+      explicit E(A);
+    };
+    BOOST_TEST_TRAIT_TRUE((is_explicitly_convertible<A, A>));
+    BOOST_TEST_TRAIT_FALSE((is_explicitly_convertible<A, B>));
+    BOOST_TEST_TRAIT_TRUE((is_explicitly_convertible<B, A>));
+    BOOST_TEST_TRAIT_TRUE((is_explicitly_convertible<C, A>));
+    BOOST_TEST_TRAIT_TRUE((is_explicitly_convertible<A, D>));
+    BOOST_TEST_TRAIT_TRUE((is_explicitly_convertible<A, E>));
+  }
+
+  // is_complete
+  {
+    struct A;
+    struct B {};
+
+    BOOST_TEST_TRAIT_FALSE((is_complete<A>));
+    BOOST_TEST_TRAIT_TRUE((is_complete<B>));
   }
 
   return boost::report_errors();
