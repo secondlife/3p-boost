@@ -3,7 +3,129 @@
 All notable changes to [Boost.GIL](https://github.com/boostorg/gil/) project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased]
+## [1.80.0] - 2022-08-10
+
+NOTICE: We are planning BREAKING switch to C++17 as minimum required C++ language version in one or two releases after Boost 1.80 ([Discussion #676](https://github.com/boostorg/gil/discussions/676))
+
+### Added
+- GSoC 2020: Added Perona-Malik anisotropic diffusion algorithm [[PR #500](https://github.com/boostorg/gil/pull/500))
+- GSoC 2020: Added histogram class and related functionality ([PR #499](https://github.com/boostorg/gil/pull/499))
+- GSoC 2020: Added histogram equalization feature ([PR #514](https://github.com/boostorg/gil/pull/514))
+- GSoC 2020: Added histogram matching algorithm ([PR #515](https://github.com/boostorg/gil/pull/515))
+- GSoC 2020: Added ability to stack images either horizontally (`hstack`) or vertically (`vstack`) ([PR #506](https://github.com/boostorg/gil/pull/506))
+- GSoC 2020: Added adaptive histogram equalization algorithm ([PR #516](https://github.com/boostorg/gil/pull/516))
+- GSoC 2020: Added Standard Hough Transform and circle rasterization ([PR #512](https://github.com/boostorg/gil/pull/512))
+- GSoC 2020: Added Bresenham's algorithm for line rasterization ([PR #512](https://github.com/boostorg/gil/pull/512))
+- GSoC 2021: Added rotation of image by arbitrary angle around its center ([PR #565](https://github.com/boostorg/gil/pull/565))
+- GSoC 2021: Added rasterization support for ellipse based on "An Efficient Ellipse-Drawing Algorithm" by Jerry Van Aken ([PR #585](https://github.com/boostorg/gil/pull/585))
+- Added `image` constructor from compatible view ([PR #520](https://github.com/boostorg/gil/pull/520))
+- Added inverse function for affine `matrix3x2` ([PR #527](https://github.com/boostorg/gil/pull/527))
+- Added standard morphological transformations ([PR #541](https://github.com/boostorg/gil/pull/541))
+- Added `for_each_pixel` overload for `any_image` ([PR #648](https://github.com/boostorg/gil/pull/648))
+- Added C++17 polymorphic memory resource typedefs for `image` class ([PR #529](https://github.com/boostorg/gil/pull/529))
+
+### Changed
+- BREAKING: The required minimum C++ version is changed from from C++11 to C++14.
+  Currently, large parts of GIL still compile with a C++11 compiler. However,
+  there is no guarantee that it stays that way, and any compilers that do not
+  support at least C++14 are considered unsupported as of now.
+- BREAKING: `any_color_converted_view()` is deprecated and will be removed in the next release.
+  Use `color_converted_view()` instead, which provides the same feature.
+- BREAKING: `apply_operation` for `any_image` is deprecated and will be removed in the next release.
+  Use `variant2::visit` instead, which provides the same feature. ([PR #656](https://github.com/boostorg/gil/pull/656))
+- documentation: Display that GIL is a header-only library
+- Moved numeric extension to core ([PR #573](https://github.com/boostorg/gil/pull/573))
+- Added support for C++17's `<filesystem>` ([PR #636](https://github.com/boostorg/gil/pull/636))
+  The availability of the ``std::filesystem`` is detected automatically,
+  unless the `BOOST_GIL_IO_USE_BOOST_FILESYSTEM` macro is defined that forces
+  the preference of the Boost.Filesystem.
+- Renamed `pixel_multiply_t` to `pixel_multiplies_t` and `pixel_divide_t` to `pixel_divides_t`([PR #655](https://github.com/boostorg/gil/pull/655))
+- Renamed `io/dynamic_io_new.hpp` to `io/detail/dynamic.hpp` ([PR #653](https://github.com/boostorg/gil/pull/653))
+- Moved function `construct_matched` into `boost::gil::detail` namespace as it was only used by other implementation details ([PR #653](https://github.com/boostorg/gil/pull/653))
+- Made `packed_pixel` trivially copyable and assignable ([PR #679](https://github.com/boostorg/gil/pull/679))
+- Replace deprecated libtiff v4.3 typedefs with C99 fixed-size integers ([#685](https://github.com/boostorg/gil/pull/685))
+
+### Removed
+- BREAKING: Removed support for GCC 5 ([PR #572](https://github.com/boostorg/gil/pull/572))
+- Removed deprecated.hpp ([PR #627](https://github.com/boostorg/gil/pull/627))
+
+### Fixed
+- Fixed conversion from RGB to HSL ([PR #505](https://github.com/boostorg/gil/pull/505))
+- Fixed conversion from RGB to signed CMYK ([PR #522](https://github.com/boostorg/gil/pull/522))
+- Removed unnecessary numeric cast in hsv.hpp ([PR #530](https://github.com/boostorg/gil/pull/530))
+- Fixed default constructor for `homogeneous_color_base` for reference pixel elements ([PR #542](https://github.com/boostorg/gil/pull/542))
+- Fixed returning reference to local temporary object in `subchroma_image_view` ([PR #556](https://github.com/boostorg/gil/pull/556))
+- Added missing header guards in diffusion.hpp ([PR #568](https://github.com/boostorg/gil/pull/568))
+- Fixed `any_image_view<>::const_t` ([PR #526](https://github.com/boostorg/gil/pull/526))
+- Fixed C++20 incompatibilities in I/O extensions ([PR #617](https://github.com/boostorg/gil/pull/617))
+- Ensured all examples build without errors ([PR #628](https://github.com/boostorg/gil/pull/628))
+- Fixed `convolve_2d` for images with `float32_t` channel model ([PR #577](https://github.com/boostorg/gil/pull/577))
+- Fixed `for_each_pixel` for non-1d iterable views ([PR #621](https://github.com/boostorg/gil/pull/621))
+- Fixed: `is_equal_to_sixteen` in PNG I/O was less-than test ([PR #650](https://github.com/boostorg/gil/pull/650))
+- Re-allow `devicen_t` with two components ([PR #654](https://github.com/boostorg/gil/pull/654))
+  It was unintentionally removed in Boost 1.72
+- Fixed memory leak in `image` class for empty dimensions ([PR #649](https://github.com/boostorg/gil/pull/649))
+
+### Acknowledgements
+
+Cypre55, Samuel Debionne, Mike-Devel, Edward Diener, Peter Dimov, Omar Emara, Dhruva Gole, Nicolas Herry, Eugene K, Avinal Kumar, Gaurav Kumar, Marco Langer, Pranam Lashkari, Mateusz Łoskot, Giovanni Mascellani, Debabrata Mandal, Gopi Krishna Menon, René Ferdinand Rivera Morell, Felix Morgner, Harshit Pant, Paul92, André Schröder, Scramjet911, Siddharth, Dirk Stolle, Prathamesh Tagore, theroyn, Olzhas Zhumabek
+
+## [1.75.0] - 2020-12-09
+
+BREAKING: In next release, we are going to drop support for GCC 5. We may also change the required minimum C++ version from C++11 to C++14.
+
+## [1.74.0] - 2020-08-12
+
+### Added
+- Added new constructor initializing `any_image` from r-value reference to any image ([PR #486](https://github.com/boostorg/gil/pull/486))
+- Implemented mechanism to reverse `kernel_2d` ([PR #489](https://github.com/boostorg/gil/pull/489))
+
+### Changed
+- BREAKING: Replace Boost.Variant with Boost.Variant2 ([PR #474](https://github.com/boostorg/gil/pull/474)) which completes removal on uses of Boost.MPL (missing from Boost 1.72.0 change added [PR #274](https://github.com/boostorg/gil/pull/274)).
+- Use perfect forwarding from apply_operation to visit ([PR #491](https://github.com/boostorg/gil/pull/491))
+
+### Removed
+- BREAKING: Removed dependency on Boost.Variant
+
+### Fixed
+- Fixed invalid conversion from RGB8 to CMYK32 due to overflow ([PR #470](https://github.com/boostorg/gil/pull/470))
+- Fixed `image` constructor from other image ([PR #477](https://github.com/boostorg/gil/pull/477))
+- Fixed error `plane_view_t` is not a class or namespace name ([PR #481](https://github.com/boostorg/gil/pull/481))
+- Fixed `interleaved_view` factory using `point<std::ptrdiff_t>` for dimension ([PR #487](https://github.com/boostorg/gil/pull/487))
+- Fixed documentation replacing uses MPL with MP11 in tutorial ([PR #494](https://github.com/boostorg/gil/pull/494))
+- Fixed missing header in `numeric/kernel.hpp` to make it self-contained ([PR #502](https://github.com/boostorg/gil/pull/502))
+
+### Acknowledgements
+
+Samuel Debionne, Pranam Lashkari, Mateusz Loskot, Debabrata Mandal
+
+## [1.73.0] - 2020-04-22
+
+### Added
+- Added move constructor and move assignment operator to `image` class ([PR #457](https://github.com/boostorg/gil/pull/457)).
+- New member function `size()` in `any_image_view` class ([PR #456](https://github.com/boostorg/gil/pull/456)).
+- Numerous new test cases for existing features.
+
+### Changed
+- Replace Boost.Test with Boost.LightweightTest as the only test framework used in GIL ([PR #459](https://github.com/boostorg/gil/pull/459) and [PR #464](https://github.com/boostorg/gil/pull/464)). This also restructured the `test/extension/io/` sub-tree and targets in related `Jamfile`-s.
+- Removed remaining uses of Boost.MPL ([PR #441](https://github.com/boostorg/gil/pull/441).
+- Renamed all macros using `BOOST_GIL_` prefix ([PR #411](https://github.com/boostorg/gil/pull/411)).
+- Renamed all CMake configuration options using `BOOST_GIL_` prefix ([PR #419](https://github.com/boostorg/gil/pull/419)).
+
+### Removed
+- Removed `extension/dynamic_image/reduce.hpp` as unused and possibly unfinished ([PR #466](https://github.com/boostorg/gil/pull/466)). An implementation attempt of techniques described in the paper [Efficient Run-Time Dispatching in Generic Programming with Minimal Code Bloat](http://lubomir.org/academic/MinimizingCodeBloat.pdf) by Lubomir Bourdev, Jaakko Jarvi.
+- Removed direct dependency on Boost.MPL, Boost.System and Boost.Test.
+- Started removing public macros for compile-time configuration of I/O extension tests, i.e. `BOOST_GIL_IO_TEST_ALLOW_READING_IMAGES` and `BOOST_GIL_IO_TEST_ALLOW_WRITING_IMAGES`. Instead, if a test target is built, it builds all its test cases unconditionally.
+
+### Fixed
+- Avoid `longjmp` interaction during destruction of I/O extension objects ([PR #433](https://github.com/boostorg/gil/pull/433)).
+- Fixed missing alignment default value in constructor of `image` class ([PR #429](https://github.com/boostorg/gil/pull/429)).
+- Fixed segmentation fault when reading corrupted PNG file ([PR #414](https://github.com/boostorg/gil/pull/414)).
+- Fixed illegal initialization of return values in the old IOv1 interface of I/O extension ([PR #409](https://github.com/boostorg/gil/pull/409)).
+
+### Acknowledgements
+
+Samuel Debionne, Thiago Henrique Hüpner, Pranam Lashkari, Mateusz Loskot, Debabrata Mandal, Olzhas Zhumabek
 
 ## [1.72.0] - 2019-12-11
 
@@ -11,7 +133,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - GSoC 2019: Lanczos resampling for image down scaling ([PR #309](https://github.com/boostorg/gil/pull/309)).
 - GSoC 2019: Methods for binary thresholding, inverted binary thresholding and truncation thresholding ([PR #313](https://github.com/boostorg/gil/pull/313)).
 - GSoC 2019: Otsu thresholding method ([PR #314](https://github.com/boostorg/gil/pull/314)).
-- GSoC 2019: Adaptive thresholding using mean or gaussian-weighted sum of the neighbourhood area ([PR #315](https://github.com/boostorg/gil/pull/315)).
+- GSoC 2019: Adaptive thresholding using mean of the neighbourhood area ([PR #341](https://github.com/boostorg/gil/pull/341)).
+- GSoC 2019: Adaptive thresholding using gaussian-weighted sum of the neighbourhood area ([PR #379](https://github.com/boostorg/gil/pull/379)).
 - GSoC 2019: Harris response calculation (corner detector without non-maximum filtering) ([PR #350](https://github.com/boostorg/gil/pull/350)).
 - GSoC 2019: Hessian corner detector ([PR #364](https://github.com/boostorg/gil/pull/364)).
 - GSoC 2019: Types for defining 2D kernel, `kernel_2d` and `kernel_2d_fixed`, in Numeric extension ([PR #361](https://github.com/boostorg/gil/pull/361)).
@@ -30,7 +153,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Move all tests, core features and extensions, inside `test/` directory ([PR #302](https://github.com/boostorg/gil/pull/302)).
 
 ### Removed
-- Replace Boost.MPL with Boost.MP11 ([PR #274](https://github.com/boostorg/gil/pull/274)).
+- BREAKING: Replace Boost.MPL with Boost.MP11 ([PR #274](https://github.com/boostorg/gil/pull/274)).
 - Removed use of Boost.TypeTraits ([PR #274](https://github.com/boostorg/gil/pull/274)).
 - Dropped support for GCC <= 4.8 ([PR #296](https://github.com/boostorg/gil/pull/296)).
 - Remove `include/boost/gil/version.hpp` file as unused ([PR #403](https://github.com/boostorg/gil/pull/403)).
@@ -42,10 +165,62 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Applied the [Rule of Three](https://en.wikipedia.org/wiki/Rule_of_three_(C%2B%2B_programming)) for numerous types.
 - Removed uses of deprecated implicit definition of defaulted copy assignment operator or copy constructor.
 
+### Acknowledgements
+
+Samuel Debionne, Tyler Deuty, Jean-David Gadina, Jan Houska, Pranam Lashkari, Mateusz Loskot, Stefan Seefeld, Miral Shah, Olzhas Zhumabek
+
+## [1.70.0] - 2019-04-12
+
+### Added
+- Numerous new test cases for existing features.
+- C++11 requirements checks to Boost.Build Jamfiles ([PR #260](https://github.com/boostorg/gil/pull/260)).
+
+### Changed
+- Split single `boost/gil/concepts.hpp` into multiple `boost/gil/concepts/*.hpp` headers ([PR #169](https://github.com/boostorg/gil/pull/169)).
+- Removed uses of `boost::enable_if` with `std::enable_if` ([PR #215](https://github.com/boostorg/gil/pull/215)).
+- Replaced own implementation of variant type used for `any_image` with Boost.Variant ([PR #231](https://github.com/boostorg/gil/pull/231)).
+- Moved original all-in-one test suite to `test/legacy/` ([PR #239](https://github.com/boostorg/gil/pull/239)).
+- Continued C++ modernization of the library source code.
+
+### Removed
+- Remove uses of deprecated `std::unary_function` and `std::binary_function` ([PR #191](https://github.com/boostorg/gil/pull/191)).
+- Removed uses of Boost.StaticAssert ([PR #207](https://github.com/boostorg/gil/pull/207)).
+- Removed uses of `BOOST_STATIC_CONSTANT` ([PR #211](https://github.com/boostorg/gil/pull/211)).
+- Removed uses of Boost.Function  ([PR #213](https://github.com/boostorg/gil/pull/213)), Boost.Bind and Boost.Lambda  ([PR #212](https://github.com/boostorg/gil/pull/212)).
+
+### Fixed
+- Fixed access to non-type results of metafunctions calls using `::value` convention ([PR #262](https://github.com/boostorg/gil/pull/262)).
+
+### Acknowledgements
+
+Samuel Debionne, Mateusz Loskot, Nikita Kniazev, Stefan Seefeld
+
+## [1.69.0] - 2018-12-12
+
+### Changed
+- Refactored library includes to `#include <boost/gil/...>` structure ([PR #145](https://github.com/boostorg/gil/pull/145)).
+
+### Removed
+- Header `include/boost/gil_all.hpp` file as deprecated ([PR #145](https://github.com/boostorg/gil/pull/145)).
+- Header `include/boost/gil_concepts.hpp` file as deprecated ([PR #145](https://github.com/boostorg/gil/pull/145)).
+- Header `include/boost/gil_config.hpp` file as unnecessary ([PR #144](https://github.com/boostorg/gil/pull/144)).
+
+### Fixed
+- Fixed `point<T>` divide and multiply to not to hardcode result as `point<double>` ([PR #157](https://github.com/boostorg/gil/pull/157)).
+- Fixed conflict between `std::fill_n` and `boost::range::fill_n` ([PR #152](https://github.com/boostorg/gil/pull/152)).
+- Fixed issue with re-assignment of functor from `for_each_pixel` ([PR #139](https://github.com/boostorg/gil/pull/139)).
+- Fixed missing template keyword prior to dependent name `axis_iterator` ([PR #129](https://github.com/boostorg/gil/pull/129)).
+- Fixed loading of grayscale PNG with alpha channel  (tRNS chunks) ([PR #118](https://github.com/boostorg/gil/pull/118)).
+
+### Acknowledgements
+
+Mateusz Loskot, Marcel Metz, Stefan Seefeld
+
 ## [1.68.0] - 2018-08-09
 
 ### Added
-- The library now requires a C++11-compliant compiler.
+- BREAKING: The library now requires a C++11-compliant compiler.
+- New top-level all-in-one `include/boost/gil.hpp` header.
 - Added Toolbox extension following the [review and acceptance into Boost](https://lists.boost.org/boost-announce/2011/01/0281.php).
 
 ### Changed
@@ -55,15 +230,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Removed
 - The existing I/O v1 extension has been replaced with I/O v2.
 
+### Acknowledgements
+
+Niklas Angare, Jan Beich, Edward Diener, Peter Dimov, Daniela Engert, Bill Gallafent, Christian Henning, Daniel James, Nikita Kniazev, Mateusz Loskot, Marcel Metz, Martin Osborne, Antony Polukhin, Stefan Seefeld
+
 ## [1.53.0] - 2013-02-04
 
 ### Fixed
 - Fixed self-assignment warnings (Trac [#4919](https://svn.boost.org/trac10/ticket/4919)).
 
+### Acknowledgements
+
+Lubomir Bourdev, Marshall Clow, Beman Dawes, Daniela Engert, Bill Gallafent, Doug Gregor, Boris Gubenko, Christian Henning, Michael Jackson, Daniel James, Hailin Jin, Nikita Kniazev, Mateusz Loskot, John Maddock, Marcel Metz, Antony Polukhin, Stefan Seefeld
+
 ## [1.35.0] - 2008-03-29
 
 ### Added
 - First Boost release of Generic Image Library developed by Lubomir Bourdev and Hailin Jin following the [review and acceptance into Boost](https://lists.boost.org/Archives/boost/2006/11/112896.php).
+
+### Acknowledgements
+
+Lubomir Bourdev, Beman Dawes, Hailin Jin, John Maddock and all the reviewers of the library.
 
 ---------------------------------------------------------------------
 
@@ -151,10 +338,10 @@ linked PDF documents with detailed changes.
 
 ### Changed
 - Updated the design guide and tutorial, updated syntax of concepts to the latest concepts proposal.
-- In `image`, `image_view`, `any_image`, `any_image_view`:  
+- In `image`, `image_view`, `any_image`, `any_image_view`:
   There are no longer global functions `get_width()`, `get_height()`, `get_dimensions()`, `num_channels()`.
   Use  methods `width()`, `height()`, `dimensions()` instead.
-- In models of pixel, pixel iterator, pixel locator, image view and image:  
+- In models of pixel, pixel iterator, pixel locator, image view and image:
   There used to be different ways of getting to a pixel, channel, color space, etc. of an image view,
   pixel, locator, iterator and image (e.g. traits, member typedefs).
   Now all pixel-based GIL constructs (pixels, pixel iterators, locators, image views and images) model
@@ -162,7 +349,7 @@ linked PDF documents with detailed changes.
   and for homogeneous constructs we also have: `channel_type`.
   To get the pixel type or pixel reference/const reference type of an image, image view, locator
   and pixel, use member typedefs `value_type`, `reference` and `const_reference`.
-- In `locator`, `image`, `image_view`, `any_image` and `any_image_view`:  
+- In `locator`, `image`, `image_view`, `any_image` and `any_image_view`:
   Removed `dynamic_x_step_t`, `dynamic_y_step_t`, `dynamic_xy_step_t` and `dynamic_xy_step_transposed_t`
   as member typedefs of locators and image views.
   Instead, there are separate concepts `HasDynamicXStepTypeConcept`, `HasDynamicYStepTypeConcept`,

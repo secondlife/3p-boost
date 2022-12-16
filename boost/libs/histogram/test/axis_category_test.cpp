@@ -4,7 +4,6 @@
 // (See accompanying file LICENSE_1_0.txt
 // or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#include <boost/core/ignore_unused.hpp>
 #include <boost/core/lightweight_test.hpp>
 #include <boost/core/lightweight_test_trait.hpp>
 #include <boost/histogram/axis/category.hpp>
@@ -14,10 +13,10 @@
 #include <sstream>
 #include <string>
 #include <type_traits>
+#include "axis.hpp"
 #include "std_ostream.hpp"
+#include "str.hpp"
 #include "throw_exception.hpp"
-#include "utility_axis.hpp"
-#include "utility_str.hpp"
 
 int main() {
   using namespace boost::histogram;
@@ -30,7 +29,7 @@ int main() {
   // bad ctor
   {
     int x[2];
-    boost::ignore_unused(x);
+    (void)x;
     BOOST_TEST_THROWS(axis::category<int>(x + 1, x), std::invalid_argument);
   }
 
@@ -82,8 +81,9 @@ int main() {
     BOOST_TEST_EQ(a.value(2), C);
     BOOST_TEST_THROWS(a.value(3), std::out_of_range);
 
-    BOOST_TEST_EQ(str(a),
-                  "category(\"A\", \"B\", \"C\", metadata=\"bar\", options=overflow)");
+    BOOST_TEST_CSTR_EQ(
+        str(a).c_str(),
+        "category(\"A\", \"B\", \"C\", metadata=\"bar\", options=overflow)");
   }
 
   // category<int, axis::null_type>: copy, move
@@ -133,15 +133,16 @@ int main() {
 
   // axis::category with growth
   {
+    using pii_t = std::pair<axis::index_type, axis::index_type>;
     axis::category<int, axis::null_type, axis::option::growth_t> a;
     BOOST_TEST_EQ(a.size(), 0);
-    BOOST_TEST_EQ(a.update(5), std::make_pair(0, -1));
+    BOOST_TEST_EQ(a.update(5), pii_t(0, -1));
     BOOST_TEST_EQ(a.size(), 1);
-    BOOST_TEST_EQ(a.update(1), std::make_pair(1, -1));
+    BOOST_TEST_EQ(a.update(1), pii_t(1, -1));
     BOOST_TEST_EQ(a.size(), 2);
-    BOOST_TEST_EQ(a.update(10), std::make_pair(2, -1));
+    BOOST_TEST_EQ(a.update(10), pii_t(2, -1));
     BOOST_TEST_EQ(a.size(), 3);
-    BOOST_TEST_EQ(a.update(10), std::make_pair(2, 0));
+    BOOST_TEST_EQ(a.update(10), pii_t(2, 0));
     BOOST_TEST_EQ(a.size(), 3);
 
     BOOST_TEST_EQ(str(a), "category(5, 1, 10, options=growth)");

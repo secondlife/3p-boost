@@ -1,10 +1,10 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>ssl_stream::set_verify_callback (1 of 2 overloads)</title>
 <link rel="stylesheet" href="../../../../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
-<link rel="home" href="../../../../index.html" title="Chapter&#160;1.&#160;Boost.Beast">
+<link rel="home" href="../../../../index.html" title="Chapter 1. Boost.Beast">
 <link rel="up" href="../set_verify_callback.html" title="ssl_stream::set_verify_callback">
 <link rel="prev" href="../set_verify_callback.html" title="ssl_stream::set_verify_callback">
 <link rel="next" href="overload2.html" title="ssl_stream::set_verify_callback (2 of 2 overloads)">
@@ -30,23 +30,29 @@
 <p>
             Set the callback used to verify peer certificates.
           </p>
-<h7><a name="beast.ref.boost__beast__ssl_stream.set_verify_callback.overload1.h0"></a>
+<h6>
+<a name="beast.ref.boost__beast__ssl_stream.set_verify_callback.overload1.h0"></a>
             <span class="phrase"><a name="beast.ref.boost__beast__ssl_stream.set_verify_callback.overload1.synopsis"></a></span><a class="link" href="overload1.html#beast.ref.boost__beast__ssl_stream.set_verify_callback.overload1.synopsis">Synopsis</a>
-          </h7><pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span>
+          </h6>
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span>
     <span class="keyword">class</span> <span class="identifier">VerifyCallback</span><span class="special">&gt;</span>
 <span class="keyword">void</span>
 <span class="identifier">set_verify_callback</span><span class="special">(</span>
     <span class="identifier">VerifyCallback</span> <span class="identifier">callback</span><span class="special">);</span>
 </pre>
-<h7><a name="beast.ref.boost__beast__ssl_stream.set_verify_callback.overload1.h1"></a>
+<h6>
+<a name="beast.ref.boost__beast__ssl_stream.set_verify_callback.overload1.h1"></a>
             <span class="phrase"><a name="beast.ref.boost__beast__ssl_stream.set_verify_callback.overload1.description"></a></span><a class="link" href="overload1.html#beast.ref.boost__beast__ssl_stream.set_verify_callback.overload1.description">Description</a>
-          </h7><p>
+          </h6>
+<p>
             This function is used to specify a callback function that will be called
             by the implementation when it needs to verify a peer certificate.
           </p>
-<h7><a name="beast.ref.boost__beast__ssl_stream.set_verify_callback.overload1.h2"></a>
+<h6>
+<a name="beast.ref.boost__beast__ssl_stream.set_verify_callback.overload1.h2"></a>
             <span class="phrase"><a name="beast.ref.boost__beast__ssl_stream.set_verify_callback.overload1.parameters"></a></span><a class="link" href="overload1.html#beast.ref.boost__beast__ssl_stream.set_verify_callback.overload1.parameters">Parameters</a>
-          </h7><div class="informaltable"><table class="table">
+          </h6>
+<div class="informaltable"><table class="table">
 <colgroup>
 <col>
 <col>
@@ -86,9 +92,11 @@
                   </td>
 </tr></tbody>
 </table></div>
-<h7><a name="beast.ref.boost__beast__ssl_stream.set_verify_callback.overload1.h3"></a>
+<h6>
+<a name="beast.ref.boost__beast__ssl_stream.set_verify_callback.overload1.h3"></a>
             <span class="phrase"><a name="beast.ref.boost__beast__ssl_stream.set_verify_callback.overload1.exceptions"></a></span><a class="link" href="overload1.html#beast.ref.boost__beast__ssl_stream.set_verify_callback.overload1.exceptions">Exceptions</a>
-          </h7><div class="informaltable"><table class="table">
+          </h6>
+<div class="informaltable"><table class="table">
 <colgroup>
 <col>
 <col>
@@ -118,15 +126,17 @@
                   </td>
 </tr></tbody>
 </table></div>
-<h7><a name="beast.ref.boost__beast__ssl_stream.set_verify_callback.overload1.h4"></a>
+<h6>
+<a name="beast.ref.boost__beast__ssl_stream.set_verify_callback.overload1.h4"></a>
             <span class="phrase"><a name="beast.ref.boost__beast__ssl_stream.set_verify_callback.overload1.remarks"></a></span><a class="link" href="overload1.html#beast.ref.boost__beast__ssl_stream.set_verify_callback.overload1.remarks">Remarks</a>
-          </h7><p>
+          </h6>
+<p>
             Calls <code class="computeroutput"><span class="identifier">SSL_set_verify</span></code>.
           </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2016-2019 Vinnie
+<td align="right"><div class="copyright-footer">Copyright © 2016-2019 Vinnie
       Falco<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)

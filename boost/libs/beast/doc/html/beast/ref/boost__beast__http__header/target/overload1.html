@@ -1,10 +1,10 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>http::header::target (1 of 2 overloads)</title>
 <link rel="stylesheet" href="../../../../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
-<link rel="home" href="../../../../index.html" title="Chapter&#160;1.&#160;Boost.Beast">
+<link rel="home" href="../../../../index.html" title="Chapter 1. Boost.Beast">
 <link rel="up" href="../target.html" title="http::header::target">
 <link rel="prev" href="../target.html" title="http::header::target">
 <link rel="next" href="overload2.html" title="http::header::target (2 of 2 overloads)">
@@ -30,28 +30,34 @@
 <p>
             Returns the request-target string.
           </p>
-<h7><a name="beast.ref.boost__beast__http__header.target.overload1.h0"></a>
+<h6>
+<a name="beast.ref.boost__beast__http__header.target.overload1.h0"></a>
             <span class="phrase"><a name="beast.ref.boost__beast__http__header.target.overload1.synopsis"></a></span><a class="link" href="overload1.html#beast.ref.boost__beast__http__header.target.overload1.synopsis">Synopsis</a>
-          </h7><pre class="programlisting"><span class="identifier">string_view</span>
+          </h6>
+<pre class="programlisting"><span class="identifier">string_view</span>
 <span class="identifier">target</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
 </pre>
-<h7><a name="beast.ref.boost__beast__http__header.target.overload1.h1"></a>
+<h6>
+<a name="beast.ref.boost__beast__http__header.target.overload1.h1"></a>
             <span class="phrase"><a name="beast.ref.boost__beast__http__header.target.overload1.description"></a></span><a class="link" href="overload1.html#beast.ref.boost__beast__http__header.target.overload1.description">Description</a>
-          </h7><p>
+          </h6>
+<p>
             The request target string returned is the same string which was received
             from the network or stored. In particular, it will contain url-encoded
             characters and should follow the syntax rules for URIs used with HTTP.
           </p>
-<h7><a name="beast.ref.boost__beast__http__header.target.overload1.h2"></a>
+<h6>
+<a name="beast.ref.boost__beast__http__header.target.overload1.h2"></a>
             <span class="phrase"><a name="beast.ref.boost__beast__http__header.target.overload1.remarks"></a></span><a class="link" href="overload1.html#beast.ref.boost__beast__http__header.target.overload1.remarks">Remarks</a>
-          </h7><p>
+          </h6>
+<p>
             This function is only available when <code class="computeroutput"><span class="identifier">isRequest</span>
             <span class="special">==</span> <span class="keyword">true</span></code>.
           </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2016-2019 Vinnie
+<td align="right"><div class="copyright-footer">Copyright © 2016-2019 Vinnie
       Falco<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)

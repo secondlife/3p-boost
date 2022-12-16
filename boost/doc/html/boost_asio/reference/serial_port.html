@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>serial_port</title>
 <link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
@@ -27,11 +27,12 @@
 <a name="boost_asio.reference.serial_port"></a><a class="link" href="serial_port.html" title="serial_port">serial_port</a>
 </h3></div></div></div>
 <p>
-        <a class="indexterm" name="boost_asio.indexterm.serial_port"></a> 
-Typedef for the typical usage
-        of a serial port.
+        <a class="indexterm" name="boost_asio.indexterm.serial_port"></a>
       </p>
-<pre class="programlisting">typedef basic_serial_port serial_port;
+<p>
+        Typedef for the typical usage of a serial port.
+      </p>
+<pre class="programlisting"><span class="keyword">typedef</span> <span class="identifier">basic_serial_port</span> <span class="identifier">serial_port</span><span class="special">;</span>
 </pre>
 <h5>
 <a name="boost_asio.reference.serial_port.h0"></a>
@@ -167,15 +168,17 @@ Typedef for the typical usage
 <tr>
 <td>
                 <p>
-                  <a class="link" href="basic_serial_port/basic_serial_port.html" title="basic_serial_port::basic_serial_port"><span class="bold"><strong>basic_serial_port</strong></span></a>
+                  <a class="link" href="basic_serial_port/basic_serial_port.html" title="basic_serial_port::basic_serial_port"><span class="bold"><strong>basic_serial_port</strong></span></a> <span class="silver">[constructor]</span>
                 </p>
               </td>
 <td>
                 <p>
-                  Construct a basic_serial_port without opening it. <br> <span class="silver"> &#8212;</span><br>
-                  Construct and open a basic_serial_port. <br> <span class="silver"> &#8212;</span><br> Construct
-                  a basic_serial_port on an existing native serial port. <br> <span class="silver"> &#8212;</span>
-                  <br> Move-construct a basic_serial_port from another.
+                  Construct a basic_serial_port without opening it. <br> <span class="silver"> —</span><br>
+                  Construct and open a basic_serial_port. <br> <span class="silver"> —</span><br> Construct
+                  a basic_serial_port on an existing native serial port. <br> <span class="silver"> —</span>
+                  <br> Move-construct a basic_serial_port from another. <br>
+                  <span class="silver"> —</span><br> Move-construct a basic_serial_port from a serial port of
+                  another executor type.
                 </p>
               </td>
 </tr>
@@ -247,7 +250,7 @@ Typedef for the typical usage
               </td>
 <td>
                 <p>
-                  Get a reference to the lowest layer. <br> <span class="silver"> &#8212;</span><br> Get a const
+                  Get a reference to the lowest layer. <br> <span class="silver"> —</span><br> Get a const
                   reference to the lowest layer.
                 </p>
               </td>
@@ -284,7 +287,8 @@ Typedef for the typical usage
               </td>
 <td>
                 <p>
-                  Move-assign a basic_serial_port from another.
+                  Move-assign a basic_serial_port from another. <br> <span class="silver"> —</span><br> Move-assign
+                  a basic_serial_port from a serial port of another executor type.
                 </p>
               </td>
 </tr>
@@ -339,7 +343,7 @@ Typedef for the typical usage
 <tr>
 <td>
                 <p>
-                  <a class="link" href="basic_serial_port/_basic_serial_port.html" title="basic_serial_port::~basic_serial_port"><span class="bold"><strong>~basic_serial_port</strong></span></a>
+                  <a class="link" href="basic_serial_port/_basic_serial_port.html" title="basic_serial_port::~basic_serial_port"><span class="bold"><strong>~basic_serial_port</strong></span></a> <span class="silver">[destructor]</span>
                 </p>
               </td>
 <td>
@@ -351,8 +355,8 @@ Typedef for the typical usage
 </tbody>
 </table></div>
 <p>
-        The <a class="link" href="basic_serial_port.html" title="basic_serial_port"><code class="computeroutput">basic_serial_port</code></a>
-        class provides a wrapper over serial port functionality.
+        The <a class="link" href="basic_serial_port.html" title="basic_serial_port"><code class="computeroutput"><span class="identifier">basic_serial_port</span></code></a> class provides
+        a wrapper over serial port functionality.
       </p>
 <h5>
 <a name="boost_asio.reference.serial_port.h2"></a>
@@ -378,7 +382,7 @@ Typedef for the typical usage
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright © 2003-2022 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

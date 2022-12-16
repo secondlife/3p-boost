@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>basic_socket_iostream</title>
 <link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
@@ -27,13 +27,16 @@
 <a name="boost_asio.reference.basic_socket_iostream"></a><a class="link" href="basic_socket_iostream.html" title="basic_socket_iostream">basic_socket_iostream</a>
 </h3></div></div></div>
 <p>
+        <a class="indexterm" name="boost_asio.indexterm.basic_socket_iostream"></a>
+      </p>
+<p>
         Iostream interface for a socket.
       </p>
-<pre class="programlisting">template&lt;
-    typename <a class="link" href="Protocol.html" title="Protocol requirements">Protocol</a>,
-    typename Clock = chrono::steady_clock,
-    typename <a class="link" href="WaitTraits.html" title="Wait traits requirements">WaitTraits</a> = wait_traits&lt;Clock&gt;&gt;
-class basic_socket_iostream
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span>
+    <span class="keyword">typename</span> <a class="link" href="Protocol.html" title="Protocol requirements">Protocol</a><span class="special">,</span>
+    <span class="keyword">typename</span> <span class="identifier">Clock</span> <span class="special">=</span> <span class="identifier">chrono</span><span class="special">::</span><span class="identifier">steady_clock</span><span class="special">,</span>
+    <span class="keyword">typename</span> <a class="link" href="WaitTraits.html" title="Wait traits requirements">WaitTraits</a> <span class="special">=</span> <span class="identifier">wait_traits</span><span class="special">&lt;</span><span class="identifier">Clock</span><span class="special">&gt;&gt;</span>
+<span class="keyword">class</span> <span class="identifier">basic_socket_iostream</span>
 </pre>
 <h5>
 <a name="boost_asio.reference.basic_socket_iostream.h0"></a>
@@ -169,15 +172,15 @@ class basic_socket_iostream
 <tr>
 <td>
                 <p>
-                  <a class="link" href="basic_socket_iostream/basic_socket_iostream.html" title="basic_socket_iostream::basic_socket_iostream"><span class="bold"><strong>basic_socket_iostream</strong></span></a>
+                  <a class="link" href="basic_socket_iostream/basic_socket_iostream.html" title="basic_socket_iostream::basic_socket_iostream"><span class="bold"><strong>basic_socket_iostream</strong></span></a> <span class="silver">[constructor]</span>
                 </p>
               </td>
 <td>
                 <p>
                   Construct a basic_socket_iostream without establishing a connection.
-                  <br> <span class="silver"> &#8212;</span><br> Construct a basic_socket_iostream from the supplied
-                  socket. <br> <span class="silver"> &#8212;</span><br> Move-construct a basic_socket_iostream from
-                  another. <br> <span class="silver"> &#8212;</span><br> Establish a connection to an endpoint corresponding
+                  <br> <span class="silver"> —</span><br> Construct a basic_socket_iostream from the supplied
+                  socket. <br> <span class="silver"> —</span><br> Move-construct a basic_socket_iostream from
+                  another. <br> <span class="silver"> —</span><br> Establish a connection to an endpoint corresponding
                   to a resolver query.
                 </p>
               </td>
@@ -240,7 +243,7 @@ class basic_socket_iostream
 <td>
                 <p>
                   (Deprecated: Use expiry().) Get the stream's expiry time as an
-                  absolute time. <br> <span class="silver"> &#8212;</span><br> Set the stream's expiry time as an
+                  absolute time. <br> <span class="silver"> —</span><br> Set the stream's expiry time as an
                   absolute time.
                 </p>
               </td>
@@ -254,7 +257,7 @@ class basic_socket_iostream
 <td>
                 <p>
                   (Deprecated: Use expiry().) Get the stream's expiry time relative
-                  to now. <br> <span class="silver"> &#8212;</span><br> (Deprecated: Use expires_after().) Set the
+                  to now. <br> <span class="silver"> —</span><br> (Deprecated: Use expires_after().) Set the
                   stream's expiry time relative to now.
                 </p>
               </td>
@@ -322,7 +325,7 @@ class basic_socket_iostream
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright © 2003-2022 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

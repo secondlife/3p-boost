@@ -121,6 +121,25 @@ void test_spots(RealType)
          tolerance); // %
 
    BOOST_CHECK_CLOSE(
+      ::boost::math::logpdf(
+         extreme_value_distribution<RealType>(0.5, 2),      
+         static_cast<RealType>(0.125)),              // x
+         log(static_cast<RealType>(0.18052654830890205978204427757846L)),                // probability.
+         tolerance); // %
+   BOOST_CHECK_CLOSE(
+      ::boost::math::logpdf(
+         extreme_value_distribution<RealType>(1, 3),      
+         static_cast<RealType>(5)),              // x
+         log(static_cast<RealType>(0.0675057324099851209129017326286L)),                // probability.
+         tolerance); // %
+   BOOST_CHECK_CLOSE(
+      ::boost::math::logpdf(
+         extreme_value_distribution<RealType>(1, 3),      
+         static_cast<RealType>(0)),              // x
+         log(static_cast<RealType>(0.11522236828583456431277265757312L)),                // probability.
+         tolerance); // %
+
+   BOOST_CHECK_CLOSE(
       ::boost::math::mean(
          extreme_value_distribution<RealType>(2, 3)),
          static_cast<RealType>(3.731646994704598581819536270246L),           
@@ -219,7 +238,7 @@ BOOST_AUTO_TEST_CASE( test_main )
   test_spots(0.0); // Test double. OK at decdigits 7, tolerance = 1e07 %
 #ifndef BOOST_MATH_NO_LONG_DOUBLE_MATH_FUNCTIONS
   test_spots(0.0L); // Test long double.
-#if !BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x582))
+#if !BOOST_WORKAROUND(BOOST_BORLANDC, BOOST_TESTED_AT(0x582)) && !defined(BOOST_MATH_NO_REAL_CONCEPT_TESTS)
   test_spots(boost::math::concepts::real_concept(0.)); // Test real concept.
 #endif
 #else

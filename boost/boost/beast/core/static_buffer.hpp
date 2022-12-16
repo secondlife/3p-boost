@@ -94,14 +94,11 @@ public:
     /// The ConstBufferSequence used to represent the readable bytes.
     using const_buffers_type = __implementation_defined__;
 
-    /// The MutableBufferSequence used to represent the readable bytes.
-    using mutable_data_type = __implementation_defined__;
-
     /// The MutableBufferSequence used to represent the writable bytes.
     using mutable_buffers_type = __implementation_defined__;
 #else
     using const_buffers_type   = detail::buffers_pair<false>;
-    using mutable_data_type    = detail::buffers_pair<true>;
+
     using mutable_buffers_type = detail::buffers_pair<true>;
 #endif
 
@@ -140,17 +137,16 @@ public:
 
     /// Returns a mutable buffer sequence representing the readable bytes
     BOOST_BEAST_DECL
-    mutable_data_type
+    mutable_buffers_type
     data() noexcept;
 
     /** Returns a mutable buffer sequence representing writable bytes.
 
         Returns a mutable buffer sequence representing the writable
-        bytes containing exactly `n` bytes of storage. Memory may be
-        reallocated as needed.
+        bytes containing exactly `n` bytes of storage.
 
         All buffers sequences previously obtained using
-        @ref data or @ref prepare are invalidated.
+        @ref data or @ref prepare may be invalidated.
 
         @param n The desired number of bytes in the returned buffer
         sequence.

@@ -8,7 +8,6 @@
 
 #define BOOST_SPIRIT_X3_UNICODE
 
-#include <boost/detail/lightweight_test.hpp>
 #include <boost/spirit/home/x3.hpp>
 #include <boost/type_traits/is_same.hpp>
 
@@ -26,6 +25,18 @@ main()
 
     {
         using namespace boost::spirit::x3::ascii;
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(alnum);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(alpha);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(digit);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(xdigit);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(cntrl);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(graph);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(lower);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(print);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(punct);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(space);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(blank);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(upper);
         BOOST_TEST(test("1", alnum));
         BOOST_TEST(!test(" ", alnum));
         BOOST_TEST(!test("1", alpha));
@@ -78,6 +89,18 @@ main()
 
     {
         using namespace boost::spirit::x3::iso8859_1;
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(alnum);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(alpha);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(digit);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(xdigit);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(cntrl);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(graph);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(lower);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(print);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(punct);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(space);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(blank);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(upper);
         BOOST_TEST(test("1", alnum));
         BOOST_TEST(!test(" ", alnum));
         BOOST_TEST(!test("1", alpha));
@@ -109,6 +132,18 @@ main()
 
     {
         using namespace boost::spirit::x3::standard;
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(alnum);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(alpha);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(digit);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(xdigit);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(cntrl);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(graph);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(lower);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(print);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(punct);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(space);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(blank);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(upper);
         BOOST_TEST(test("1", alnum));
         BOOST_TEST(!test(" ", alnum));
         BOOST_TEST(!test("1", alpha));
@@ -131,10 +166,23 @@ main()
         BOOST_TEST(test("0", xdigit));
         BOOST_TEST(test("f", xdigit));
         BOOST_TEST(!test("g", xdigit));
+        BOOST_TEST(!test("\xF1", print));
     }
 
     {
         using namespace boost::spirit::x3::standard_wide;
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(alnum);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(alpha);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(digit);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(xdigit);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(cntrl);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(graph);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(lower);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(print);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(punct);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(space);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(blank);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(upper);
         BOOST_TEST(test(L"1", alnum));
         BOOST_TEST(!test(L" ", alnum));
         BOOST_TEST(!test(L"1", alpha));
@@ -161,6 +209,18 @@ main()
 
     {
         using namespace boost::spirit::x3::unicode;
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(alnum);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(alpha);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(digit);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(xdigit);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(cntrl);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(graph);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(lower);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(print);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(punct);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(space);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(blank);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(upper);
         BOOST_TEST(test(L"1", alnum));
         BOOST_TEST(!test(L" ", alnum));
         BOOST_TEST(!test(L"1", alpha));

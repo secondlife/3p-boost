@@ -12,16 +12,18 @@
 import testing ;
 
 ###############################################################################
+local 9-11 = 9 10 11 ;
 
 project spirit-qi
     : requirements
         <include>.
         <c++-template-depth>512
+        <known-warnings>hide,<toolset>gcc-$(9-11):<cxxflags>-Wno-deprecated-copy  # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94492
     ;
 
 ###############################################################################
 
-cpp-pch pch : pch.hpp : : : <include>. <toolset>msvc:<cxxflags>"/FIpch.hpp" ;
+cpp-pch pch : pch.hpp : : : <include>. <force-include>pch.hpp ;
 
 explicit pch ;
 
@@ -66,7 +68,7 @@ run auto.cpp ;
 run binary.cpp ;
 run bool1.cpp ;
 run bool2.cpp ;
-run char1.cpp : : : <pch>off ; # Enable PCH after fixing interference from including auto.
+run char1.cpp ;
 run char2.cpp ;
 run char_class.cpp : : : <pch>off ;
 run debug.cpp : : : <pch>off ;

@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Class template crc_basic</title>
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
@@ -27,7 +27,7 @@
 <a name="boost.crc_basic"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2><span class="refentrytitle">Class template crc_basic</span></h2>
-<p>boost::crc_basic &#8212; Bit-wise CRC computer. </p>
+<p>boost::crc_basic — Bit-wise CRC computer. </p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
 <div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../crc/reference.html#header.boost.crc_hpp" title="Header &lt;boost/crc.hpp&gt;">boost/crc.hpp</a>&gt;
@@ -39,41 +39,41 @@
   <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">uint_t</span><span class="special">&lt;</span> <span class="identifier">Bits</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">fast</span> <a class="link" href="crc_basic.html#boost.crc_basic.value_type"><span class="identifier">value_type</span></a><span class="special">;</span>
 
   <span class="comment">// <a class="link" href="crc_basic.html#boost.crc_basicconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <span class="keyword">explicit</span> <a class="link" href="crc_basic.html#id-1_3_13_11_1_4_1_6-bb"><span class="identifier">crc_basic</span></a><span class="special">(</span><span class="identifier">value_type</span><span class="special">,</span> <span class="identifier">value_type</span> <span class="special">=</span> <span class="number">0</span><span class="special">,</span> <span class="identifier">value_type</span> <span class="special">=</span> <span class="number">0</span><span class="special">,</span> <span class="keyword">bool</span> <span class="special">=</span> <span class="keyword">false</span><span class="special">,</span> 
+  <span class="keyword">explicit</span> <a class="link" href="crc_basic.html#id-1_3_11_11_1_4_1_6-bb"><span class="identifier">crc_basic</span></a><span class="special">(</span><span class="identifier">value_type</span><span class="special">,</span> <span class="identifier">value_type</span> <span class="special">=</span> <span class="number">0</span><span class="special">,</span> <span class="identifier">value_type</span> <span class="special">=</span> <span class="number">0</span><span class="special">,</span> <span class="keyword">bool</span> <span class="special">=</span> <span class="keyword">false</span><span class="special">,</span> 
                      <span class="keyword">bool</span> <span class="special">=</span> <span class="keyword">false</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="crc_basic.html#id-1_3_13_11_1_4_1_5-bb">public member functions</a></span>
-   <a class="link" href="crc_basic.html#id-1_3_13_11_1_4_1_5_1-bb"><span class="identifier">BOOST_STATIC_CONSTANT</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">,</span> <span class="identifier">bit_count</span> <span class="special">=</span> <span class="identifier">Bits</span><span class="special">)</span><span class="special">;</span>
-  <span class="identifier">value_type</span> <a class="link" href="crc_basic.html#id-1_3_13_11_1_4_1_5_2-bb"><span class="identifier">get_truncated_polynominal</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">value_type</span> <a class="link" href="crc_basic.html#id-1_3_13_11_1_4_1_5_3-bb"><span class="identifier">get_initial_remainder</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">value_type</span> <a class="link" href="crc_basic.html#id-1_3_13_11_1_4_1_5_4-bb"><span class="identifier">get_final_xor_value</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="crc_basic.html#id-1_3_13_11_1_4_1_5_5-bb"><span class="identifier">get_reflect_input</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="crc_basic.html#id-1_3_13_11_1_4_1_5_6-bb"><span class="identifier">get_reflect_remainder</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">value_type</span> <a class="link" href="crc_basic.html#id-1_3_13_11_1_4_1_5_7-bb"><span class="identifier">get_interim_remainder</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="crc_basic.html#id-1_3_13_11_1_4_1_5_8-bb"><span class="identifier">reset</span></a><span class="special">(</span><span class="identifier">value_type</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="crc_basic.html#id-1_3_13_11_1_4_1_5_9-bb"><span class="identifier">reset</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="crc_basic.html#id-1_3_13_11_1_4_1_5_10-bb"><span class="identifier">process_bit</span></a><span class="special">(</span><span class="keyword">bool</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="crc_basic.html#id-1_3_13_11_1_4_1_5_11-bb"><span class="identifier">process_bits</span></a><span class="special">(</span><span class="keyword">unsigned</span> <span class="keyword">char</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="crc_basic.html#id-1_3_13_11_1_4_1_5_12-bb"><span class="identifier">process_byte</span></a><span class="special">(</span><span class="keyword">unsigned</span> <span class="keyword">char</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="crc_basic.html#id-1_3_13_11_1_4_1_5_13-bb"><span class="identifier">process_block</span></a><span class="special">(</span><span class="keyword">void</span> <span class="keyword">const</span> <span class="special">*</span><span class="special">,</span> <span class="keyword">void</span> <span class="keyword">const</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="crc_basic.html#id-1_3_13_11_1_4_1_5_14-bb"><span class="identifier">process_bytes</span></a><span class="special">(</span><span class="keyword">void</span> <span class="keyword">const</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
-  <span class="identifier">value_type</span> <a class="link" href="crc_basic.html#id-1_3_13_11_1_4_1_5_15-bb"><span class="identifier">checksum</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="crc_basic.html#id-1_3_11_11_1_4_1_5-bb">public member functions</a></span>
+   <a class="link" href="crc_basic.html#id-1_3_11_11_1_4_1_5_1-bb"><span class="identifier">BOOST_STATIC_CONSTANT</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">,</span> <span class="identifier">bit_count</span> <span class="special">=</span> <span class="identifier">Bits</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">value_type</span> <a class="link" href="crc_basic.html#id-1_3_11_11_1_4_1_5_2-bb"><span class="identifier">get_truncated_polynominal</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">value_type</span> <a class="link" href="crc_basic.html#id-1_3_11_11_1_4_1_5_3-bb"><span class="identifier">get_initial_remainder</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">value_type</span> <a class="link" href="crc_basic.html#id-1_3_11_11_1_4_1_5_4-bb"><span class="identifier">get_final_xor_value</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="crc_basic.html#id-1_3_11_11_1_4_1_5_5-bb"><span class="identifier">get_reflect_input</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="crc_basic.html#id-1_3_11_11_1_4_1_5_6-bb"><span class="identifier">get_reflect_remainder</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">value_type</span> <a class="link" href="crc_basic.html#id-1_3_11_11_1_4_1_5_7-bb"><span class="identifier">get_interim_remainder</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="crc_basic.html#id-1_3_11_11_1_4_1_5_8-bb"><span class="identifier">reset</span></a><span class="special">(</span><span class="identifier">value_type</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="crc_basic.html#id-1_3_11_11_1_4_1_5_9-bb"><span class="identifier">reset</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="crc_basic.html#id-1_3_11_11_1_4_1_5_10-bb"><span class="identifier">process_bit</span></a><span class="special">(</span><span class="keyword">bool</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="crc_basic.html#id-1_3_11_11_1_4_1_5_11-bb"><span class="identifier">process_bits</span></a><span class="special">(</span><span class="keyword">unsigned</span> <span class="keyword">char</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="crc_basic.html#id-1_3_11_11_1_4_1_5_12-bb"><span class="identifier">process_byte</span></a><span class="special">(</span><span class="keyword">unsigned</span> <span class="keyword">char</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="crc_basic.html#id-1_3_11_11_1_4_1_5_13-bb"><span class="identifier">process_block</span></a><span class="special">(</span><span class="keyword">void</span> <span class="keyword">const</span> <span class="special">*</span><span class="special">,</span> <span class="keyword">void</span> <span class="keyword">const</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="crc_basic.html#id-1_3_11_11_1_4_1_5_14-bb"><span class="identifier">process_bytes</span></a><span class="special">(</span><span class="keyword">void</span> <span class="keyword">const</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">value_type</span> <a class="link" href="crc_basic.html#id-1_3_11_11_1_4_1_5_15-bb"><span class="identifier">checksum</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="id-1.3.13.11.2.7.4"></a><h2>Description</h2>
+<a name="id-1.3.11.11.2.7.4"></a><h2>Description</h2>
 <p>Objects of this type compute the CRC checksum of submitted data, where said data can be entered piecemeal through several different kinds of groupings. Modulo-2 polynomial division steps are always performed bit-wise, without the use of pre-computation tables. Said division uses the altered algorithm, so any data has to be unaugmented.</p>
 <p>
 
 </p>
 <div class="refsect2">
-<a name="id-1.3.13.11.2.7.4.4"></a><h3>Template Parameters</h3>
+<a name="id-1.3.11.11.2.7.4.4"></a><h3>Template Parameters</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
 <pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> Bits</pre>
 <p>The order of the modulo-2 polynomial divisor. (<span class="emphasis"><em>Width</em></span> from the RMCA) </p>
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="id-1.3.13.11.2.7.4.5"></a><h3>
+<a name="id-1.3.11.11.2.7.4.5"></a><h3>
 <a name="boost.crc_basictypes"></a><code class="computeroutput">crc_basic</code> 
         public
        types</h3>
@@ -84,12 +84,12 @@
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="id-1.3.13.11.2.7.4.6"></a><h3>
+<a name="id-1.3.11.11.2.7.4.6"></a><h3>
 <a name="boost.crc_basicconstruct-copy-destruct"></a><code class="computeroutput">crc_basic</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="keyword">explicit</span> <a name="id-1_3_13_11_1_4_1_6-bb"></a><span class="identifier">crc_basic</span><span class="special">(</span><span class="identifier">value_type</span> truncated_polynomial<span class="special">,</span> 
+<pre class="literallayout"><span class="keyword">explicit</span> <a name="id-1_3_11_11_1_4_1_6-bb"></a><span class="identifier">crc_basic</span><span class="special">(</span><span class="identifier">value_type</span> truncated_polynomial<span class="special">,</span> 
                    <span class="identifier">value_type</span> initial_remainder <span class="special">=</span> <span class="number">0</span><span class="special">,</span> 
                    <span class="identifier">value_type</span> final_xor_value <span class="special">=</span> <span class="number">0</span><span class="special">,</span> 
                    <span class="keyword">bool</span> reflect_input <span class="special">=</span> <span class="keyword">false</span><span class="special">,</span> 
@@ -173,13 +173,13 @@
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="id-1.3.13.11.2.7.4.7"></a><h3>
-<a name="id-1_3_13_11_1_4_1_5-bb"></a><code class="computeroutput">crc_basic</code> public member functions</h3>
+<a name="id-1.3.11.11.2.7.4.7"></a><h3>
+<a name="id-1_3_11_11_1_4_1_5-bb"></a><code class="computeroutput">crc_basic</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"> <a name="id-1_3_13_11_1_4_1_5_1-bb"></a><span class="identifier">BOOST_STATIC_CONSTANT</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">,</span> <span class="identifier">bit_count</span> <span class="special">=</span> <span class="identifier">Bits</span><span class="special">)</span><span class="special">;</span></pre>A copy of <span class="emphasis"><em>Bits</em></span> provided for meta-programming purposes. </li>
+<pre class="literallayout"> <a name="id-1_3_11_11_1_4_1_5_1-bb"></a><span class="identifier">BOOST_STATIC_CONSTANT</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">,</span> <span class="identifier">bit_count</span> <span class="special">=</span> <span class="identifier">Bits</span><span class="special">)</span><span class="special">;</span></pre>A copy of <span class="emphasis"><em>Bits</em></span> provided for meta-programming purposes. </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">value_type</span> <a name="id-1_3_13_11_1_4_1_5_2-bb"></a><span class="identifier">get_truncated_polynominal</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Return the (truncated) polynomial divisor. <p>Returns a representation of the polynomial divisor. The value of the 2<sup>i</sup> bit is the value of the coefficient of the polynomial's x<sup>i</sup> term. The omitted bit for x<sup>(#bit_count)</sup> term is always 1.</p>
+<pre class="literallayout"><span class="identifier">value_type</span> <a name="id-1_3_11_11_1_4_1_5_2-bb"></a><span class="identifier">get_truncated_polynominal</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Return the (truncated) polynomial divisor. <p>Returns a representation of the polynomial divisor. The value of the 2<sup>i</sup> bit is the value of the coefficient of the polynomial's x<sup>i</sup> term. The omitted bit for x<sup>(#bit_count)</sup> term is always 1.</p>
 <p>
 </p>
 <div class="variablelist"><table border="0" class="variablelist compact">
@@ -194,7 +194,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">value_type</span> <a name="id-1_3_13_11_1_4_1_5_3-bb"></a><span class="identifier">get_initial_remainder</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Return what the polynomial remainder was set to during construction. <p>Returns a representation of the polynomial remainder before any input has been submitted. The value of the 2<sup>i</sup> bit is the value of the coefficient of the polynomial's x<sup>i</sup> term.</p>
+<pre class="literallayout"><span class="identifier">value_type</span> <a name="id-1_3_11_11_1_4_1_5_3-bb"></a><span class="identifier">get_initial_remainder</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Return what the polynomial remainder was set to during construction. <p>Returns a representation of the polynomial remainder before any input has been submitted. The value of the 2<sup>i</sup> bit is the value of the coefficient of the polynomial's x<sup>i</sup> term.</p>
 <p>
 </p>
 <div class="variablelist"><table border="0" class="variablelist compact">
@@ -209,7 +209,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">value_type</span> <a name="id-1_3_13_11_1_4_1_5_4-bb"></a><span class="identifier">get_final_xor_value</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Return the XOR-mask used during output processing. <p>Returns the mask to be used during creation of a checksum. The mask is used for an exclusive-or (XOR) operation applied bit-wise to the interim remainder representation (after any reflection, if get_reflect_remainder() returns <code class="computeroutput">true</code>).</p>
+<pre class="literallayout"><span class="identifier">value_type</span> <a name="id-1_3_11_11_1_4_1_5_4-bb"></a><span class="identifier">get_final_xor_value</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Return the XOR-mask used during output processing. <p>Returns the mask to be used during creation of a checksum. The mask is used for an exclusive-or (XOR) operation applied bit-wise to the interim remainder representation (after any reflection, if get_reflect_remainder() returns <code class="computeroutput">true</code>).</p>
 <p>
 </p>
 <div class="variablelist"><table border="0" class="variablelist compact">
@@ -224,17 +224,17 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="id-1_3_13_11_1_4_1_5_5-bb"></a><span class="identifier">get_reflect_input</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Check if input-bytes will be reflected before processing. <p>Returns a whether or not a submitted byte will be "reflected" before it is used to update the interim remainder. Only the byte-wise operations process_byte, process_block, and process_bytes are affected.</p>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="id-1_3_11_11_1_4_1_5_5-bb"></a><span class="identifier">get_reflect_input</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Check if input-bytes will be reflected before processing. <p>Returns a whether or not a submitted byte will be "reflected" before it is used to update the interim remainder. Only the byte-wise operations process_byte, process_block, and process_bytes are affected.</p>
 <p>
 </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="id-1_3_13_11_1_4_1_5_6-bb"></a><span class="identifier">get_reflect_remainder</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Check if the remainder will be reflected during output processing. <p>Indicates if the interim remainder will be "reflected" before it is passed to the XOR-mask stage when returning a checksum.</p>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="id-1_3_11_11_1_4_1_5_6-bb"></a><span class="identifier">get_reflect_remainder</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Check if the remainder will be reflected during output processing. <p>Indicates if the interim remainder will be "reflected" before it is passed to the XOR-mask stage when returning a checksum.</p>
 <p>
 </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">value_type</span> <a name="id-1_3_13_11_1_4_1_5_7-bb"></a><span class="identifier">get_interim_remainder</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Return the remainder based from already-processed bits. <p>Returns a representation of the polynomial remainder after all the input submissions since construction or the last reset call. The value of the 2<sup>i</sup> bit is the value of the coefficient of the polynomial's x<sup>i</sup> term. If CRC processing gets interrupted here, retain the value returned, and use it to start up the next CRC computer where you left off (with reset(value_type) or construction). The next computer has to have its other parameters compatible with this computer.</p>
+<pre class="literallayout"><span class="identifier">value_type</span> <a name="id-1_3_11_11_1_4_1_5_7-bb"></a><span class="identifier">get_interim_remainder</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Return the remainder based from already-processed bits. <p>Returns a representation of the polynomial remainder after all the input submissions since construction or the last reset call. The value of the 2<sup>i</sup> bit is the value of the coefficient of the polynomial's x<sup>i</sup> term. If CRC processing gets interrupted here, retain the value returned, and use it to start up the next CRC computer where you left off (with reset(value_type) or construction). The next computer has to have its other parameters compatible with this computer.</p>
 <p>
 </p>
 <div class="variablelist"><table border="0" class="variablelist compact">
@@ -249,7 +249,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="id-1_3_13_11_1_4_1_5_8-bb"></a><span class="identifier">reset</span><span class="special">(</span><span class="identifier">value_type</span> new_rem<span class="special">)</span><span class="special">;</span></pre>Change the interim remainder to a new value. <p>Changes the interim polynomial remainder to <span class="emphasis"><em>new_rem</em></span>, purging any influence previously submitted input has had. The value of the 2<sup>i</sup> bit is the value of the coefficient of the polynomial's x<sup>i</sup> term.</p>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id-1_3_11_11_1_4_1_5_8-bb"></a><span class="identifier">reset</span><span class="special">(</span><span class="identifier">value_type</span> new_rem<span class="special">)</span><span class="special">;</span></pre>Change the interim remainder to a new value. <p>Changes the interim polynomial remainder to <span class="emphasis"><em>new_rem</em></span>, purging any influence previously submitted input has had. The value of the 2<sup>i</sup> bit is the value of the coefficient of the polynomial's x<sup>i</sup> term.</p>
 <p>
 
 
@@ -285,7 +285,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="id-1_3_13_11_1_4_1_5_9-bb"></a><span class="identifier">reset</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>Change the interim remainder back to the initial value. <p>Changes the interim polynomial remainder to the initial remainder given during construction, purging any influence previously submitted input has had. The value of the 2<sup>i</sup> bit is the value of the coefficient of the polynomial's x<sup>i</sup> term.</p>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id-1_3_11_11_1_4_1_5_9-bb"></a><span class="identifier">reset</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>Change the interim remainder back to the initial value. <p>Changes the interim polynomial remainder to the initial remainder given during construction, purging any influence previously submitted input has had. The value of the 2<sup>i</sup> bit is the value of the coefficient of the polynomial's x<sup>i</sup> term.</p>
 <p>
 
 </p>
@@ -307,7 +307,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="id-1_3_13_11_1_4_1_5_10-bb"></a><span class="identifier">process_bit</span><span class="special">(</span><span class="keyword">bool</span> bit<span class="special">)</span><span class="special">;</span></pre>Submit a single bit for input processing. <p>Updates the interim remainder with a single altered-CRC-division step.</p>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id-1_3_11_11_1_4_1_5_10-bb"></a><span class="identifier">process_bit</span><span class="special">(</span><span class="keyword">bool</span> bit<span class="special">)</span><span class="special">;</span></pre>Submit a single bit for input processing. <p>Updates the interim remainder with a single altered-CRC-division step.</p>
 <p>
 
 </p>
@@ -338,7 +338,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="id-1_3_13_11_1_4_1_5_11-bb"></a><span class="identifier">process_bits</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="keyword">char</span> bits<span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> bit_length<span class="special">)</span><span class="special">;</span></pre>Submit the lowest <span class="emphasis"><em>bit_length</em></span> bits of a byte for input processing. <p>Updates the interim remainder with several altered-CRC-division steps. Each bit is processed separately, starting from the one at the 2<sup><span class="emphasis"><em>bit_length</em></span> - 1</sup> place, then proceeding down to the lowest-placed bit. Any order imposed by <code class="computeroutput">this-&gt;get_reflect_input()</code> is ignored.</p>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id-1_3_11_11_1_4_1_5_11-bb"></a><span class="identifier">process_bits</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="keyword">char</span> bits<span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> bit_length<span class="special">)</span><span class="special">;</span></pre>Submit the lowest <span class="emphasis"><em>bit_length</em></span> bits of a byte for input processing. <p>Updates the interim remainder with several altered-CRC-division steps. Each bit is processed separately, starting from the one at the 2<sup><span class="emphasis"><em>bit_length</em></span> - 1</sup> place, then proceeding down to the lowest-placed bit. Any order imposed by <code class="computeroutput">this-&gt;get_reflect_input()</code> is ignored.</p>
 <p>
 
 
@@ -380,7 +380,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="id-1_3_13_11_1_4_1_5_12-bb"></a><span class="identifier">process_byte</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="keyword">char</span> byte<span class="special">)</span><span class="special">;</span></pre>Submit a single byte for input processing. <p>Updates the interim remainder with a byte's worth of altered-CRC-division steps. The bits within the byte are processed from the highest place down if <code class="computeroutput">this-&gt;get_reflect_input()</code> is <code class="computeroutput">false</code>, and lowest place up otherwise.</p>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id-1_3_11_11_1_4_1_5_12-bb"></a><span class="identifier">process_byte</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="keyword">char</span> byte<span class="special">)</span><span class="special">;</span></pre>Submit a single byte for input processing. <p>Updates the interim remainder with a byte's worth of altered-CRC-division steps. The bits within the byte are processed from the highest place down if <code class="computeroutput">this-&gt;get_reflect_input()</code> is <code class="computeroutput">false</code>, and lowest place up otherwise.</p>
 <p>
 
 </p>
@@ -411,7 +411,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="id-1_3_13_11_1_4_1_5_13-bb"></a><span class="identifier">process_block</span><span class="special">(</span><span class="keyword">void</span> <span class="keyword">const</span> <span class="special">*</span> bytes_begin<span class="special">,</span> <span class="keyword">void</span> <span class="keyword">const</span> <span class="special">*</span> bytes_end<span class="special">)</span><span class="special">;</span></pre>Submit a memory block for input processing, iterator-pair style. <p>Updates the interim remainder with several bytes' worth of altered-CRC-division steps. The bits within each byte are processed from the highest place down if <code class="computeroutput">this-&gt;get_reflect_input()</code> is <code class="computeroutput">false</code>, and lowest place up otherwise. The bytes themselves are processed starting from the one pointed by <span class="emphasis"><em>bytes_begin</em></span> until <span class="emphasis"><em>bytes_end</em></span> is reached through forward iteration, treating the two pointers as if they point to <code class="computeroutput">unsigned char</code> objects.</p>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id-1_3_11_11_1_4_1_5_13-bb"></a><span class="identifier">process_block</span><span class="special">(</span><span class="keyword">void</span> <span class="keyword">const</span> <span class="special">*</span> bytes_begin<span class="special">,</span> <span class="keyword">void</span> <span class="keyword">const</span> <span class="special">*</span> bytes_end<span class="special">)</span><span class="special">;</span></pre>Submit a memory block for input processing, iterator-pair style. <p>Updates the interim remainder with several bytes' worth of altered-CRC-division steps. The bits within each byte are processed from the highest place down if <code class="computeroutput">this-&gt;get_reflect_input()</code> is <code class="computeroutput">false</code>, and lowest place up otherwise. The bytes themselves are processed starting from the one pointed by <span class="emphasis"><em>bytes_begin</em></span> until <span class="emphasis"><em>bytes_end</em></span> is reached through forward iteration, treating the two pointers as if they point to <code class="computeroutput">unsigned char</code> objects.</p>
 <p>
 
 
@@ -463,7 +463,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="id-1_3_13_11_1_4_1_5_14-bb"></a><span class="identifier">process_bytes</span><span class="special">(</span><span class="keyword">void</span> <span class="keyword">const</span> <span class="special">*</span> buffer<span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> byte_count<span class="special">)</span><span class="special">;</span></pre>Submit a memory block for input processing, pointer-and-size style. <p>Updates the interim remainder with several bytes' worth of altered-CRC-division steps. The bits within each byte are processed from the highest place down if <code class="computeroutput">this-&gt;get_reflect_input()</code> is <code class="computeroutput">false</code>, and lowest place up otherwise. The bytes themselves are processed starting from the one pointed by <span class="emphasis"><em>buffer</em></span>, forward-iterated (as if the pointed-to objects were of <code class="computeroutput">unsigned char</code>) until <span class="emphasis"><em>byte_count</em></span> bytes are read.</p>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id-1_3_11_11_1_4_1_5_14-bb"></a><span class="identifier">process_bytes</span><span class="special">(</span><span class="keyword">void</span> <span class="keyword">const</span> <span class="special">*</span> buffer<span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> byte_count<span class="special">)</span><span class="special">;</span></pre>Submit a memory block for input processing, pointer-and-size style. <p>Updates the interim remainder with several bytes' worth of altered-CRC-division steps. The bits within each byte are processed from the highest place down if <code class="computeroutput">this-&gt;get_reflect_input()</code> is <code class="computeroutput">false</code>, and lowest place up otherwise. The bytes themselves are processed starting from the one pointed by <span class="emphasis"><em>buffer</em></span>, forward-iterated (as if the pointed-to objects were of <code class="computeroutput">unsigned char</code>) until <span class="emphasis"><em>byte_count</em></span> bytes are read.</p>
 <p>
 
 
@@ -510,7 +510,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">value_type</span> <a name="id-1_3_13_11_1_4_1_5_15-bb"></a><span class="identifier">checksum</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Return the checksum of the already-processed bits. <p>Computes the checksum of all the submitted bits since construction or the last call to reset. The checksum will be the raw checksum, i.e. the (interim) remainder after all the modulo-2 polynomial division, plus any output processing.</p>
+<pre class="literallayout"><span class="identifier">value_type</span> <a name="id-1_3_11_11_1_4_1_5_15-bb"></a><span class="identifier">checksum</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Return the checksum of the already-processed bits. <p>Computes the checksum of all the submitted bits since construction or the last call to reset. The checksum will be the raw checksum, i.e. the (interim) remainder after all the modulo-2 polynomial division, plus any output processing.</p>
 <p>
 </p>
 <div class="note"><table border="0" summary="Note">
@@ -539,7 +539,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2001, 2003, 2012 Daryle Walker<p>
+<td align="right"><div class="copyright-footer">Copyright © 2001, 2003, 2012 Daryle Walker<p>
         Distributed under the Boost Software License, Version 1.0. (See the accompanying
         file LICENSE_1_0.txt or a copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

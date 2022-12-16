@@ -25,6 +25,7 @@
 #include <boost/core/ignore_unused.hpp>
 #include <stdexcept>
 
+
 //------------------------------------------------------------------------------
 
 namespace boost {
@@ -32,6 +33,58 @@ namespace beast {
 
 namespace {
 
+#if defined(BOOST_ASIO_NO_TS_EXECUTORS)
+
+static struct ex1_context : net::execution_context
+{
+
+} ex1ctx;
+
+struct ex1_type
+{
+
+    net::execution_context &
+    query(net::execution::context_t c) const noexcept
+    { return *reinterpret_cast<net::execution_context *>(&ex1ctx); }
+
+    net::execution::blocking_t
+    query(net::execution::blocking_t) const noexcept
+    { return net::execution::blocking; };
+
+    net::execution::outstanding_work_t
+    query(net::execution::outstanding_work_t w) const noexcept
+    { return net::execution::outstanding_work; }
+
+    ex1_type
+    require(net::execution::blocking_t::possibly_t b) const
+    { return *this; }
+
+    ex1_type
+    require(net::execution::blocking_t::never_t b) const
+    { return *this; };
+
+    ex1_type
+    prefer(net::execution::outstanding_work_t::untracked_t w) const
+    { return *this; };
+
+    ex1_type
+    prefer(net::execution::outstanding_work_t::tracked_t w) const
+    { return *this; };
+
+    template<class F>
+    void
+    execute(F &&) const
+    {}
+
+    bool
+    operator==(ex1_type const &) const noexcept
+    { return true; }
+    bool
+    operator!=(ex1_type const &) const noexcept
+    { return false; }
+};
+BOOST_STATIC_ASSERT(net::execution::is_executor<ex1_type>::value);
+#else
 struct ex1_type
 {
     void* context() { return nullptr; }
@@ -41,6 +94,9 @@ struct ex1_type
     template<class F> void post(F&&) {}
     template<class F> void defer(F&&) {}
 };
+BOOST_STATIC_ASSERT(net::is_executor<ex1_type>::value);
+#endif
+
 
 struct no_alloc
 {
@@ -51,6 +107,11 @@ struct nested_alloc
     struct allocator_type
     {
     };
+
+    allocator_type get_allocator() const noexcept
+    {
+        return allocator_type{};
+    }
 };
 
 struct intrusive_alloc
@@ -58,11 +119,21 @@ struct intrusive_alloc
     struct allocator_type
     {
     };
+
+    allocator_type get_allocator() const noexcept
+    {
+        return allocator_type{};
+    }
 };
 
 struct no_ex
 {
     using executor_type = net::system_executor;
+
+    executor_type get_executor() const noexcept
+    {
+        return executor_type{};
+    }
 };
 
 struct nested_ex
@@ -70,6 +141,11 @@ struct nested_ex
     struct executor_type
     {
     };
+
+    executor_type get_executor() const noexcept
+    {
+        return executor_type{};
+    }
 };
 
 struct intrusive_ex
@@ -77,6 +153,11 @@ struct intrusive_ex
     struct executor_type
     {
     };
+
+    executor_type get_executor() const noexcept
+    {
+        return executor_type{};
+    }
 };
 
 template<class E, class A>
@@ -430,11 +511,13 @@ public:
         }
         {
             net::io_context ioc;
-            async_base<
-                test::handler,
-                net::io_context::executor_type> op(
-                    test::any_handler(), ioc.get_executor());
-            op.complete(false);
+            auto op = new
+                async_base<
+                    test::handler,
+                    net::io_context::executor_type>(
+                        test::any_handler(), ioc.get_executor());
+            op->complete(false);
+            delete op;
             ioc.run();
         }
         {
@@ -506,12 +589,13 @@ public:
             net::io_context ioc1;
             net::io_context ioc2;
             auto h = net::bind_executor(ioc2, test::any_handler());
-            stable_async_base<
+            auto op = new stable_async_base<
                 decltype(h),
-                net::io_context::executor_type> op(
+                net::io_context::executor_type>(
                     std::move(h),
                     ioc1.get_executor());
-            op.complete(false);
+            op->complete(false);
+            delete op;
             BEAST_EXPECT(ioc1.run() == 0);
             BEAST_EXPECT(ioc2.run() == 1);
         }
@@ -585,7 +669,7 @@ public:
     //--------------------------------------------------------------------------
 
     // Asynchronously read into a buffer until the buffer is full, or an error occurs
-    template<class AsyncReadStream, class ReadHandler>
+    template<class AsyncReadStream, BOOST_BEAST_ASYNC_TPARAM2 ReadHandler>
     typename net::async_result<ReadHandler, void(error_code, std::size_t)>::return_type
     async_read(AsyncReadStream& stream, net::mutable_buffer buffer, ReadHandler&& handler)
     {
@@ -663,9 +747,9 @@ public:
 
                 net::steady_timer timer;
 
-                temporary_data(std::string message_, net::io_context& ctx)
+                temporary_data(std::string message_, net::any_io_executor ex)
                     : message(std::move(message_))
-                    , timer(ctx)
+                    , timer(std::move(ex))
                 {
                 }
             };
@@ -678,7 +762,9 @@ public:
                 : base_type(std::move(handler), stream.get_executor())
                 , stream_(stream)
                 , repeats_(repeats)
-                , data_(allocate_stable<temporary_data>(*this, std::move(message), stream.get_executor().context()))
+                , data_(allocate_stable<temporary_data>(*this,
+                    std::move(message),
+                    stream.get_executor()))
             {
                 (*this)(); // start the operation
             }

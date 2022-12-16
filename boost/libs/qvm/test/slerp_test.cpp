@@ -1,10 +1,19 @@
-//Copyright (c) 2008-2016 Emil Dotchevski and Reverge Studios, Inc.
+// Copyright 2008-2022 Emil Dotchevski and Reverge Studios, Inc.
 
-//Distributed under the Boost Software License, Version 1.0. (See accompanying
-//file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#include <boost/qvm/quat_operations.hpp>
-#include <boost/qvm/quat.hpp>
+#ifdef NDEBUG
+#undef NDEBUG
+#endif
+
+#ifdef BOOST_QVM_TEST_SINGLE_HEADER
+#   include BOOST_QVM_TEST_SINGLE_HEADER
+#else
+#   include <boost/qvm/quat_operations.hpp>
+#   include <boost/qvm/quat.hpp>
+#endif
+
 #include "test_qvm_quaternion.hpp"
 #include "gold.hpp"
 
@@ -22,17 +31,17 @@ namespace
             BOOST_QVM_TEST_CLOSE(aa.a,a.a,0.0001f);
             BOOST_QVM_TEST_CLOSE(bb.a,b.a,0.0001f);
             }
-        for( float a1=0; a1<6.28f; a1+=0.3f )
+        for( float a1=0; a1<6.28f; a1+=0.1f )
             {
             test_qvm::quaternion<Q1> const qx1=rotx_quat(a1);
             test_qvm::quaternion<Q1> const qy1=roty_quat(a1);
             test_qvm::quaternion<Q1> const qz1=rotz_quat(a1);
-            for( float a2=0; a2<6.28f; a2+=0.05f )
+            for( float a2=0; a2<6.28f; a2+=0.1f )
                 {
                 test_qvm::quaternion<Q1> const qx2=rotx_quat(a2);
                 test_qvm::quaternion<Q1> const qy2=roty_quat(a2);
                 test_qvm::quaternion<Q1> const qz2=rotz_quat(a2);
-                for( float t=0; t<1; t+=0.03f )
+                for( float t=0; t<1; t+=0.1f )
                     {
                     test_qvm::quaternion<Q1> const qx=rotx_quat(a1*(1-t)+a2*t);
                     test_qvm::quaternion<Q1> const qy=roty_quat(a1*(1-t)+a2*t);

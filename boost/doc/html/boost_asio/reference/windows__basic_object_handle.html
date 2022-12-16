@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>windows::basic_object_handle</title>
 <link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
@@ -27,11 +27,14 @@
 <a name="boost_asio.reference.windows__basic_object_handle"></a><a class="link" href="windows__basic_object_handle.html" title="windows::basic_object_handle">windows::basic_object_handle</a>
 </h3></div></div></div>
 <p>
+        <a class="indexterm" name="boost_asio.indexterm.windows__basic_object_handle"></a>
+      </p>
+<p>
         Provides object-oriented handle functionality.
       </p>
-<pre class="programlisting">template&lt;
-    typename <a class="link" href="Executor1.html" title="Executor requirements">Executor</a> = executor&gt;
-class basic_object_handle
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span>
+    <span class="keyword">typename</span> <a class="link" href="Executor1.html" title="Executor requirements">Executor</a> <span class="special">=</span> <span class="identifier">any_io_executor</span><span class="special">&gt;</span>
+<span class="keyword">class</span> <span class="identifier">basic_object_handle</span>
 </pre>
 <h5>
 <a name="boost_asio.reference.windows__basic_object_handle.h0"></a>
@@ -155,14 +158,15 @@ class basic_object_handle
 <tr>
 <td>
                 <p>
-                  <a class="link" href="windows__basic_object_handle/basic_object_handle.html" title="windows::basic_object_handle::basic_object_handle"><span class="bold"><strong>basic_object_handle</strong></span></a>
+                  <a class="link" href="windows__basic_object_handle/basic_object_handle.html" title="windows::basic_object_handle::basic_object_handle"><span class="bold"><strong>basic_object_handle</strong></span></a> <span class="silver">[constructor]</span>
                 </p>
               </td>
 <td>
                 <p>
-                  Construct an object handle without opening it. <br> <span class="silver"> &#8212;</span><br> Construct
-                  an object handle on an existing native handle. <br> <span class="silver"> &#8212;</span><br> Move-construct
-                  an object handle from another.
+                  Construct an object handle without opening it. <br> <span class="silver"> —</span><br> Construct
+                  an object handle on an existing native handle. <br> <span class="silver"> —</span><br> Move-construct
+                  an object handle from another. <br> <span class="silver"> —</span><br> Move-construct an
+                  object handle from a handle of another executor type.
                 </p>
               </td>
 </tr>
@@ -222,7 +226,7 @@ class basic_object_handle
               </td>
 <td>
                 <p>
-                  Get a reference to the lowest layer. <br> <span class="silver"> &#8212;</span><br> Get a const
+                  Get a reference to the lowest layer. <br> <span class="silver"> —</span><br> Get a const
                   reference to the lowest layer.
                 </p>
               </td>
@@ -247,7 +251,8 @@ class basic_object_handle
               </td>
 <td>
                 <p>
-                  Move-assign an object handle from another.
+                  Move-assign an object handle from another. <br> <span class="silver"> —</span><br> Move-assign
+                  an object handle from a handle of another executor type.
                 </p>
               </td>
 </tr>
@@ -266,8 +271,8 @@ class basic_object_handle
 </tbody>
 </table></div>
 <p>
-        The <a class="link" href="windows__basic_object_handle.html" title="windows::basic_object_handle"><code class="computeroutput">windows::basic_object_handle</code></a>
-        class provides asynchronous and blocking object-oriented handle functionality.
+        The <a class="link" href="windows__basic_object_handle.html" title="windows::basic_object_handle"><code class="computeroutput"><span class="identifier">windows</span><span class="special">::</span><span class="identifier">basic_object_handle</span></code></a> class provides
+        asynchronous and blocking object-oriented handle functionality.
       </p>
 <h5>
 <a name="boost_asio.reference.windows__basic_object_handle.h2"></a>
@@ -293,7 +298,7 @@ class basic_object_handle
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright © 2003-2022 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

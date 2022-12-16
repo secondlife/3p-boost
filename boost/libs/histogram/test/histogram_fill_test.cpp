@@ -6,14 +6,16 @@
 
 #include <array>
 #include <boost/config.hpp>
-#include <boost/core/ignore_unused.hpp>
 #include <boost/core/lightweight_test.hpp>
-#include <boost/histogram/accumulators.hpp>
+#include <boost/histogram/accumulators/mean.hpp>
 #include <boost/histogram/accumulators/ostream.hpp>
+#include <boost/histogram/accumulators/weighted_mean.hpp>
 #include <boost/histogram/algorithm/sum.hpp>
 #include <boost/histogram/axis/category.hpp>
 #include <boost/histogram/axis/integer.hpp>
 #include <boost/histogram/axis/ostream.hpp>
+#include <boost/histogram/axis/regular.hpp>
+#include <boost/histogram/axis/variant.hpp>
 #include <boost/histogram/histogram.hpp>
 #include <boost/histogram/literals.hpp>
 #include <boost/histogram/make_histogram.hpp>
@@ -26,8 +28,8 @@
 #include <tuple>
 #include <utility>
 #include <vector>
+#include "histogram.hpp"
 #include "throw_exception.hpp"
-#include "utility_histogram.hpp"
 
 using namespace boost::histogram;
 using namespace boost::histogram::algorithm;
@@ -92,7 +94,7 @@ void run_tests(const std::vector<int>& x, const std::vector<int>& y,
     h(1);
     for (auto&& xi : x) h(xi);
     // uses variant
-    boost::variant2::variant<int, std::vector<int>, std::string> v[1];
+    variant<int, std::vector<int>, std::string> v[1];
     v[0] = 1;
     h2.fill(v);
     v[0] = x;
@@ -105,11 +107,11 @@ void run_tests(const std::vector<int>& x, const std::vector<int>& y,
     auto h = make(Tag(), in{1, 3});
 
     int bad1[2][4];
-    boost::ignore_unused(bad1);
+    (void)bad1;
     BOOST_TEST_THROWS(h.fill(bad1), std::invalid_argument);
 
     std::vector<std::array<int, 4>> bad2;
-    boost::ignore_unused(bad2);
+    (void)bad2;
     BOOST_TEST_THROWS(h.fill(bad2), std::invalid_argument);
   }
 
@@ -148,7 +150,7 @@ void run_tests(const std::vector<int>& x, const std::vector<int>& y,
     BOOST_TEST_EQ(h, h2);
 
     auto w2 = {1};
-    boost::ignore_unused(w2);
+    (void)w2;
     BOOST_TEST_THROWS(h2.fill(x, weight(w2)), std::invalid_argument);
   }
 
@@ -168,7 +170,7 @@ void run_tests(const std::vector<int>& x, const std::vector<int>& y,
 
     // not rectangular
     std::array<std::vector<int>, 2> bad = {{std::vector<int>(1), std::vector<int>(2)}};
-    boost::ignore_unused(bad);
+    (void)bad;
     BOOST_TEST_THROWS(h2.fill(bad), std::invalid_argument);
   }
 
@@ -285,7 +287,7 @@ void run_tests(const std::vector<int>& x, const std::vector<int>& y,
     BOOST_TEST_EQ(h, h2);
 
     const auto bad = {V(std::vector<std::string>(1, "foo")), V(std::vector<int>{1, 2})};
-    boost::ignore_unused(bad);
+    (void)bad;
     BOOST_TEST_THROWS(h.fill(bad), std::invalid_argument);
   }
 

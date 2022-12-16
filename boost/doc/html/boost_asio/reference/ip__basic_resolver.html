@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>ip::basic_resolver</title>
 <link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
@@ -27,13 +27,16 @@
 <a name="boost_asio.reference.ip__basic_resolver"></a><a class="link" href="ip__basic_resolver.html" title="ip::basic_resolver">ip::basic_resolver</a>
 </h3></div></div></div>
 <p>
+        <a class="indexterm" name="boost_asio.indexterm.ip__basic_resolver"></a>
+      </p>
+<p>
         Provides endpoint resolution functionality.
       </p>
-<pre class="programlisting">template&lt;
-    typename <a class="link" href="InternetProtocol.html" title="Internet protocol requirements">InternetProtocol</a>,
-    typename <a class="link" href="Executor1.html" title="Executor requirements">Executor</a>&gt;
-class basic_resolver :
-  public ip::resolver_base
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span>
+    <span class="keyword">typename</span> <a class="link" href="InternetProtocol.html" title="Internet protocol requirements">InternetProtocol</a><span class="special">,</span>
+    <span class="keyword">typename</span> <a class="link" href="Executor1.html" title="Executor requirements">Executor</a><span class="special">&gt;</span>
+<span class="keyword">class</span> <span class="identifier">basic_resolver</span> <span class="special">:</span>
+  <span class="keyword">public</span> <span class="identifier">ip</span><span class="special">::</span><span class="identifier">resolver_base</span>
 </pre>
 <h5>
 <a name="boost_asio.reference.ip__basic_resolver.h0"></a>
@@ -188,8 +191,8 @@ class basic_resolver :
                 <p>
                   (Deprecated: Use overload with separate host and service parameters.)
                   Asynchronously perform forward resolution of a query to a list
-                  of entries. <br> <span class="silver"> &#8212;</span><br> Asynchronously perform forward resolution
-                  of a query to a list of entries. <br> <span class="silver"> &#8212;</span><br> Asynchronously perform
+                  of entries. <br> <span class="silver"> —</span><br> Asynchronously perform forward resolution
+                  of a query to a list of entries. <br> <span class="silver"> —</span><br> Asynchronously perform
                   reverse resolution of an endpoint to a list of entries.
                 </p>
               </td>
@@ -197,13 +200,13 @@ class basic_resolver :
 <tr>
 <td>
                 <p>
-                  <a class="link" href="ip__basic_resolver/basic_resolver.html" title="ip::basic_resolver::basic_resolver"><span class="bold"><strong>basic_resolver</strong></span></a>
+                  <a class="link" href="ip__basic_resolver/basic_resolver.html" title="ip::basic_resolver::basic_resolver"><span class="bold"><strong>basic_resolver</strong></span></a> <span class="silver">[constructor]</span>
                 </p>
               </td>
 <td>
                 <p>
-                  Construct with executor. <br> <span class="silver"> &#8212;</span><br> Construct with execution
-                  context. <br> <span class="silver"> &#8212;</span><br> Move-construct a basic_resolver from another.
+                  Construct with executor. <br> <span class="silver"> —</span><br> Construct with execution
+                  context. <br> <span class="silver"> —</span><br> Move-construct a basic_resolver from another.
                 </p>
               </td>
 </tr>
@@ -253,8 +256,8 @@ class basic_resolver :
                 <p>
                   (Deprecated: Use overload with separate host and service parameters.)
                   Perform forward resolution of a query to a list of entries. <br>
-                  <span class="silver"> &#8212;</span><br> Perform forward resolution of a query to a list of entries.
-                  <br> <span class="silver"> &#8212;</span><br> Perform reverse resolution of an endpoint to a list
+                  <span class="silver"> —</span><br> Perform forward resolution of a query to a list of entries.
+                  <br> <span class="silver"> —</span><br> Perform reverse resolution of an endpoint to a list
                   of entries.
                 </p>
               </td>
@@ -262,7 +265,7 @@ class basic_resolver :
 <tr>
 <td>
                 <p>
-                  <a class="link" href="ip__basic_resolver/_basic_resolver.html" title="ip::basic_resolver::~basic_resolver"><span class="bold"><strong>~basic_resolver</strong></span></a>
+                  <a class="link" href="ip__basic_resolver/_basic_resolver.html" title="ip::basic_resolver::~basic_resolver"><span class="bold"><strong>~basic_resolver</strong></span></a> <span class="silver">[destructor]</span>
                 </p>
               </td>
 <td>
@@ -298,7 +301,7 @@ class basic_resolver :
 <tr>
 <td>
                 <p>
-                  <a class="link" href="ip__basic_resolver/address_configured.html" title="ip::basic_resolver::address_configured"><span class="bold"><strong>address_configured</strong></span></a>
+                  <a class="link" href="ip__basic_resolver/address_configured.html" title="ip::basic_resolver::address_configured"><span class="bold"><strong>address_configured</strong></span></a> <span class="silver">[static]</span>
                 </p>
               </td>
 <td>
@@ -312,7 +315,7 @@ class basic_resolver :
 <tr>
 <td>
                 <p>
-                  <a class="link" href="ip__basic_resolver/all_matching.html" title="ip::basic_resolver::all_matching"><span class="bold"><strong>all_matching</strong></span></a>
+                  <a class="link" href="ip__basic_resolver/all_matching.html" title="ip::basic_resolver::all_matching"><span class="bold"><strong>all_matching</strong></span></a> <span class="silver">[static]</span>
                 </p>
               </td>
 <td>
@@ -324,7 +327,7 @@ class basic_resolver :
 <tr>
 <td>
                 <p>
-                  <a class="link" href="ip__basic_resolver/canonical_name.html" title="ip::basic_resolver::canonical_name"><span class="bold"><strong>canonical_name</strong></span></a>
+                  <a class="link" href="ip__basic_resolver/canonical_name.html" title="ip::basic_resolver::canonical_name"><span class="bold"><strong>canonical_name</strong></span></a> <span class="silver">[static]</span>
                 </p>
               </td>
 <td>
@@ -336,7 +339,7 @@ class basic_resolver :
 <tr>
 <td>
                 <p>
-                  <a class="link" href="ip__basic_resolver/numeric_host.html" title="ip::basic_resolver::numeric_host"><span class="bold"><strong>numeric_host</strong></span></a>
+                  <a class="link" href="ip__basic_resolver/numeric_host.html" title="ip::basic_resolver::numeric_host"><span class="bold"><strong>numeric_host</strong></span></a> <span class="silver">[static]</span>
                 </p>
               </td>
 <td>
@@ -349,7 +352,7 @@ class basic_resolver :
 <tr>
 <td>
                 <p>
-                  <a class="link" href="ip__basic_resolver/numeric_service.html" title="ip::basic_resolver::numeric_service"><span class="bold"><strong>numeric_service</strong></span></a>
+                  <a class="link" href="ip__basic_resolver/numeric_service.html" title="ip::basic_resolver::numeric_service"><span class="bold"><strong>numeric_service</strong></span></a> <span class="silver">[static]</span>
                 </p>
               </td>
 <td>
@@ -362,7 +365,7 @@ class basic_resolver :
 <tr>
 <td>
                 <p>
-                  <a class="link" href="ip__basic_resolver/passive.html" title="ip::basic_resolver::passive"><span class="bold"><strong>passive</strong></span></a>
+                  <a class="link" href="ip__basic_resolver/passive.html" title="ip::basic_resolver::passive"><span class="bold"><strong>passive</strong></span></a> <span class="silver">[static]</span>
                 </p>
               </td>
 <td>
@@ -375,7 +378,7 @@ class basic_resolver :
 <tr>
 <td>
                 <p>
-                  <a class="link" href="ip__basic_resolver/v4_mapped.html" title="ip::basic_resolver::v4_mapped"><span class="bold"><strong>v4_mapped</strong></span></a>
+                  <a class="link" href="ip__basic_resolver/v4_mapped.html" title="ip::basic_resolver::v4_mapped"><span class="bold"><strong>v4_mapped</strong></span></a> <span class="silver">[static]</span>
                 </p>
               </td>
 <td>
@@ -388,7 +391,7 @@ class basic_resolver :
 </tbody>
 </table></div>
 <p>
-        The <a class="link" href="ip__basic_resolver.html" title="ip::basic_resolver"><code class="computeroutput">ip::basic_resolver</code></a>
+        The <a class="link" href="ip__basic_resolver.html" title="ip::basic_resolver"><code class="computeroutput"><span class="identifier">ip</span><span class="special">::</span><span class="identifier">basic_resolver</span></code></a>
         class template provides the ability to resolve a query to a list of endpoints.
       </p>
 <h5>
@@ -414,7 +417,7 @@ class basic_resolver :
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright © 2003-2022 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

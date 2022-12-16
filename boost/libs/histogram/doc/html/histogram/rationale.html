@@ -1,13 +1,13 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Rationale</title>
 <link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
-<link rel="home" href="../index.html" title="Chapter&#160;1.&#160;Boost.Histogram">
-<link rel="up" href="../index.html" title="Chapter&#160;1.&#160;Boost.Histogram">
-<link rel="prev" href="../boost/histogram/weight.html" title="Function template weight">
-<link rel="next" href="history.html" title="Revision history">
+<link rel="home" href="../index.html" title="Chapter 1. Boost.Histogram">
+<link rel="up" href="../index.html" title="Chapter 1. Boost.Histogram">
+<link rel="prev" href="../boost/histogram/utility/deviation.html" title="Class deviation">
+<link rel="next" href="changelog.html" title="Changelog">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
@@ -20,7 +20,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../boost/histogram/weight.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="history.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="../boost/histogram/utility/deviation.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="changelog.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -48,6 +48,8 @@
       to Boost.Accumulators</a></span></dt>
 <dt><span class="section"><a href="rationale.html#histogram.rationale.why_is_boost_histogram_not_built">Why
       is Boost.Histogram not built on top of Boost.MultiArray?</a></span></dt>
+<dt><span class="section"><a href="rationale.html#histogram.rationale.axis_metadata_and_equality_check">Axis
+      metadata and equality checks</a></span></dt>
 </dl></div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
@@ -566,6 +568,34 @@
         can adapted dynamically to the size of the value type.
       </p>
 </div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="histogram.rationale.axis_metadata_and_equality_check"></a><a class="link" href="rationale.html#histogram.rationale.axis_metadata_and_equality_check" title="Axis metadata and equality checks">Axis
+      metadata and equality checks</a>
+</h3></div></div></div>
+<p>
+        The Boost.Histogram library allows one to attach metadata to histogram axes.
+        The intended purpose of metadata is to distinguish between otherwise identical
+        axes, e.g. distinguish <code class="computeroutput"><span class="identifier">axis</span><span class="special">::</span><span class="identifier">regular</span><span class="special">(</span><span class="number">10</span><span class="special">,</span>
+        <span class="number">0</span><span class="special">,</span> <span class="number">10</span><span class="special">,</span> <span class="string">"time
+        in seconds"</span><span class="special">)</span></code> from <code class="computeroutput"><span class="identifier">axis</span><span class="special">::</span><span class="identifier">regular</span><span class="special">(</span><span class="number">10</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">10</span><span class="special">,</span>
+        <span class="string">"length in meters"</span><span class="special">)</span></code>.
+        The library does not assign any meaning to metadata, but it is checked for
+        equality when axes (and histograms) are compared. Histograms with the same
+        cell layout but different axis metadata do not compare equal and cannot be
+        added. The assumption here is that one can only add histograms with identical
+        layout in a meaningful way, not only identical cell layout but also logical
+        layout in terms of what these axes mean.
+      </p>
+<p>
+        If this check is not desired, there are two ways to suppress it. If the metadata
+        class is under control of the user, it is enough to simply override <code class="computeroutput"><span class="keyword">operator</span><span class="special">==</span></code>
+        to always return <code class="computeroutput"><span class="keyword">true</span></code>. Another
+        option is to inherit a custom axis from a builtin axis and override its
+        <code class="computeroutput"><span class="keyword">operator</span><span class="special">==</span></code>
+        to not check the metadata for equality.
+      </p>
+</div>
 <div class="footnotes">
 <br><hr style="width:100; text-align:left;margin-left: 0">
 <div id="ftn.histogram.rationale.variance.f0" class="footnote"><p><a href="#histogram.rationale.variance.f0" class="para"><sup class="para">[3] </sup></a>
@@ -584,7 +614,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2016-2019 Hans
+<td align="right"><div class="copyright-footer">Copyright © 2016-2019 Hans
       Dembinski<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -593,7 +623,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../boost/histogram/weight.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="history.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="../boost/histogram/utility/deviation.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="changelog.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

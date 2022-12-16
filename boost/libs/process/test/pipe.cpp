@@ -39,8 +39,7 @@ BOOST_AUTO_TEST_CASE(named, *boost::unit_test::timeout(2))
 #if defined( BOOST_WINDOWS_API )
     bp::pipe pipe("\\\\.\\pipe\\pipe_name");
 #elif defined( BOOST_POSIX_API )
-    const auto home_path = boost::this_process::environment()["HOME"].to_string();
-    bp::pipe pipe(home_path  + "/.boost_process_test_pipe");
+    bp::pipe pipe("./.boost_process_test_pipe");
 #endif
 
     std::string in  = "xyz";
@@ -100,6 +99,110 @@ BOOST_AUTO_TEST_CASE(stream, *boost::unit_test::timeout(2))
     is >> j;
 
     BOOST_CHECK_EQUAL(i, j);
+}
+
+BOOST_AUTO_TEST_CASE(stream_move, *boost::unit_test::timeout(2))
+{
+
+    bp::pipe pipe;
+
+    bp::pstream os(pipe);
+    bp::ipstream is(pipe);
+
+    int i = 42, j = 0, k = 0;
+
+    os << i << std::endl;
+    os << std::endl;
+    is >> j;
+
+    BOOST_CHECK_EQUAL(i, j);
+
+    bp::pstream os2 = std::move(os);
+    bp::ipstream is2 = std::move(is);
+    os2 << i << std::endl;
+    os2 << std::endl;
+    is2 >> k;
+
+    BOOST_CHECK_EQUAL(i, k);
+}
+
+BOOST_AUTO_TEST_CASE(ostream_move, *boost::unit_test::timeout(2))
+{
+
+    bp::pipe pipe;
+
+    bp::opstream os(pipe);
+    bp::ipstream is(pipe);
+
+    int i = 42, j = 0, k = 0;
+
+    os << i << std::endl;
+    os << std::endl;
+    is >> j;
+
+    BOOST_CHECK_EQUAL(i, j);
+
+    bp::opstream os2 = std::move(os);
+    bp::ipstream is2 = std::move(is);
+    os2 << i << std::endl;
+    os2 << std::endl;
+    is2 >> k;
+
+    BOOST_CHECK_EQUAL(i, k);
+}
+
+BOOST_AUTO_TEST_CASE(stream_move_assignment, *boost::unit_test::timeout(2))
+{
+
+    bp::pipe pipe;
+
+    bp::pstream os(pipe);
+    bp::ipstream is(pipe);
+
+    int i = 42, j = 0, k = 0;
+
+    os << i << std::endl;
+    os << std::endl;
+    is >> j;
+
+    BOOST_CHECK_EQUAL(i, j);
+
+    bp::pstream os2;
+    os2 = std::move(os);
+    bp::ipstream is2;
+    is2 = std::move(is);
+    os2 << i << std::endl;
+    os2 << std::endl;
+    is2 >> k;
+
+    BOOST_CHECK_EQUAL(i, k);
+}
+
+BOOST_AUTO_TEST_CASE(ostream_move_assignment, *boost::unit_test::timeout(2))
+{
+
+    bp::pipe pipe;
+
+    bp::opstream os(pipe);
+    bp::ipstream is(pipe);
+
+    int i = 42, j = 0, k = 0;
+
+    os << i << std::endl;
+    os << std::endl;
+    is >> j;
+
+    BOOST_CHECK_EQUAL(i, j);
+
+    bp::opstream os2;
+    os2 = std::move(os);
+    bp::ipstream is2;
+    is2 = std::move(is);
+    os2 << i << std::endl;
+    os2 << std::endl;
+    is2 >> k;
+
+    BOOST_CHECK_EQUAL(i, k);
 }
 
 BOOST_AUTO_TEST_CASE(stream_line, *boost::unit_test::timeout(2))

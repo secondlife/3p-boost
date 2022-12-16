@@ -7,8 +7,8 @@
 [[bbv2.util.debugger.overview]]
 === Overview
 
-Boost.Build comes with a debugger for Jamfiles. To run the debugger,
-start Boost.Build with `b2 -dconsole`.
+B2 comes with a debugger for Jamfiles. To run the debugger,
+start B2 with `b2 -dconsole`.
 
 ....
 $ b2 -dconsole
@@ -16,7 +16,7 @@ $ b2 -dconsole
 Breakpoint 1 set at gcc.init
 (b2db) run
 Starting program: /usr/bin/b2
-Breakpoint 1, gcc.init ( ) at /usr/share/boost-build/tools/gcc.jam:74
+Breakpoint 1, gcc.init ( ) at /usr/share/b2/tools/gcc.jam:74
 74      local tool-command = ;
 (b2db) quit
 ....

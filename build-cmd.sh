@@ -57,7 +57,7 @@ source_environment_tempfile="$stage/source_environment.sh"
 
 # Explicitly request each of the libraries named in BOOST_LIBS.
 # Use magic bash syntax to prefix each entry in BOOST_LIBS with "--with-".
-BOOST_BJAM_OPTIONS="address-model=$AUTOBUILD_ADDRSIZE architecture=x86 --layout=tagged -sNO_BZIP2=1 \
+BOOST_BJAM_OPTIONS="address-model=$AUTOBUILD_ADDRSIZE --layout=tagged -sNO_BZIP2=1 \
                     ${BOOST_LIBS[*]/#/--with-}"
 
 # Turn these into a bash array: it's important that all of cxxflags (which
@@ -292,9 +292,17 @@ case "$AUTOBUILD_PLATFORM" in
             fi
         done
 
+	logical_cpus=$(sysctl hw.logicalcpu | cut -d ':' -d ' ' -f 2)
+
         sep "bootstrap"
         stage_lib="${stage}"/lib
         ./bootstrap.sh --prefix=$(pwd) --with-icu="${stage}"/packages
+
+	cat > "$top/$BOOST_SOURCE_DIR/tools/build/src/user-config.jam" <<EOF
+using clang-darwin : : :
+<architecture>combined <visibility>global <compileflags>"-arch x86_64 -arch arm64"
+;
+EOF
 
         # Boost.Context and Boost.Coroutine2 now require C++14 support.
         # Without the -Wno-etc switches, clang spams the build output with
@@ -302,6 +310,7 @@ case "$AUTOBUILD_PLATFORM" in
         # Building Boost.Regex without --disable-icu causes the viewer link to
         # fail for lack of an ICU library.
         DARWIN_BJAM_OPTIONS=("${BOOST_BJAM_OPTIONS[@]}" \
+	    "-j${logical_cpus:-2}" \
             "include=${stage}/packages/include" \
             "include=${stage}/packages/include/zlib-ng/" \
             "-sZLIB_INCLUDE=${stage}/packages/include/zlib-ng/" \
@@ -309,13 +318,14 @@ case "$AUTOBUILD_PLATFORM" in
             cxxflags=-Wno-c99-extensions cxxflags=-Wno-variadic-macros \
             cxxflags=-Wno-unused-function cxxflags=-Wno-unused-const-variable \
             cxxflags=-Wno-unused-local-typedef \
+	    cxxflags=-mmacosx-version-min=10.12 \
             --disable-icu)
 
         RELEASE_BJAM_OPTIONS=("${DARWIN_BJAM_OPTIONS[@]}" \
             "-sZLIB_LIBPATH=${stage}/packages/lib/release")
 
         sep "build"
-        "${bjam}" toolset=darwin variant=release "${RELEASE_BJAM_OPTIONS[@]}" $BOOST_BUILD_SPAM stage
+        "${bjam}" variant=release "${RELEASE_BJAM_OPTIONS[@]}" $BOOST_BUILD_SPAM stage
 
         # conditionally run unit tests
         # date_time Posix test failures: https://svn.boost.org/trac/boost/ticket/10570
@@ -337,7 +347,7 @@ case "$AUTOBUILD_PLATFORM" in
              -e 'regex/test/de_fuzz' \
              -e 'stacktrace/' \
             | \
-        run_tests toolset=darwin variant=release -a -q \
+        run_tests toolset=clang-darwin variant=release -a -q \
                   "${RELEASE_BJAM_OPTIONS[@]}" $BOOST_BUILD_SPAM \
                   cxxflags="-DBOOST_STACKTRACE_GNU_SOURCE_NOT_REQUIRED" \
                   cxxflags="-DBOOST_THREAD_TEST_TIME_MS=250"

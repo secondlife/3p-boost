@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>use_future_t</title>
 <link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
@@ -27,11 +27,15 @@
 <a name="boost_asio.reference.use_future_t"></a><a class="link" href="use_future_t.html" title="use_future_t">use_future_t</a>
 </h3></div></div></div>
 <p>
-        Class used to specify that an asynchronous operation should return a future.
+        <a class="indexterm" name="boost_asio.indexterm.use_future_t"></a>
       </p>
-<pre class="programlisting">template&lt;
-    typename Allocator = std::allocator&lt;void&gt;&gt;
-class use_future_t
+<p>
+        A <a class="link" href="../overview/model/completion_tokens.html" title="Completion Tokens">completion
+        token</a> type that causes an asynchronous operation to return a future.
+      </p>
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span>
+    <span class="keyword">typename</span> <span class="identifier">Allocator</span> <span class="special">=</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">&gt;&gt;</span>
+<span class="keyword">class</span> <span class="identifier">use_future_t</span>
 </pre>
 <h5>
 <a name="boost_asio.reference.use_future_t.h0"></a>
@@ -142,12 +146,12 @@ class use_future_t
 <tr>
 <td>
                 <p>
-                  <a class="link" href="use_future_t/use_future_t.html" title="use_future_t::use_future_t"><span class="bold"><strong>use_future_t</strong></span></a>
+                  <a class="link" href="use_future_t/use_future_t.html" title="use_future_t::use_future_t"><span class="bold"><strong>use_future_t</strong></span></a> <span class="silver">[constructor]</span>
                 </p>
               </td>
 <td>
                 <p>
-                  Construct using default-constructed allocator. <br> <span class="silver"> &#8212;</span><br> Construct
+                  Construct using default-constructed allocator. <br> <span class="silver"> —</span><br> Construct
                   using specified allocator.
                 </p>
               </td>
@@ -155,14 +159,14 @@ class use_future_t
 </tbody>
 </table></div>
 <p>
-        The <a class="link" href="use_future_t.html" title="use_future_t"><code class="computeroutput">use_future_t</code></a>
-        class is used to indicate that an asynchronous operation should return a
-        std::future object. A <a class="link" href="use_future_t.html" title="use_future_t"><code class="computeroutput">use_future_t</code></a>
-        object may be passed as a handler to an asynchronous operation, typically
-        using the special value <code class="computeroutput">boost::asio::use_future</code>. For example:
+        The <a class="link" href="use_future_t.html" title="use_future_t"><code class="computeroutput"><span class="identifier">use_future_t</span></code></a>
+        class is a completion token type that is used to indicate that an asynchronous
+        operation should return a std::future object. A <a class="link" href="use_future_t.html" title="use_future_t"><code class="computeroutput"><span class="identifier">use_future_t</span></code></a> object may be passed
+        as a completion token to an asynchronous operation, typically using the special
+        value <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">use_future</span></code>. For example:
       </p>
-<pre class="programlisting">std::future&lt;std::size_t&gt; my_future
-  = my_socket.async_read_some(my_buffer, boost::asio::use_future);
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">&gt;</span> <span class="identifier">my_future</span>
+  <span class="special">=</span> <span class="identifier">my_socket</span><span class="special">.</span><span class="identifier">async_read_some</span><span class="special">(</span><span class="identifier">my_buffer</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">use_future</span><span class="special">);</span>
 </pre>
 <p>
         The initiating function (async_read_some in the above example) returns a
@@ -183,7 +187,7 @@ class use_future_t
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright © 2003-2022 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

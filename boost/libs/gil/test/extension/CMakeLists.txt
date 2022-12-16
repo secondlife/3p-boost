@@ -5,18 +5,30 @@
 # (See accompanying file LICENSE_1_0.txt or copy at
 # http://www.boost.org/LICENSE_1_0.txt)
 #
-if(GIL_ENABLE_EXT_DYNAMIC_IMAGE)
+if(BOOST_GIL_ENABLE_EXT_RASTERIZATION)
+  add_subdirectory(rasterization)
+endif()
+
+if(BOOST_GIL_ENABLE_EXT_IMAGE_PROCESSING)
+  add_subdirectory(image_processing)
+endif()
+
+if(BOOST_GIL_ENABLE_EXT_DYNAMIC_IMAGE)
   add_subdirectory(dynamic_image)
 endif()
 
-if(GIL_ENABLE_EXT_NUMERIC)
+if(BOOST_GIL_ENABLE_EXT_HISTOGRAM)
+  add_subdirectory(histogram)
+endif()
+
+if(BOOST_GIL_ENABLE_EXT_NUMERIC)
   add_subdirectory(numeric)
 endif()
 
-if(GIL_ENABLE_EXT_TOOLBOX)
+if(BOOST_GIL_ENABLE_EXT_TOOLBOX)
   add_subdirectory(toolbox)
 endif()
 
-if(GIL_ENABLE_EXT_IO)
+if(BOOST_GIL_ENABLE_EXT_IO)
   add_subdirectory(io)
 endif()

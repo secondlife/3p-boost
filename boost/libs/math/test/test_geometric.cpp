@@ -298,7 +298,7 @@ if(std::numeric_limits<RealType>::is_specialized)
   tolerance);
 
   BOOST_CHECK_CLOSE_FRACTION( //> formatC(dgeom(0,0.5), digits=17)[1] "    0.5"
-    //  R treates geom as a discrete distribution.
+    //  R treats geom as a discrete distribution.
     // > formatC(dgeom(1.999999,0.5, FALSE), digits=17) [1] "   0"
     // Warning message:
     // In dgeom(1.999999, 0.5, FALSE) : non-integer x = 1.999999
@@ -309,7 +309,7 @@ if(std::numeric_limits<RealType>::is_specialized)
 
   BOOST_CHECK_CLOSE_FRACTION( // > formatC(pgeom(0.0001,0.5, TRUE), digits=17)[1] " 0.5"
     // > formatC(pgeom(0.0001,0.5, FALSE), digits=17) [1] "               0.5"
-    //  R treates geom as a discrete distribution.
+    //  R treats geom as a discrete distribution.
   pdf(geometric_distribution<RealType>(static_cast<RealType>(0.5)),
   static_cast<RealType>(0.0001L) ),  // Number of failures, k is very small but not integral,
   static_cast<RealType>(0.4999653438420768L), // nearly success probability.
@@ -387,7 +387,7 @@ if(std::numeric_limits<RealType>::is_specialized)
   ///////////////////////////////////////////////////
   BOOST_CHECK_CLOSE_FRACTION( //
     // > formatC(dgeom(0.0001,0.5, FALSE), digits=17) [1] "               0.5"
-    //  R treates geom as a discrete distribution.
+    //  R treats geom as a discrete distribution.
     // But Boost.Math is continuous, so if you want R behaviour,
     // make number of failures, k into an integer with the floor function.
   pdf(geometric_distribution<RealType>(static_cast<RealType>(0.5)),
@@ -402,7 +402,7 @@ if(std::numeric_limits<RealType>::is_specialized)
 
   BOOST_CHECK_CLOSE_FRACTION( // > formatC(pgeom(0.0001,0.5, TRUE), digits=17)[1] "               0.5"
     // > formatC(pgeom(0.0001,0.5, FALSE), digits=17) [1] "               0.5"
-    //  R treates geom as a discrete distribution.
+    //  R treats geom as a discrete distribution.
     // But Boost.Math is continuous, so if you want R behaviour,
     // make number of failures, k into an integer with the floor function.
   pdf(geometric_distribution<RealType>(static_cast<RealType>(0.5)),
@@ -412,7 +412,7 @@ if(std::numeric_limits<RealType>::is_specialized)
 
   BOOST_CHECK_CLOSE_FRACTION( // > formatC(pgeom(0.0001,0.5, TRUE), digits=17)[1] "               0.5"
     // > formatC(pgeom(0.0001,0.5, FALSE), digits=17) [1] "               0.5"
-    //  R treates geom as a discrete distribution.
+    //  R treats geom as a discrete distribution.
     // But Boost.Math is continuous, so if you want R behaviour,
     // make number of failures, k into an integer with the floor function.
   pdf(geometric_distribution<RealType>(static_cast<RealType>(0.5)),
@@ -780,8 +780,8 @@ BOOST_AUTO_TEST_CASE( test_main )
 #ifdef TEST_LDOUBLE
   test_spots(0.0L); // Test long double.
 #endif
-  #if !BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x582))
-#ifdef TEST_REAL_CONCEPT
+  #if !BOOST_WORKAROUND(BOOST_BORLANDC, BOOST_TESTED_AT(0x582)) && !defined(BOOST_MATH_NO_REAL_CONCEPT_TESTS)
+#if defined(TEST_REAL_CONCEPT) && !defined(BOOST_MATH_NO_REAL_CONCEPT_TESTS)
     test_spots(boost::math::concepts::real_concept(0.)); // Test real concept.
 #endif
   #endif

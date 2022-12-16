@@ -5,6 +5,9 @@
 // Copyright (c) 2008-2012 Bruno Lalande, Paris, France.
 // Copyright (c) 2009-2012 Mateusz Loskot, London, UK.
 
+// Copyright (c) 2020, Oracle and/or its affiliates.
+// Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
+
 // Parts of Boost.Geometry are redesigned from Geodan's Geographic Library
 // (geolib/GGL), copyright (c) 1995-2010 Geodan, Amsterdam, the Netherlands.
 
@@ -21,20 +24,18 @@
 #include <geometry_test_common.hpp>
 
 #include <boost/geometry/algorithms/assign.hpp>
-
-#include <boost/geometry/strategies/cartesian/intersection.hpp>
-#include <boost/geometry/strategies/intersection_result.hpp>
-
-#include <boost/geometry/policies/relate/intersection_points.hpp>
-#include <boost/geometry/policies/relate/direction.hpp>
-#include <boost/geometry/policies/relate/tupled.hpp>
-
 #include <boost/geometry/algorithms/intersection.hpp>
 #include <boost/geometry/algorithms/detail/overlay/segment_as_subrange.hpp>
 
 #include <boost/geometry/geometries/point.hpp>
 #include <boost/geometry/geometries/segment.hpp>
 #include <boost/geometry/geometries/adapted/boost_tuple.hpp>
+
+#include <boost/geometry/policies/relate/intersection_policy.hpp>
+
+#include <boost/geometry/strategies/intersection_result.hpp>
+#include <boost/geometry/strategies/relate/cartesian.hpp>
+
 
 BOOST_GEOMETRY_REGISTER_BOOST_TUPLE_CS(cs::cartesian);
 

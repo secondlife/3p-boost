@@ -10,10 +10,10 @@
 #include <limits>
 #include <sstream>
 #include <type_traits>
+#include "axis.hpp"
 #include "std_ostream.hpp"
+#include "str.hpp"
 #include "throw_exception.hpp"
-#include "utility_axis.hpp"
-#include "utility_str.hpp"
 
 int main() {
   using namespace boost::histogram;
@@ -127,29 +127,32 @@ int main() {
     BOOST_TEST_EQ(a.value(2), 1);
     BOOST_TEST_EQ(a.value(3), 2);
     BOOST_TEST_EQ(a.index(-2), 1);
+    BOOST_TEST_EQ(a.index(-1.9), 1);
+    BOOST_TEST_EQ(a.index(-1.1), 1);
     BOOST_TEST_EQ(a.index(-1), 0);
     BOOST_TEST_EQ(a.index(0), 1);
     BOOST_TEST_EQ(a.index(1), 0);
     BOOST_TEST_EQ(a.index(2), 1);
+    BOOST_TEST_EQ(a.index(2.1), 1);
+    BOOST_TEST_EQ(a.index(2.9), 1);
+
     BOOST_TEST_EQ(a.index(std::numeric_limits<double>::quiet_NaN()), 2);
   }
 
   // axis::integer with growth
   {
+    using pii_t = std::pair<axis::index_type, axis::index_type>;
     axis::integer<double, axis::null_type, axis::option::growth_t> a;
     BOOST_TEST_EQ(a.size(), 0);
-    BOOST_TEST_EQ(a.update(0), std::make_pair(0, -1));
+    BOOST_TEST_EQ(a.update(0), pii_t(0, -1));
     BOOST_TEST_EQ(a.size(), 1);
-    BOOST_TEST_EQ(a.update(1), std::make_pair(1, -1));
+    BOOST_TEST_EQ(a.update(1), pii_t(1, -1));
     BOOST_TEST_EQ(a.size(), 2);
-    BOOST_TEST_EQ(a.update(-1), std::make_pair(0, 1));
+    BOOST_TEST_EQ(a.update(-1), pii_t(0, 1));
     BOOST_TEST_EQ(a.size(), 3);
-    BOOST_TEST_EQ(a.update(std::numeric_limits<double>::infinity()),
-                  std::make_pair(a.size(), 0));
-    BOOST_TEST_EQ(a.update(std::numeric_limits<double>::quiet_NaN()),
-                  std::make_pair(a.size(), 0));
-    BOOST_TEST_EQ(a.update(-std::numeric_limits<double>::infinity()),
-                  std::make_pair(-1, 0));
+    BOOST_TEST_EQ(a.update(std::numeric_limits<double>::infinity()), pii_t(a.size(), 0));
+    BOOST_TEST_EQ(a.update(std::numeric_limits<double>::quiet_NaN()), pii_t(a.size(), 0));
+    BOOST_TEST_EQ(a.update(-std::numeric_limits<double>::infinity()), pii_t(-1, 0));
   }
 
   // iterators

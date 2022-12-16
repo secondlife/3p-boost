@@ -1,12 +1,12 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Buffer Types</title>
 <link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
-<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Boost.Beast">
+<link rel="home" href="../../index.html" title="Chapter 1. Boost.Beast">
 <link rel="up" href="../using_io.html" title="Networking">
-<link rel="prev" href="layered_streams/counted_stream_example.html" title="Counted Stream &#128161;">
+<link rel="prev" href="layered_streams/counted_stream_example.html" title="Counted Stream 💡">
 <link rel="next" href="files.html" title="Files">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -37,7 +37,7 @@
         Control of buffers is retained by the caller; ownership is not transferred.
       </p>
 <div class="table">
-<a name="beast.using_io.buffer_types.buffer_algorithms_and_types"></a><p class="title"><b>Table&#160;1.7.&#160;Buffer Algorithms and Types</b></p>
+<a name="beast.using_io.buffer_types.buffer_algorithms_and_types"></a><p class="title"><b>Table 1.7. Buffer Algorithms and Types</b></p>
 <div class="table-contents"><table class="table" summary="Buffer Algorithms and Types">
 <colgroup>
 <col>
@@ -194,6 +194,24 @@
                 </p>
               </td>
 </tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="../ref/boost__beast__buffer_ref.html" title="buffer_ref"><code class="computeroutput"><span class="identifier">buffer_ref</span></code></a> <a class="link" href="../ref/boost__beast__ref.html" title="ref"><code class="computeroutput"><span class="identifier">ref</span></code></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  This function converts a beast buffer, that is to be passed by
+                  reference, into a buffer reference, that can be passed by value
+                  into asio functions.
+                </p>
+                <p>
+                  It implements the <a href="../../../../../../doc/html/boost_asio/reference/DynamicBuffer_v2.html" target="_top"><span class="emphasis"><em>DynamicBuffer_v2'</em></span></a>
+                  concept.
+                </p>
+              </td>
+</tr>
 </tbody>
 </table></div>
 </div>
@@ -204,7 +222,7 @@
         provides this set of additional implementations of the dynamic buffer concept:
       </p>
 <div class="table">
-<a name="beast.using_io.buffer_types.dynamic_buffer_implementations"></a><p class="title"><b>Table&#160;1.8.&#160;Dynamic Buffer Implementations</b></p>
+<a name="beast.using_io.buffer_types.dynamic_buffer_implementations"></a><p class="title"><b>Table 1.8. Dynamic Buffer Implementations</b></p>
 <div class="table-contents"><table class="table" summary="Dynamic Buffer Implementations">
 <colgroup>
 <col>
@@ -307,11 +325,206 @@
 </table></div>
 </div>
 <br class="table-break"><p>
+        The buffers provide different guarantees regarding the allocated memory;
+        stable means that existing mutable and const_buffers obtained by calling
+        <code class="computeroutput"><span class="identifier">data</span></code> or <code class="computeroutput"><span class="identifier">prepare</span></code>,
+        will remain valid.
+      </p>
+<p>
+        Note that copies always requires a new call to <code class="computeroutput"><span class="identifier">data</span></code>
+        and <code class="computeroutput"><span class="identifier">prepare</span></code>.`
+      </p>
+<div class="table">
+<a name="beast.using_io.buffer_types.memory_stability"></a><p class="title"><b>Table 1.9. Memory stability</b></p>
+<div class="table-contents"><table class="table" summary="Memory stability">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Name
+                </p>
+              </th>
+<th>
+                <p>
+                  Allocation
+                </p>
+              </th>
+<th>
+                <p>
+                  buffer sequence length
+                </p>
+              </th>
+<th>
+                <p>
+                  Max Size
+                </p>
+              </th>
+<th>
+                <p>
+                  Movable
+                </p>
+              </th>
+<th>
+                <p>
+                  prepare/commit
+                </p>
+              </th>
+<th>
+                <p>
+                  consume
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="../ref/boost__beast__flat_buffer.html" title="flat_buffer"><code class="computeroutput"><span class="identifier">flat_buffer</span></code></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  dynamic
+                </p>
+              </td>
+<td>
+                <p>
+                  1
+                </p>
+              </td>
+<td>
+                <p>
+                  dynamic
+                </p>
+              </td>
+<td>
+                <p>
+                  yes
+                </p>
+              </td>
+<td>
+                <p>
+                  invalidating
+                </p>
+              </td>
+<td>
+                <p>
+                  invalidating
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="../ref/boost__beast__multi_buffer.html" title="multi_buffer"><code class="computeroutput"><span class="identifier">multi_buffer</span></code></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  dynamic
+                </p>
+              </td>
+<td>
+                <p>
+                  dynamic
+                </p>
+              </td>
+<td>
+                <p>
+                  stable
+                </p>
+              </td>
+<td>
+                <p>
+                  yesy
+                </p>
+              </td>
+<td>
+                <p>
+                  invalidating
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="../ref/boost__beast__flat_static_buffer.html" title="flat_static_buffer"><code class="computeroutput"><span class="identifier">flat_static_buffer</span></code></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  static
+                </p>
+              </td>
+<td>
+                <p>
+                  1
+                </p>
+              </td>
+<td>
+                <p>
+                  static
+                </p>
+              </td>
+<td>
+                <p>
+                  no
+                </p>
+              </td>
+<td>
+                <p>
+                  invalidating
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="../ref/boost__beast__static_buffer.html" title="static_buffer"><code class="computeroutput"><span class="identifier">static_buffer</span></code></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  static
+                </p>
+              </td>
+<td>
+                <p>
+                  1-2
+                </p>
+              </td>
+<td>
+                <p>
+                  static
+                </p>
+              </td>
+<td>
+                <p>
+                  no
+                </p>
+              </td>
+<td>
+                <p>
+                  may invalidate
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><p>
         These two functions facilitate buffer interoperability with standard output
         streams.
       </p>
 <div class="table">
-<a name="beast.using_io.buffer_types.buffer_output_streams"></a><p class="title"><b>Table&#160;1.9.&#160;Buffer Output Streams</b></p>
+<a name="beast.using_io.buffer_types.buffer_output_streams"></a><p class="title"><b>Table 1.10. Buffer Output Streams</b></p>
 <div class="table-contents"><table class="table" summary="Buffer Output Streams">
 <colgroup>
 <col>
@@ -366,7 +579,7 @@
         which operate on buffers:
       </p>
 <div class="table">
-<a name="beast.using_io.buffer_types.buffer_algorithms_and_types0"></a><p class="title"><b>Table&#160;1.10.&#160;Buffer Algorithms and Types</b></p>
+<a name="beast.using_io.buffer_types.buffer_algorithms_and_types0"></a><p class="title"><b>Table 1.11. Buffer Algorithms and Types</b></p>
 <div class="table-contents"><table class="table" summary="Buffer Algorithms and Types">
 <colgroup>
 <col>
@@ -451,7 +664,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2016-2019 Vinnie
+<td align="right"><div class="copyright-footer">Copyright © 2016-2019 Vinnie
       Falco<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)

@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>C++11 Examples</title>
 <link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
@@ -97,12 +97,28 @@
 </ul></div>
 <h5>
 <a name="boost_asio.examples.cpp11_examples.h4"></a>
+        <span class="phrase"><a name="boost_asio.examples.cpp11_examples.deferred"></a></span><a class="link" href="cpp11_examples.html#boost_asio.examples.cpp11_examples.deferred">Deferred</a>
+      </h5>
+<p>
+        Examples showing how to use the <a class="link" href="../reference/deferred.html" title="deferred"><code class="computeroutput"><span class="identifier">deferred</span></code></a> completion token.
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+            <a href="../example/cpp11/deferred/deferred_1.cpp" target="_top">boost_asio/example/cpp11/deferred/deferred_1.cpp</a>
+          </li>
+<li class="listitem">
+            <a href="../example/cpp11/deferred/deferred_2.cpp" target="_top">boost_asio/example/cpp11/deferred/deferred_2.cpp</a>
+          </li>
+</ul></div>
+<h5>
+<a name="boost_asio.examples.cpp11_examples.h5"></a>
         <span class="phrase"><a name="boost_asio.examples.cpp11_examples.fork"></a></span><a class="link" href="cpp11_examples.html#boost_asio.examples.cpp11_examples.fork">Fork</a>
       </h5>
 <p>
         These POSIX-specific examples show how to use Boost.Asio in conjunction with
-        the <code class="computeroutput">fork()</code> system call. The first example illustrates the steps
-        required to start a daemon process:
+        the <code class="computeroutput"><span class="identifier">fork</span><span class="special">()</span></code>
+        system call. The first example illustrates the steps required to start a
+        daemon process:
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
             <a href="../example/cpp11/fork/daemon.cpp" target="_top">boost_asio/example/cpp11/fork/daemon.cpp</a>
@@ -115,7 +131,7 @@
             <a href="../example/cpp11/fork/process_per_connection.cpp" target="_top">boost_asio/example/cpp11/fork/process_per_connection.cpp</a>
           </li></ul></div>
 <h5>
-<a name="boost_asio.examples.cpp11_examples.h5"></a>
+<a name="boost_asio.examples.cpp11_examples.h6"></a>
         <span class="phrase"><a name="boost_asio.examples.cpp11_examples.futures"></a></span><a class="link" href="cpp11_examples.html#boost_asio.examples.cpp11_examples.futures">Futures</a>
       </h5>
 <p>
@@ -126,18 +142,25 @@
             <a href="../example/cpp11/futures/daytime_client.cpp" target="_top">boost_asio/example/cpp11/futures/daytime_client.cpp</a>
           </li></ul></div>
 <h5>
-<a name="boost_asio.examples.cpp11_examples.h6"></a>
+<a name="boost_asio.examples.cpp11_examples.h7"></a>
         <span class="phrase"><a name="boost_asio.examples.cpp11_examples.handler_tracking"></a></span><a class="link" href="cpp11_examples.html#boost_asio.examples.cpp11_examples.handler_tracking">Handler
         Tracking</a>
       </h5>
 <p>
-        This example shows how to implement custom handler tracking.
+        This example header file shows how to implement custom handler tracking.
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
             <a href="../example/cpp11/handler_tracking/custom_tracking.hpp" target="_top">boost_asio/example/cpp11/handler_tracking/custom_tracking.hpp</a>
           </li></ul></div>
+<p>
+        This example program shows how to include source location information in
+        the handler tracking output.
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
+            <a href="../example/cpp11/handler_tracking/async_tcp_echo_server.cpp" target="_top">boost_asio/example/cpp11/handler_tracking/async_tcp_echo_server.cpp</a>
+          </li></ul></div>
 <h5>
-<a name="boost_asio.examples.cpp11_examples.h7"></a>
+<a name="boost_asio.examples.cpp11_examples.h8"></a>
         <span class="phrase"><a name="boost_asio.examples.cpp11_examples.http_server"></a></span><a class="link" href="cpp11_examples.html#boost_asio.examples.cpp11_examples.http_server">HTTP
         Server</a>
       </h5>
@@ -200,7 +223,7 @@
           </li>
 </ul></div>
 <h5>
-<a name="boost_asio.examples.cpp11_examples.h8"></a>
+<a name="boost_asio.examples.cpp11_examples.h9"></a>
         <span class="phrase"><a name="boost_asio.examples.cpp11_examples.multicast"></a></span><a class="link" href="cpp11_examples.html#boost_asio.examples.cpp11_examples.multicast">Multicast</a>
       </h5>
 <p>
@@ -216,7 +239,7 @@
           </li>
 </ul></div>
 <h5>
-<a name="boost_asio.examples.cpp11_examples.h9"></a>
+<a name="boost_asio.examples.cpp11_examples.h10"></a>
         <span class="phrase"><a name="boost_asio.examples.cpp11_examples.nonblocking"></a></span><a class="link" href="cpp11_examples.html#boost_asio.examples.cpp11_examples.nonblocking">Nonblocking</a>
       </h5>
 <p>
@@ -227,7 +250,7 @@
             <a href="../example/cpp11/nonblocking/third_party_lib.cpp" target="_top">boost_asio/example/cpp11/nonblocking/third_party_lib.cpp</a>
           </li></ul></div>
 <h5>
-<a name="boost_asio.examples.cpp11_examples.h10"></a>
+<a name="boost_asio.examples.cpp11_examples.h11"></a>
         <span class="phrase"><a name="boost_asio.examples.cpp11_examples.operations"></a></span><a class="link" href="cpp11_examples.html#boost_asio.examples.cpp11_examples.operations">Operations</a>
       </h5>
 <p>
@@ -261,7 +284,32 @@
           </li>
 </ul></div>
 <h5>
-<a name="boost_asio.examples.cpp11_examples.h11"></a>
+<a name="boost_asio.examples.cpp11_examples.h12"></a>
+        <span class="phrase"><a name="boost_asio.examples.cpp11_examples.parallel_groups"></a></span><a class="link" href="cpp11_examples.html#boost_asio.examples.cpp11_examples.parallel_groups">Parallel
+        Groups</a>
+      </h5>
+<p>
+        Examples showing how to use the <a class="link" href="../reference/experimental__make_parallel_group.html" title="experimental::make_parallel_group"><code class="computeroutput"><span class="identifier">experimental</span><span class="special">::</span><span class="identifier">make_parallel_group</span></code></a> operation.
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+            <a href="../example/cpp11/parallel_group/wait_for_all.cpp" target="_top">boost_asio/example/cpp11/parallel_group/wait_for_all.cpp</a>
+          </li>
+<li class="listitem">
+            <a href="../example/cpp11/parallel_group/wait_for_one.cpp" target="_top">boost_asio/example/cpp11/parallel_group/wait_for_one.cpp</a>
+          </li>
+<li class="listitem">
+            <a href="../example/cpp11/parallel_group/wait_for_one_error.cpp" target="_top">boost_asio/example/cpp11/parallel_group/wait_for_one_error.cpp</a>
+          </li>
+<li class="listitem">
+            <a href="../example/cpp11/parallel_group/wait_for_one_success.cpp" target="_top">boost_asio/example/cpp11/parallel_group/wait_for_one_success.cpp</a>
+          </li>
+<li class="listitem">
+            <a href="../example/cpp11/parallel_group/ranged_wait_for_all.cpp" target="_top">boost_asio/example/cpp11/parallel_group/ranged_wait_for_all.cpp</a>
+          </li>
+</ul></div>
+<h5>
+<a name="boost_asio.examples.cpp11_examples.h13"></a>
         <span class="phrase"><a name="boost_asio.examples.cpp11_examples.socks_4"></a></span><a class="link" href="cpp11_examples.html#boost_asio.examples.cpp11_examples.socks_4">SOCKS
         4</a>
       </h5>
@@ -278,7 +326,7 @@
           </li>
 </ul></div>
 <h5>
-<a name="boost_asio.examples.cpp11_examples.h12"></a>
+<a name="boost_asio.examples.cpp11_examples.h14"></a>
         <span class="phrase"><a name="boost_asio.examples.cpp11_examples.spawn"></a></span><a class="link" href="cpp11_examples.html#boost_asio.examples.cpp11_examples.spawn">Spawn</a>
       </h5>
 <p>
@@ -290,7 +338,7 @@
             <a href="../example/cpp11/spawn/echo_server.cpp" target="_top">boost_asio/example/cpp11/spawn/echo_server.cpp</a>
           </li></ul></div>
 <h5>
-<a name="boost_asio.examples.cpp11_examples.h13"></a>
+<a name="boost_asio.examples.cpp11_examples.h15"></a>
         <span class="phrase"><a name="boost_asio.examples.cpp11_examples.ssl"></a></span><a class="link" href="cpp11_examples.html#boost_asio.examples.cpp11_examples.ssl">SSL</a>
       </h5>
 <p>
@@ -306,7 +354,7 @@
           </li>
 </ul></div>
 <h5>
-<a name="boost_asio.examples.cpp11_examples.h14"></a>
+<a name="boost_asio.examples.cpp11_examples.h16"></a>
         <span class="phrase"><a name="boost_asio.examples.cpp11_examples.timeouts"></a></span><a class="link" href="cpp11_examples.html#boost_asio.examples.cpp11_examples.timeouts">Timeouts</a>
       </h5>
 <p>
@@ -331,7 +379,7 @@
           </li>
 </ul></div>
 <h5>
-<a name="boost_asio.examples.cpp11_examples.h15"></a>
+<a name="boost_asio.examples.cpp11_examples.h17"></a>
         <span class="phrase"><a name="boost_asio.examples.cpp11_examples.timers"></a></span><a class="link" href="cpp11_examples.html#boost_asio.examples.cpp11_examples.timers">Timers</a>
       </h5>
 <p>
@@ -342,7 +390,36 @@
             <a href="../example/cpp11/timers/time_t_timer.cpp" target="_top">boost_asio/example/cpp11/timers/time_t_timer.cpp</a>
           </li></ul></div>
 <h5>
-<a name="boost_asio.examples.cpp11_examples.h16"></a>
+<a name="boost_asio.examples.cpp11_examples.h18"></a>
+        <span class="phrase"><a name="boost_asio.examples.cpp11_examples.type_erasure"></a></span><a class="link" href="cpp11_examples.html#boost_asio.examples.cpp11_examples.type_erasure">Type
+        Erasure</a>
+      </h5>
+<p>
+        Example showing how to use <a class="link" href="../../"><code class="computeroutput"><span class="identifier">any_completion_handler</span></code></a> to enable
+        separate compilation of asynchronous operations.
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+            <a href="../example/cpp11/type_erasure/main.cpp" target="_top">boost_asio/example/cpp11/type_erasure/main.cpp</a>
+          </li>
+<li class="listitem">
+            <a href="../example/cpp11/type_erasure/line_reader.hpp" target="_top">boost_asio/example/cpp11/type_erasure/line_reader.hpp</a>
+          </li>
+<li class="listitem">
+            <a href="../example/cpp11/type_erasure/stdin_line_reader.hpp" target="_top">boost_asio/example/cpp11/type_erasure/stdin_line_reader.hpp</a>
+          </li>
+<li class="listitem">
+            <a href="../example/cpp11/type_erasure/stdin_line_reader.cpp" target="_top">boost_asio/example/cpp11/type_erasure/stdin_line_reader.cpp</a>
+          </li>
+<li class="listitem">
+            <a href="../example/cpp11/type_erasure/sleep.hpp" target="_top">boost_asio/example/cpp11/type_erasure/sleep.hpp</a>
+          </li>
+<li class="listitem">
+            <a href="../example/cpp11/type_erasure/sleep.cpp" target="_top">boost_asio/example/cpp11/type_erasure/sleep.cpp</a>
+          </li>
+</ul></div>
+<h5>
+<a name="boost_asio.examples.cpp11_examples.h19"></a>
         <span class="phrase"><a name="boost_asio.examples.cpp11_examples.unix_domain_sockets"></a></span><a class="link" href="cpp11_examples.html#boost_asio.examples.cpp11_examples.unix_domain_sockets">UNIX Domain
         Sockets</a>
       </h5>
@@ -362,11 +439,17 @@
 <li class="listitem">
             <a href="../example/cpp11/local/stream_client.cpp" target="_top">boost_asio/example/cpp11/local/stream_client.cpp</a>
           </li>
+<li class="listitem">
+            <a href="../example/cpp11/local/fd_passing_stream_server.cpp" target="_top">boost_asio/example/cpp11/local/fd_passing_stream_server.cpp</a>
+          </li>
+<li class="listitem">
+            <a href="../example/cpp11/local/fd_passing_stream_client.cpp" target="_top">boost_asio/example/cpp11/local/fd_passing_stream_client.cpp</a>
+          </li>
 </ul></div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright © 2003-2022 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

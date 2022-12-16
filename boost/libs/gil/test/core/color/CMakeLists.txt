@@ -7,7 +7,9 @@
 #
 foreach(_name
   concepts
-  color_spaces_are_compatible)
+  color_spaces_are_compatible
+  default_color_converter_impl
+  default_color_converter_rgb_to_cmyk)
   set(_test t_core_color_${_name})
   set(_target test_core_color_${_name})
 

@@ -34,7 +34,7 @@
 
 #include <boost/move/utility_core.hpp>
 #include <boost/move/adl_move_swap.hpp>
-
+#include <boost/move/detail/force_ptr.hpp>
 #include <boost/assert.hpp>
 
 #include <memory>
@@ -61,7 +61,7 @@ class simple_allocator
    {}
 
    T* allocate(std::size_t n)
-   { return (T*)::new char[sizeof(T)*n];  }
+   { return move_detail::force_ptr<T*>(::new char[sizeof(T)*n]);  }
 
    void deallocate(T*p, std::size_t)
    { delete[] ((char*)p);}
@@ -78,6 +78,7 @@ template< class T
         , bool PropagateOnContMoveAssign
         , bool PropagateOnContSwap
         , bool CopyOnPropagateOnContSwap
+        , bool EqualIfEqualIds
         >
 class propagation_test_allocator
 {
@@ -99,7 +100,8 @@ class propagation_test_allocator
          , PropagateOnContCopyAssign
          , PropagateOnContMoveAssign
          , PropagateOnContSwap
-         , CopyOnPropagateOnContSwap>   other;
+         , CopyOnPropagateOnContSwap
+         , EqualIfEqualIds>   other;
    };
 
    propagation_test_allocator select_on_container_copy_construction() const
@@ -129,7 +131,8 @@ class propagation_test_allocator
                                        , PropagateOnContCopyAssign
                                        , PropagateOnContMoveAssign
                                        , PropagateOnContSwap
-                                       , CopyOnPropagateOnContSwap> &x)
+                                       , CopyOnPropagateOnContSwap
+                                       , EqualIfEqualIds> &x)
       : id_(x.id_)
       , ctr_copies_(x.ctr_copies_+1)
       , ctr_moves_(0)
@@ -173,16 +176,16 @@ class propagation_test_allocator
    {  unique_id_ = id;  }
 
    T* allocate(std::size_t n)
-   {  return (T*)::new char[sizeof(T)*n];  }
+   {  return move_detail::force_ptr<T*>(::new char[sizeof(T)*n]);  }
 
    void deallocate(T*p, std::size_t)
    { delete[] ((char*)p);}
 
-   friend bool operator==(const propagation_test_allocator &, const propagation_test_allocator &)
-   {  return true;  }
+   friend bool operator==(const propagation_test_allocator &a, const propagation_test_allocator &b)
+   {  return EqualIfEqualIds ? a.id_ == b.id_ : true;  }
 
-   friend bool operator!=(const propagation_test_allocator &, const propagation_test_allocator &)
-   {  return false;  }
+   friend bool operator!=(const propagation_test_allocator &a, const propagation_test_allocator &b)
+   {  return EqualIfEqualIds ? a.id_ != b.id_ : false;  }
 
    void swap(propagation_test_allocator &r)
    {
@@ -214,12 +217,15 @@ template< class T
         , bool PropagateOnContMoveAssign
         , bool PropagateOnContSwap
         , bool CopyOnPropagateOnContSwap
+        , bool EqualIfEqualIds
         >
 unsigned int propagation_test_allocator< T
                                        , PropagateOnContCopyAssign
                                        , PropagateOnContMoveAssign
                                        , PropagateOnContSwap
-                                       , CopyOnPropagateOnContSwap>::unique_id_ = 0;
+                                       , CopyOnPropagateOnContSwap
+                                       , EqualIfEqualIds
+                                       >::unique_id_ = 0;
 
 
 }  //namespace test {

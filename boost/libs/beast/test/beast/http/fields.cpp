@@ -10,6 +10,7 @@
 // Test that header file is self-contained.
 #include <boost/beast/http/fields.hpp>
 
+#include <boost/beast/core/static_string.hpp>
 #include <boost/beast/http/empty_body.hpp>
 #include <boost/beast/http/message.hpp>
 #include <boost/beast/http/type_traits.hpp>
@@ -93,8 +94,10 @@ public:
     void
     fill(std::size_t n, basic_fields<Allocator>& f)
     {
-        for(std::size_t i = 1; i<= n; ++i)
-            f.insert(std::to_string(i), i);
+        for(std::size_t i = 1; i<= n; ++i) {
+            auto s = std::to_string(i);
+            f.insert(s, s);
+        }
     }
 
     template<class U, class V>
@@ -411,10 +414,10 @@ public:
         {
             // group fields
             fields f;
-            f.insert(field::age,   1);
-            f.insert(field::body,  2);
-            f.insert(field::close, 3);
-            f.insert(field::body,  4);
+            f.insert(field::age,   "1");
+            f.insert(field::body,  "2");
+            f.insert(field::close, "3");
+            f.insert(field::body,  "4");
             BEAST_EXPECT(std::next(f.begin(), 0)->name() == field::age);
             BEAST_EXPECT(std::next(f.begin(), 1)->name() == field::body);
             BEAST_EXPECT(std::next(f.begin(), 2)->name() == field::body);
@@ -434,10 +437,10 @@ public:
         {
             // group fields, case insensitive
             fields f;
-            f.insert("a",  1);
-            f.insert("ab", 2);
-            f.insert("b",  3);
-            f.insert("AB", 4);
+            f.insert("a",  "1");
+            f.insert("ab", "2");
+            f.insert("b",  "3");
+            f.insert("AB", "4");
             BEAST_EXPECT(std::next(f.begin(), 0)->name() == field::unknown);
             BEAST_EXPECT(std::next(f.begin(), 1)->name() == field::unknown);
             BEAST_EXPECT(std::next(f.begin(), 2)->name() == field::unknown);
@@ -457,14 +460,14 @@ public:
         {
             // verify insertion orde
             fields f;
-            f.insert( "a", 1);
-            f.insert("dd", 2);
-            f.insert("b",  3);
-            f.insert("dD", 4);
-            f.insert("c",  5);
-            f.insert("Dd", 6);
-            f.insert("DD", 7);
-            f.insert( "e", 8);
+            f.insert( "a", "1");
+            f.insert("dd", "2");
+            f.insert("b",  "3");
+            f.insert("dD", "4");
+            f.insert("c",  "5");
+            f.insert("Dd", "6");
+            f.insert("DD", "7");
+            f.insert( "e", "8");
             BEAST_EXPECT(f.count("dd") == 4);
             BEAST_EXPECT(std::next(f.begin(), 1)->name_string() == "dd");
             BEAST_EXPECT(std::next(f.begin(), 2)->name_string() == "dD");
@@ -478,13 +481,13 @@ public:
         // equal_range
         {
             fields f;
-            f.insert("E", 1);
-            f.insert("B", 2);
-            f.insert("D", 3);
-            f.insert("B", 4);
-            f.insert("C", 5);
-            f.insert("B", 6);
-            f.insert("A", 7);
+            f.insert("E", "1");
+            f.insert("B", "2");
+            f.insert("D", "3");
+            f.insert("B", "4");
+            f.insert("C", "5");
+            f.insert("B", "6");
+            f.insert("A", "7");
             auto const rng = f.equal_range("B");
             BEAST_EXPECT(std::distance(rng.first, rng.second) == 3);
             BEAST_EXPECT(std::next(rng.first, 0)->value() == "2");
@@ -944,7 +947,7 @@ public:
             };
 
         res.erase(field::transfer_encoding);
-        res.set(field::content_length, 32);
+        res.set(field::content_length, "32");
         chunked(true);
         BEAST_EXPECT(res[field::transfer_encoding] == "chunked");
 
@@ -953,7 +956,7 @@ public:
         BEAST_EXPECT(res[field::transfer_encoding] == "chunked");
 
         res.erase(field::transfer_encoding);
-        res.set(field::content_length, 32);
+        res.set(field::content_length, "32");
         chunked(false);
         BEAST_EXPECT(res.count(field::transfer_encoding) == 0);
 
@@ -989,6 +992,101 @@ public:
     }
 
     void
+    testIssue1828()
+    {
+        beast::http::fields req;
+        req.insert("abc", "1");
+        req.insert("abc", "2");
+        req.insert("abc", "3");
+        BEAST_EXPECT(req.count("abc") == 3);
+        auto iter = req.find("abc");
+        BEAST_EXPECT(iter->value() == "1");
+        req.insert("abc", "4");
+        req.erase(iter);
+        BEAST_EXPECT(req.count("abc") == 3);
+    }
+
+    template<class Arg1, class InArg>
+    struct set_test
+    {
+        static auto test(...) ->
+            std::false_type;
+
+        template<class U = InArg>
+        static auto test(U arg) ->
+            decltype(std::declval<fields>().
+                set(std::declval<Arg1>(),
+                    std::declval<U>()),
+                std::true_type());
+
+        static constexpr bool value =
+            decltype(test(std::declval<InArg>()))::value;
+    };
+
+    template<class Arg1, class InArg>
+    struct insert_test
+    {
+        static auto test(...) ->
+            std::false_type;
+
+        template<class U = InArg>
+        static auto test(U arg) ->
+            decltype(std::declval<fields>().
+                insert(std::declval<Arg1>(),
+                    std::declval<U>()),
+                std::true_type());
+
+        static constexpr bool value =
+            decltype(test(std::declval<InArg>()))::value;
+    };
+
+    void
+    testIssue2085()
+    {
+        BOOST_STATIC_ASSERT((! set_test<field, int>::value));
+        BOOST_STATIC_ASSERT((! set_test<field, std::nullptr_t>::value));
+        BOOST_STATIC_ASSERT((! set_test<field, double>::value));
+        BOOST_STATIC_ASSERT((! set_test<string_view, int>::value));
+        BOOST_STATIC_ASSERT((! set_test<string_view, std::nullptr_t>::value));
+        BOOST_STATIC_ASSERT((! set_test<string_view, double>::value));
+
+        BOOST_STATIC_ASSERT(( set_test<field, const char*>::value));
+        BOOST_STATIC_ASSERT(( set_test<field, string_view>::value));
+        BOOST_STATIC_ASSERT(( set_test<field, const char(&)[10]>::value));
+        BOOST_STATIC_ASSERT(( set_test<string_view, const char*>::value));
+        BOOST_STATIC_ASSERT(( set_test<string_view, string_view>::value));
+        BOOST_STATIC_ASSERT(( set_test<string_view, const char(&)[10]>::value));
+
+        BOOST_STATIC_ASSERT((! insert_test<field, int>::value));
+        BOOST_STATIC_ASSERT((! insert_test<field, std::nullptr_t>::value));
+        BOOST_STATIC_ASSERT((! insert_test<field, double>::value));
+        BOOST_STATIC_ASSERT((! insert_test<string_view, int>::value));
+        BOOST_STATIC_ASSERT((! insert_test<string_view, std::nullptr_t>::value));
+        BOOST_STATIC_ASSERT((! insert_test<string_view, double>::value));
+
+        BOOST_STATIC_ASSERT(( insert_test<field, const char*>::value));
+        BOOST_STATIC_ASSERT(( insert_test<field, string_view>::value));
+        BOOST_STATIC_ASSERT(( insert_test<field, const char(&)[10]>::value));
+        BOOST_STATIC_ASSERT(( insert_test<string_view, const char*>::value));
+        BOOST_STATIC_ASSERT(( insert_test<string_view, string_view>::value));
+        BOOST_STATIC_ASSERT(( insert_test<string_view, const char(&)[10]>::value));
+    }
+
+    void
+    testEmpty()
+    {
+        beast::http::fields req;
+        req.insert("abc", "");
+        req.set("cba", "");
+        auto itr = req.find("abc");
+        BEAST_EXPECT(itr != req.end());
+        BEAST_EXPECT(itr->value().empty());
+        itr = req.find("cba");
+        BEAST_EXPECT(itr != req.end());
+        BEAST_EXPECT(itr->value().empty());
+    }
+
+    void
     run() override
     {
         testMembers();
@@ -1002,6 +1100,10 @@ public:
         testKeepAlive();
         testContentLength();
         testChunked();
+
+        testIssue1828();
+        boost::ignore_unused(&fields_test::testIssue2085);
+        testEmpty();
     }
 };
 

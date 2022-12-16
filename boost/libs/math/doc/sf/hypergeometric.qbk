@@ -275,7 +275,9 @@ readers will have to refer to the code for the transitions between methods, as w
 In almost all cases where /z < 0/ we use [@https://en.wikipedia.org/wiki/Confluent_hypergeometric_function Kummer's relation]
 to make /z/ positive:
 
-[:[/\large  $$_1F_1(a, b; -z) = e^{-z} {_1F_1}(a, b; z)$$]
+[:[/\large  $$_1F_1(a, b; -z) = e^{-z} {_1F_1}(b-a, b; z)$$]
+[/ https://github.com/boostorg/math/issues/638]
+[/See https://dlmf.nist.gov/13.2#E39] 
 [$../equations/hypergeometric_1f1_12.svg]]
 
 The main series representation
@@ -454,7 +456,7 @@ are destroyed by cancellation.
 
 The function `hypergeometric_pFq` returns the result of:
 
-[:[/\Large  $$ _pF_q(\{a_1...a_n\}, \{b_1...b_n\}; z) = \sum_{k=0}^{\infty} \frac{\Pi_{j=1}^n(a_j)_n z^k}{\Pi_{j=1}^n(b_j)_n k!} $$]
+[:[/\Large  $$ {}_pF_q\left(\left\{a_1, \ldots, a_p\right\}, \left\{b_1, \ldots, b_q\right\}; z\right)=\sum_{n=0}^{\infty} \frac{\prod_{j=1}^{p}\left(a_j\right)_n}{\prod_{j=1}^{q}\left(b_{j}\right)_n} \frac{z^n}{n!} $$]
 [$../equations/hypergeometric_pfq_1.svg]]
 
 It is most naturally used via initializer lists as in:
@@ -480,7 +482,7 @@ require type `Real` to be a *variable-precision* floating-point type: in practic
    // Calculate 2F2 to 20 decimal places using a 10 second timeout:
    //
    mp_type result = boost::math::hypergeometric_pFq_precision(
-     { mp_type(a1), mp_type(a2) }, { mp_type(b1), m_type(b2) }, mp_type(z), 20, 10.0
+     { mp_type(a1), mp_type(a2) }, { mp_type(b1), mp_type(b2) }, mp_type(z), 20, 10.0
      );
    //
    // Convert the result back to a double:

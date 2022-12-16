@@ -85,9 +85,11 @@ class basic_file_body<File>::value_type
     // This body container holds a handle to the file
     // when it is open, and also caches the size when set.
 
+#ifndef BOOST_BEAST_DOXYGEN
     friend class reader;
     friend class writer;
     friend struct basic_file_body;
+#endif
 
     // This represents the open file
     File file_;
@@ -110,6 +112,12 @@ public:
 
     /// Move assignment
     value_type& operator=(value_type&& other) = default;
+
+    /// Return the file
+    File& file()
+    {
+        return file_;
+    }
 
     /// Returns `true` if the file is open
     bool
@@ -356,6 +364,12 @@ get(error_code& ec) ->
     auto const nread = body_.file_.read(buf_, amount, ec);
     if(ec)
         return boost::none;
+
+    if (nread == 0)
+    {
+        BOOST_BEAST_ASSIGN_EC(ec, error::short_read);
+        return boost::none;
+    }
 
     // Make sure there is forward progress
     BOOST_ASSERT(nread != 0);
