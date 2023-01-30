@@ -197,7 +197,9 @@ case "$AUTOBUILD_PLATFORM" in
         # Odd things go wrong with the .bat files:  branch targets
         # not recognized, file tests incorrect.  Inexplicable but
         # dropping 'echo on' into the .bat files seems to help.
-        cmd.exe /C bootstrap.bat "$bootstrapver" || echo bootstrap failed 1>&2
+##        cmd.exe /C bootstrap.bat "$bootstrapver" || echo bootstrap failed 1>&2
+        # Try letting bootstrap.bat infer the tooset version.
+        cmd.exe /C bootstrap.bat msvc || echo bootstrap failed 1>&2
         # Failure of this bootstrap.bat file may or may not produce nonzero rc
         # -- check for the program it should have built.
         if [ ! -x "$bjam.exe" ]
