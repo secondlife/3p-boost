@@ -148,24 +148,7 @@ start_time="$last_time"
 
 sep()
 {
-    python -c "
-from __future__ import print_function
-import os
-import sys
-import time
-start = $start_time
-last_file = r'$last_file'
-last = int(os.path.getmtime(last_file))
-now = int(time.time())
-os.utime(last_file, (now, now))
-def since(baseline, now):
-    duration = now - baseline
-    rest, secs = divmod(duration, 60)
-    hours, mins = divmod(rest, 60)
-    return '%2d:%02d:%02d' % (hours, mins, secs)
-print('((((( %s )))))' % since(last, now), file=sys.stderr)
-print(since(start, now), ' $* '.center(72, '='), file=sys.stderr)
-"
+    python "$(native "$top")/timestamp.py" "$start_time" "$last_file" "$@"
 }
 
 # bjam doesn't support a -sICU_LIBPATH to point to the location
@@ -186,23 +169,29 @@ case "$AUTOBUILD_PLATFORM" in
         ZLIB_RELEASE_PATH="$(native "${stage}"/packages/lib/release)"
         ICU_PATH="$(native "${stage}"/packages)"
 
-        case "$AUTOBUILD_VSVER" in
-            120)
-                bootstrapver="vc12"
-                bjamtoolset="msvc-12.0"
-                ;;
-            150)
-                bootstrapver="vc141"
-                bjamtoolset="msvc-14.1"
-                ;;
-            170)
-                bootstrapver="vc141"
-                bjamtoolset="msvc-14.1"
-                ;;
-            *)
-                echo "Unrecognized AUTOBUILD_VSVER='$AUTOBUILD_VSVER'" 1>&2 ; exit 1
-                ;;
-        esac
+        if [[ -z "$AUTOBUILD_WIN_VSTOOLSET" ]]
+        then
+            # lifted from autobuild_tool_source_environment.py
+            declare -A toolsets=(
+                ["14"]=v140
+                ["15"]=v141
+                ["16"]=v142
+                ["17"]=v143
+            )
+            AUTOBUILD_WIN_VSTOOLSET="${toolsets[${AUTOBUILD_VSVER:0:2}]}"
+            if [[ -z "$AUTOBUILD_WIN_VSTOOLSET" ]]
+            then
+                echo "Can't guess AUTOBUILD_WIN_VSTOOLSET from AUTOBUILD_VSVER='$AUTOBUILD_VSVER'" >&2
+                exit 1
+            fi
+        fi
+
+        # e.g. "v141", want just "141"
+        toolset="${AUTOBUILD_WIN_VSTOOLSET#v}"
+        # e.g. "vc14"
+        bootstrapver="vc${toolset%0}"
+        # e.g. "msvc-14.1"
+        bjamtoolset="msvc-${toolset:0:2}.${toolset:2}"
 
         sep "bootstrap"
         # Odd things go wrong with the .bat files:  branch targets
