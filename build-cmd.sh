@@ -22,7 +22,8 @@ fi
 BOOST_LIBS=(context date_time fiber filesystem iostreams program_options \
             regex stacktrace system thread wave)
 
-BOOST_BUILD_SPAM="-d2 -d+4"             # -d0 is quiet, "-d2 -d+4" allows compilation to be examined
+# -d0 is quiet, "-d2 -d+4" allows compilation to be examined
+BOOST_BUILD_SPAM="-d0"
 
 top="$(pwd)"
 cd "$BOOST_SOURCE_DIR"
@@ -65,7 +66,7 @@ BOOST_BJAM_OPTIONS="address-model=$AUTOBUILD_ADDRSIZE architecture=x86 --layout=
 # we're about to add) go into a single array entry.
 BOOST_BJAM_OPTIONS=($BOOST_BJAM_OPTIONS)
 # Append cxxflags as a single entry containing all of LL_BUILD_RELEASE.
-BOOST_BJAM_OPTIONS[${#BOOST_BJAM_OPTIONS[*]}]="cxxflags=$LL_BUILD_RELEASE"
+BOOST_BJAM_OPTIONS+=("cxxflags=$LL_BUILD_RELEASE")
 
 stage_lib="${stage}"/lib
 stage_release="${stage_lib}"/release
