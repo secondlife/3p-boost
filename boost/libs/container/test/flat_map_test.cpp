@@ -7,10 +7,9 @@
 // See http://www.boost.org/libs/container for documentation.
 //
 //////////////////////////////////////////////////////////////////////////////
-#include <boost/container/detail/config_begin.hpp>
-
 #include <vector>
 
+#include <boost/static_assert.hpp>
 #include <boost/container/flat_map.hpp>
 #include <boost/container/allocator.hpp>
 #include <boost/container/detail/container_or_allocator_rebind.hpp>
@@ -307,7 +306,7 @@ bool flat_tree_extract_adopt_test()
          fmap.emplace(static_cast<int>(i), -static_cast<int>(i));
       }
 
-      flat_map<int, int> fmap_copy(fmap);
+      const flat_map<int, int> fmap_copy(fmap);
       flat_map<int, int>::sequence_type seq(fmap.extract_sequence());
       if(!fmap.empty())
          return false;
@@ -318,6 +317,8 @@ bool flat_tree_extract_adopt_test()
       boost::container::test::random_shuffle(seq.begin(), seq.end());
       fmap.adopt_sequence(boost::move(seq));
       if(!CheckEqualContainers(fmap, fmap_copy))
+         return false;
+      if (!CheckEqualContainers(fmap.sequence(), fmap_copy.sequence()))
          return false;
    }
 
@@ -330,7 +331,7 @@ bool flat_tree_extract_adopt_test()
          fmap.emplace(static_cast<int>(i), -static_cast<int>(i));
       }
 
-      flat_map<int, int> fmap_copy(fmap);
+      const flat_map<int, int> fmap_copy(fmap);
       flat_map<int, int>::sequence_type seq(fmap.extract_sequence());
       if(!fmap.empty())
          return false;
@@ -339,6 +340,8 @@ bool flat_tree_extract_adopt_test()
 
       fmap.adopt_sequence(ordered_unique_range, boost::move(seq));
       if(!CheckEqualContainers(fmap, fmap_copy))
+         return false;
+      if (!CheckEqualContainers(fmap.sequence(), fmap_copy.sequence()))
          return false;
    }
 
@@ -352,7 +355,7 @@ bool flat_tree_extract_adopt_test()
          fmmap.emplace(static_cast<int>(i), -static_cast<int>(i));
       }
 
-      flat_multimap<int, int> fmmap_copy(fmmap);
+      const flat_multimap<int, int> fmmap_copy(fmmap);
       flat_multimap<int, int>::sequence_type seq(fmmap.extract_sequence());
       if(!fmmap.empty())
          return false;
@@ -362,6 +365,8 @@ bool flat_tree_extract_adopt_test()
       boost::container::test::random_shuffle(seq.begin(), seq.end());
       fmmap.adopt_sequence(boost::move(seq));
       if(!CheckEqualContainers(fmmap, fmmap_copy))
+         return false;
+      if (!CheckEqualContainers(fmmap.sequence(), fmmap_copy.sequence()))
          return false;
    }
 
@@ -375,7 +380,7 @@ bool flat_tree_extract_adopt_test()
          fmmap.emplace(static_cast<int>(i), -static_cast<int>(i));
       }
 
-      flat_multimap<int, int> fmmap_copy(fmmap);
+      const flat_multimap<int, int> fmmap_copy(fmmap);
       flat_multimap<int, int>::sequence_type seq(fmmap.extract_sequence());
       if(!fmmap.empty())
          return false;
@@ -384,6 +389,8 @@ bool flat_tree_extract_adopt_test()
 
       fmmap.adopt_sequence(ordered_range, boost::move(seq));
       if(!CheckEqualContainers(fmmap, fmmap_copy))
+         return false;
+      if (!CheckEqualContainers(fmmap.sequence(), fmmap_copy.sequence()))
          return false;
    }
 
@@ -769,70 +776,56 @@ int main()
          typedef boost::container::new_allocator<value_t> alloc_or_cont_t;
          typedef boost::container::flat_map<int, int> cont;
          typedef boost::container::dtl::flat_tree<value_t, key_of_value_t, std::less<int>, alloc_or_cont_t> tree;
-         if (boost::has_trivial_destructor_after_move<cont>::value !=
-             boost::has_trivial_destructor_after_move<tree>::value) {
-            std::cerr << "has_trivial_destructor_after_move(flat_map, default) test failed" << std::endl;
-            return 1;
-         }
+         BOOST_STATIC_ASSERT_MSG( boost::has_trivial_destructor_after_move<cont>::value ==
+                                  boost::has_trivial_destructor_after_move<tree>::value
+                                , "has_trivial_destructor_after_move(flat_map, default) test failed");
       }
       // flat_map, vector
       {
          typedef boost::container::vector<value_t> alloc_or_cont_t;
          typedef boost::container::flat_map<int, int, std::less<int>, alloc_or_cont_t> cont;
          typedef boost::container::dtl::flat_tree<value_t, key_of_value_t, std::less<int>, alloc_or_cont_t> tree;
-         if (boost::has_trivial_destructor_after_move<cont>::value !=
-             boost::has_trivial_destructor_after_move<tree>::value) {
-            std::cerr << "has_trivial_destructor_after_move(flat_map, vector) test failed" << std::endl;
-            return 1;
-         }
+         BOOST_STATIC_ASSERT_MSG( boost::has_trivial_destructor_after_move<cont>::value ==
+                                  boost::has_trivial_destructor_after_move<tree>::value
+                                , "has_trivial_destructor_after_move(flat_map, vector) test failed");
       }
       // flat_map, std::vector
       {
          typedef std::vector<value_t> alloc_or_cont_t;
          typedef boost::container::flat_map<int, int, std::less<int>, alloc_or_cont_t> cont;
          typedef boost::container::dtl::flat_tree<value_t, key_of_value_t, std::less<int>, alloc_or_cont_t> tree;
-         if (boost::has_trivial_destructor_after_move<cont>::value !=
-             boost::has_trivial_destructor_after_move<tree>::value) {
-            std::cerr << "has_trivial_destructor_after_move(flat_map, std::vector) test failed" << std::endl;
-            return 1;
-         }
+         BOOST_STATIC_ASSERT_MSG( boost::has_trivial_destructor_after_move<cont>::value ==
+                                  boost::has_trivial_destructor_after_move<tree>::value
+                                , "has_trivial_destructor_after_move(flat_map, std::vector) test failed");
       }
       // flat_multimap, default
       {
          typedef boost::container::new_allocator<value_t> alloc_or_cont_t;
          typedef boost::container::flat_multimap<int, int> cont;
          typedef boost::container::dtl::flat_tree<value_t, key_of_value_t, std::less<int>, alloc_or_cont_t> tree;
-         if (boost::has_trivial_destructor_after_move<cont>::value !=
-             boost::has_trivial_destructor_after_move<tree>::value) {
-            std::cerr << "has_trivial_destructor_after_move(flat_multimap, default) test failed" << std::endl;
-            return 1;
-         }
+         BOOST_STATIC_ASSERT_MSG( boost::has_trivial_destructor_after_move<cont>::value ==
+                                  boost::has_trivial_destructor_after_move<tree>::value
+                                , "has_trivial_destructor_after_move(flat_multimap, default) test failed");
       }
       // flat_multimap, vector
       {
          typedef boost::container::vector<value_t> alloc_or_cont_t;
          typedef boost::container::flat_multimap<int, int, std::less<int>, alloc_or_cont_t> cont;
          typedef boost::container::dtl::flat_tree<value_t, key_of_value_t, std::less<int>, alloc_or_cont_t> tree;
-         if (boost::has_trivial_destructor_after_move<cont>::value !=
-             boost::has_trivial_destructor_after_move<tree>::value) {
-            std::cerr << "has_trivial_destructor_after_move(flat_multimap, vector) test failed" << std::endl;
-            return 1;
-         }
+         BOOST_STATIC_ASSERT_MSG( boost::has_trivial_destructor_after_move<cont>::value ==
+                                  boost::has_trivial_destructor_after_move<tree>::value
+                                , "has_trivial_destructor_after_move(flat_multimap, vector) test failed");
       }
       // flat_multimap, std::vector
       {
          typedef std::vector<value_t> alloc_or_cont_t;
          typedef boost::container::flat_multimap<int, int, std::less<int>, alloc_or_cont_t> cont;
          typedef boost::container::dtl::flat_tree<value_t, key_of_value_t, std::less<int>, alloc_or_cont_t> tree;
-         if (boost::has_trivial_destructor_after_move<cont>::value !=
-             boost::has_trivial_destructor_after_move<tree>::value) {
-            std::cerr << "has_trivial_destructor_after_move(flat_multimap, std::vector) test failed" << std::endl;
-            return 1;
-         }
+         BOOST_STATIC_ASSERT_MSG (boost::has_trivial_destructor_after_move<cont>::value ==
+                                  boost::has_trivial_destructor_after_move<tree>::value
+                                 , "has_trivial_destructor_after_move(flat_multimap, std::vector) test failed");
       }
    }
 
    return 0;
 }
-
-#include <boost/container/detail/config_end.hpp>

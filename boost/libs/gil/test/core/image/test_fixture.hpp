@@ -5,8 +5,10 @@
 // See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt
 //
+#ifndef BOOST_GIL_TEST_CORE_IMAGE_TEST_FIXTURE_HPP
+#define BOOST_GIL_TEST_CORE_IMAGE_TEST_FIXTURE_HPP
+
 #include <boost/gil.hpp>
-#include <boost/assert.hpp>
 
 #include <cstdint>
 #include <initializer_list>
@@ -15,9 +17,7 @@
 #include <tuple>
 #include <type_traits>
 
-namespace boost { namespace gil {
-
-namespace test { namespace fixture {
+namespace boost { namespace gil { namespace test { namespace fixture {
 
 using image_types = std::tuple
 <
@@ -35,60 +35,48 @@ using image_types = std::tuple
     gil::rgba32_image_t
 >;
 
-template <typename T>
-struct consecutive_value
-{
-    consecutive_value(T start) : current_(start)
-    {
-        BOOST_TEST(static_cast<int>(current_) >= 0);
-    }
+#if defined(BOOST_NO_CXX17_HDR_MEMORY_RESOURCE)
+    using pmr_image_types = std::tuple<>;
+#else
+    using pmr_image_types = std::tuple
+    <
+        gil::pmr::gray8_image_t,
+        gil::pmr::gray16_image_t,
+        gil::pmr::gray32_image_t,
+        gil::pmr::bgr8_image_t,
+        gil::pmr::bgr16_image_t,
+        gil::pmr::bgr32_image_t,
+        gil::pmr::rgb8_image_t,
+        gil::pmr::rgb16_image_t,
+        gil::pmr::rgb32_image_t,
+        gil::pmr::rgba8_image_t,
+        gil::pmr::rgba16_image_t,
+        gil::pmr::rgba32_image_t
+    >;
+#endif //defined(BOOST_NO_CXX17_HDR_MEMORY_RESOURCE)
 
-    T operator()()
-    {
-        BOOST_ASSERT(static_cast<int>(current_) + 1 > 0);
-        return current_++;
-    }
+using rgb_interleaved_image_types = std::tuple
+<
+    gil::bgr8_image_t,
+    gil::bgr16_image_t,
+    gil::bgr32_image_t,
+    gil::rgb8_image_t,
+    gil::rgb16_image_t,
+    gil::rgb32_image_t,
+    gil::rgba8_image_t,
+    gil::rgba16_image_t,
+    gil::rgba32_image_t
+>;
 
-    T current_;
-};
-
-template <typename T>
-struct reverse_consecutive_value
-{
-    reverse_consecutive_value(T start) : current_(start)
-    {
-        BOOST_ASSERT(static_cast<int>(current_) > 0);
-    }
-
-    T operator()()
-    {
-        BOOST_ASSERT(static_cast<int>(current_) + 1 >= 0);
-        return current_--;
-    }
-
-    T current_;
-};
-
-template <typename T>
-struct random_value
-{
-    static_assert(std::is_integral<T>::value, "T must be integral type");
-    static constexpr auto range_min = std::numeric_limits<T>::min();
-    static constexpr auto range_max = std::numeric_limits<T>::max();
-
-    random_value() : rng_(rd_()), uid_(range_min, range_max) {}
-
-    T operator()()
-    {
-        auto value = uid_(rng_);
-        BOOST_ASSERT(range_min <= value && value <= range_max);
-        return static_cast<T>(value);
-    }
-
-    std::random_device rd_;
-    std::mt19937 rng_;
-    std::uniform_int_distribution<typename gil::promote_integral<T>::type> uid_;
-};
+using bit_aligned_image_types = std::tuple
+<
+    gil::bit_aligned_image1_type<1, gil::gray_layout_t>::type,
+    gil::bit_aligned_image1_type<3, gil::gray_layout_t>::type,
+    gil::bit_aligned_image1_type<8, gil::gray_layout_t>::type,
+    gil::bit_aligned_image3_type<2, 2, 2, gil::rgb_layout_t>::type,
+    gil::bit_aligned_image3_type<5, 6, 5, gil::rgb_layout_t>::type,
+    gil::bit_aligned_image3_type<6, 6, 6, gil::rgb_layout_t>::type
+>;
 
 template <typename Image, typename Generator>
 auto generate_image(std::ptrdiff_t size_x, std::ptrdiff_t size_y, Generator&& generate) -> Image
@@ -119,3 +107,5 @@ auto create_image(std::ptrdiff_t size_x, std::ptrdiff_t size_y, int channel_valu
 }
 
 }}}} // namespace boost::gil::test::fixture
+
+#endif
