@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>C++03 Examples</title>
 <link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
@@ -108,8 +108,9 @@
       </h5>
 <p>
         These POSIX-specific examples show how to use Boost.Asio in conjunction with
-        the <code class="computeroutput">fork()</code> system call. The first example illustrates the steps
-        required to start a daemon process:
+        the <code class="computeroutput"><span class="identifier">fork</span><span class="special">()</span></code>
+        system call. The first example illustrates the steps required to start a
+        daemon process:
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
             <a href="../example/cpp03/fork/daemon.cpp" target="_top">boost_asio/example/cpp03/fork/daemon.cpp</a>
@@ -270,7 +271,7 @@
         Server 3</a>
       </h5>
 <p>
-        An HTTP server using a single io_context and a thread pool calling <code class="computeroutput">io_context::run()</code>.
+        An HTTP server using a single io_context and a thread pool calling <code class="computeroutput"><span class="identifier">io_context</span><span class="special">::</span><span class="identifier">run</span><span class="special">()</span></code>.
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
@@ -620,8 +621,7 @@
         <span class="phrase"><a name="boost_asio.examples.cpp03_examples.windows"></a></span><a class="link" href="cpp03_examples.html#boost_asio.examples.cpp03_examples.windows">Windows</a>
       </h5>
 <p>
-        An example showing how to use the Windows-specific function <code class="computeroutput">TransmitFile</code>
-        with Boost.Asio.
+        An example showing how to use the Windows-specific function <code class="computeroutput"><span class="identifier">TransmitFile</span></code> with Boost.Asio.
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
             <a href="../example/cpp03/windows/transmit_file.cpp" target="_top">boost_asio/example/cpp03/windows/transmit_file.cpp</a>
@@ -629,7 +629,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright © 2003-2022 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

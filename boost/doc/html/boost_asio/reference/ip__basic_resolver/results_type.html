@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>ip::basic_resolver::results_type</title>
 <link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
@@ -31,7 +31,7 @@
 The
           results type.
         </p>
-<pre class="programlisting">typedef basic_resolver_results&lt; InternetProtocol &gt; results_type;
+<pre class="programlisting"><span class="keyword">typedef</span> <span class="identifier">basic_resolver_results</span><span class="special">&lt;</span> <span class="identifier">InternetProtocol</span> <span class="special">&gt;</span> <span class="identifier">results_type</span><span class="special">;</span>
 </pre>
 <h6>
 <a name="boost_asio.reference.ip__basic_resolver.results_type.h0"></a>
@@ -216,13 +216,13 @@ The
 <tr>
 <td>
                   <p>
-                    <a class="link" href="../ip__basic_resolver_results/basic_resolver_results.html" title="ip::basic_resolver_results::basic_resolver_results"><span class="bold"><strong>basic_resolver_results</strong></span></a>
+                    <a class="link" href="../ip__basic_resolver_results/basic_resolver_results.html" title="ip::basic_resolver_results::basic_resolver_results"><span class="bold"><strong>basic_resolver_results</strong></span></a> <span class="silver">[constructor]</span>
                   </p>
                 </td>
 <td>
                   <p>
-                    Default constructor creates an empty range. <br> <span class="silver"> &#8212;</span><br> Copy
-                    constructor. <br> <span class="silver"> &#8212;</span><br> Move constructor.
+                    Default constructor creates an empty range. <br> <span class="silver"> —</span><br> Copy
+                    constructor. <br> <span class="silver"> —</span><br> Move constructor.
                   </p>
                 </td>
 </tr>
@@ -318,7 +318,7 @@ The
                 </td>
 <td>
                   <p>
-                    Increment operator (prefix). <br> <span class="silver"> &#8212;</span><br> Increment operator
+                    Increment operator (prefix). <br> <span class="silver"> —</span><br> Increment operator
                     (postfix).
                   </p>
                 </td>
@@ -343,7 +343,7 @@ The
                 </td>
 <td>
                   <p>
-                    Assignment operator. <br> <span class="silver"> &#8212;</span><br> Move-assignment operator.
+                    Assignment operator. <br> <span class="silver"> —</span><br> Move-assignment operator.
                   </p>
                 </td>
 </tr>
@@ -517,24 +517,23 @@ The
 </tbody>
 </table></div>
 <p>
-          The <a class="link" href="../ip__basic_resolver_results.html" title="ip::basic_resolver_results"><code class="computeroutput">ip::basic_resolver_results</code></a>
-          class template is used to define a range over the results returned by a
-          resolver.
+          The <a class="link" href="../ip__basic_resolver_results.html" title="ip::basic_resolver_results"><code class="computeroutput"><span class="identifier">ip</span><span class="special">::</span><span class="identifier">basic_resolver_results</span></code></a> class template
+          is used to define a range over the results returned by a resolver.
         </p>
 <p>
           The iterator's value_type, obtained when a results iterator is dereferenced,
           is:
         </p>
-<pre class="programlisting">const basic_resolver_entry&lt;InternetProtocol&gt;
+<pre class="programlisting"><span class="keyword">const</span> <span class="identifier">basic_resolver_entry</span><span class="special">&lt;</span><span class="identifier">InternetProtocol</span><span class="special">&gt;</span>
 </pre>
 <h6>
 <a name="boost_asio.reference.ip__basic_resolver.results_type.h5"></a>
           <span class="phrase"><a name="boost_asio.reference.ip__basic_resolver.results_type.remarks"></a></span><a class="link" href="results_type.html#boost_asio.reference.ip__basic_resolver.results_type.remarks">Remarks</a>
         </h6>
 <p>
-          For backward compatibility, <a class="link" href="../ip__basic_resolver_results.html" title="ip::basic_resolver_results"><code class="computeroutput">ip::basic_resolver_results</code></a>
-          is derived from <a class="link" href="../ip__basic_resolver_iterator.html" title="ip::basic_resolver_iterator"><code class="computeroutput">ip::basic_resolver_iterator</code></a>.
-          This derivation is deprecated.
+          For backward compatibility, <a class="link" href="../ip__basic_resolver_results.html" title="ip::basic_resolver_results"><code class="computeroutput"><span class="identifier">ip</span><span class="special">::</span><span class="identifier">basic_resolver_results</span></code></a> is derived
+          from <a class="link" href="../ip__basic_resolver_iterator.html" title="ip::basic_resolver_iterator"><code class="computeroutput"><span class="identifier">ip</span><span class="special">::</span><span class="identifier">basic_resolver_iterator</span></code></a>. This
+          derivation is deprecated.
         </p>
 <h6>
 <a name="boost_asio.reference.ip__basic_resolver.results_type.h6"></a>
@@ -560,7 +559,7 @@ The
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright © 2003-2022 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

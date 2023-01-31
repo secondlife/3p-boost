@@ -2,9 +2,15 @@
 title = "Home"
 +++
 
-# Outcome 2.1 library
+# Outcome 2.2 library
 
 {{% boost-copyright %}}
+
+{{% notice note %}}
+At the end of December 2021, Standalone Outcome
+<a href="{{% relref "/abi-stability" %}}">went guaranteed future ABI stable</a>.
+From v2.2.3 onwards, you get ABI compatibilty guarantees across Outcome releases.
+{{% /notice %}}
 
 Outcome is a set of tools for reporting and handling function failures in contexts where *directly* using C++ exception handling is unsuitable. Such contexts include:
 
@@ -33,6 +39,10 @@ Outcome addresses failure handling through returning a special type from functio
 Particular care has been taken to ensure that Outcome has the lowest possible impact on build times,
 thus making it suitable for use in the global headers of really large codebases. Storage layout is
 guaranteed and is C-compatible for `result<T, E>`[^1], thus making Outcome based code long term ABI-stable.
+
+Fully deterministic all-`noexcept` C++ Coroutine support in Outcome is particularly strong, and we
+supply Outcome-optimising {{< api "eager<T, Executor = void>/atomic_eager<T, Executor = void>" >}}, {{< api "lazy<T, Executor = void>/atomic_lazy<T, Executor = void>" >}}
+and {{<api "generator<T, Executor = void>" >}} awaitables which work for any user type.
 
 ## Sample usage
 

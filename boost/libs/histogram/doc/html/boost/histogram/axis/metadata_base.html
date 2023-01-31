@@ -1,10 +1,10 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Class template metadata_base</title>
 <link rel="stylesheet" href="../../../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
-<link rel="home" href="../../../index.html" title="Chapter&#160;1.&#160;Boost.Histogram">
+<link rel="home" href="../../../index.html" title="Chapter 1. Boost.Histogram">
 <link rel="up" href="../../../histogram/reference.html#header.boost.histogram.axis.metadata_base_hpp" title="Header &lt;boost/histogram/axis/metadata_base.hpp&gt;">
 <link rel="prev" href="iterator_mixin.html" title="Class template iterator_mixin">
 <link rel="next" href="option/bit.html" title="Struct template bit">
@@ -26,62 +26,67 @@
 <a name="boost.histogram.axis.metadata_base"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2><span class="refentrytitle">Class template metadata_base</span></h2>
-<p>boost::histogram::axis::metadata_base &#8212; Meta data holder with space optimization for empty meta data types. </p>
+<p>boost::histogram::axis::metadata_base — Meta data holder with space optimization for empty meta data types. </p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
 <div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../../histogram/reference.html#header.boost.histogram.axis.metadata_base_hpp" title="Header &lt;boost/histogram/axis/metadata_base.hpp&gt;">boost/histogram/axis/metadata_base.hpp</a>&gt;
 
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Metadata<span class="special">,</span> 
-         <span class="keyword">typename</span> DetailMetadata <span class="special">=</span> <span class="identifier">detail</span><span class="special">::</span><span class="identifier">replace_default</span><span class="special">&lt;</span><span class="identifier">Metadata</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span> <span class="special">&gt;</span> 
-<span class="keyword">class</span> <a class="link" href="metadata_base.html" title="Class template metadata_base">metadata_base</a> <span class="special">:</span> <span class="keyword">private</span> <span class="identifier">empty_value</span><span class="special">&lt;</span> <span class="identifier">DetailMetadata</span> <span class="special">&gt;</span> <span class="special">{</span>
+</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Metadata<span class="special">&gt;</span> 
+<span class="keyword">class</span> <a class="link" href="metadata_base.html" title="Class template metadata_base">metadata_base</a> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="metadata_base.html#boost.histogram.axis.metadata_baseconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="metadata_base.html#idm45414524797488-bb"><span class="identifier">metadata_base</span></a><span class="special">(</span><span class="special">)</span> <span class="special">=</span> <span class="keyword">default</span><span class="special">;</span>
-  <a class="link" href="metadata_base.html#idm45414524796928-bb"><span class="identifier">metadata_base</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="metadata_base.html" title="Class template metadata_base">metadata_base</a> <span class="special">&amp;</span><span class="special">)</span> <span class="special">=</span> <span class="keyword">default</span><span class="special">;</span>
-  <a class="link" href="metadata_base.html#idm45414524792960-bb"><span class="identifier">metadata_base</span></a><span class="special">(</span><a class="link" href="metadata_base.html" title="Class template metadata_base">metadata_base</a> <span class="special">&amp;&amp;</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span>
-  <a class="link" href="metadata_base.html#idm45414524791424-bb"><span class="identifier">metadata_base</span></a><span class="special">(</span><span class="identifier">metadata_type</span> <span class="special">&amp;&amp;</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span>
-  <a class="link" href="metadata_base.html" title="Class template metadata_base">metadata_base</a> <span class="special">&amp;</span> <a class="link" href="metadata_base.html#idm45414524795232-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="metadata_base.html" title="Class template metadata_base">metadata_base</a> <span class="special">&amp;</span><span class="special">)</span> <span class="special">=</span> <span class="keyword">default</span><span class="special">;</span>
-  <a class="link" href="metadata_base.html" title="Class template metadata_base">metadata_base</a> <span class="special">&amp;</span> <a class="link" href="metadata_base.html#idm45414524790176-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><a class="link" href="metadata_base.html" title="Class template metadata_base">metadata_base</a> <span class="special">&amp;&amp;</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <a class="link" href="metadata_base.html#idm14742-bb"><span class="identifier">metadata_base</span></a><span class="special">(</span><span class="special">)</span> <span class="special">=</span> <span class="keyword">default</span><span class="special">;</span>
+  <a class="link" href="metadata_base.html#idm14743-bb"><span class="identifier">metadata_base</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="metadata_base.html" title="Class template metadata_base">metadata_base</a> <span class="special">&amp;</span><span class="special">)</span> <span class="special">=</span> <span class="keyword">default</span><span class="special">;</span>
+  <a class="link" href="metadata_base.html#idm14753-bb"><span class="identifier">metadata_base</span></a><span class="special">(</span><a class="link" href="metadata_base.html" title="Class template metadata_base">metadata_base</a> <span class="special">&amp;&amp;</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <a class="link" href="metadata_base.html#idm14757-bb"><span class="identifier">metadata_base</span></a><span class="special">(</span><span class="identifier">metadata_type</span> <span class="special">&amp;&amp;</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <a class="link" href="metadata_base.html" title="Class template metadata_base">metadata_base</a> <span class="special">&amp;</span> <a class="link" href="metadata_base.html#idm14747-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="metadata_base.html" title="Class template metadata_base">metadata_base</a> <span class="special">&amp;</span><span class="special">)</span> <span class="special">=</span> <span class="keyword">default</span><span class="special">;</span>
+  <a class="link" href="metadata_base.html" title="Class template metadata_base">metadata_base</a> <span class="special">&amp;</span> <a class="link" href="metadata_base.html#idm14760-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><a class="link" href="metadata_base.html" title="Class template metadata_base">metadata_base</a> <span class="special">&amp;&amp;</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="metadata_base.html#idm45414524788064-bb">public member functions</a></span>
-  <span class="identifier">metadata_type</span> <span class="special">&amp;</span> <a class="link" href="metadata_base.html#idm45414524787504-bb"><span class="identifier">metadata</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span>
-  <span class="keyword">const</span> <span class="identifier">metadata_type</span> <span class="special">&amp;</span> <a class="link" href="metadata_base.html#idm45414524786080-bb"><span class="identifier">metadata</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="metadata_base.html#idm45414524784656-bb"><span class="keyword">operator</span><span class="special">==</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="metadata_base.html" title="Class template metadata_base">metadata_base</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="metadata_base.html#idm45414524782400-bb"><span class="keyword">operator</span><span class="special">!=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="metadata_base.html" title="Class template metadata_base">metadata_base</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="metadata_base.html#idm14766-bb">public member functions</a></span>
+  <span class="identifier">metadata_type</span> <span class="special">&amp;</span> <a class="link" href="metadata_base.html#idm14767-bb"><span class="identifier">metadata</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <span class="identifier">metadata_type</span> <span class="special">&amp;</span> <a class="link" href="metadata_base.html#idm14770-bb"><span class="identifier">metadata</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idm45212146648208"></a><h2>Description</h2>
+<a name="idm26835"></a><h2>Description</h2>
+<p>Allows write-access to metadata even if const.</p>
+<p>
+</p>
 <div class="refsect2">
-<a name="idm45212146647824"></a><h3>
+<a name="idm26839"></a><h3>Template Parameters</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+<pre class="literallayout"><span class="keyword">typename</span> Metadata</pre>
+<p>Wrapped meta data type. </p>
+</li></ol></div>
+</div>
+<div class="refsect2">
+<a name="idm26848"></a><h3>
 <a name="boost.histogram.axis.metadata_baseconstruct-copy-destruct"></a><code class="computeroutput">metadata_base</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem"><pre class="literallayout"><a name="idm45414524797488-bb"></a><span class="identifier">metadata_base</span><span class="special">(</span><span class="special">)</span> <span class="special">=</span> <span class="keyword">default</span><span class="special">;</span></pre></li>
-<li class="listitem"><pre class="literallayout"><a name="idm45414524796928-bb"></a><span class="identifier">metadata_base</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="metadata_base.html" title="Class template metadata_base">metadata_base</a> <span class="special">&amp;</span><span class="special">)</span> <span class="special">=</span> <span class="keyword">default</span><span class="special">;</span></pre></li>
-<li class="listitem"><pre class="literallayout"><a name="idm45414524792960-bb"></a><span class="identifier">metadata_base</span><span class="special">(</span><a class="link" href="metadata_base.html" title="Class template metadata_base">metadata_base</a> <span class="special">&amp;&amp;</span> o<span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span></pre></li>
-<li class="listitem"><pre class="literallayout"><a name="idm45414524791424-bb"></a><span class="identifier">metadata_base</span><span class="special">(</span><span class="identifier">metadata_type</span> <span class="special">&amp;&amp;</span> o<span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span></pre></li>
-<li class="listitem"><pre class="literallayout"><a class="link" href="metadata_base.html" title="Class template metadata_base">metadata_base</a> <span class="special">&amp;</span> <a name="idm45414524795232-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="metadata_base.html" title="Class template metadata_base">metadata_base</a> <span class="special">&amp;</span><span class="special">)</span> <span class="special">=</span> <span class="keyword">default</span><span class="special">;</span></pre></li>
-<li class="listitem"><pre class="literallayout"><a class="link" href="metadata_base.html" title="Class template metadata_base">metadata_base</a> <span class="special">&amp;</span> <a name="idm45414524790176-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><a class="link" href="metadata_base.html" title="Class template metadata_base">metadata_base</a> <span class="special">&amp;&amp;</span> o<span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><a name="idm14742-bb"></a><span class="identifier">metadata_base</span><span class="special">(</span><span class="special">)</span> <span class="special">=</span> <span class="keyword">default</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><a name="idm14743-bb"></a><span class="identifier">metadata_base</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="metadata_base.html" title="Class template metadata_base">metadata_base</a> <span class="special">&amp;</span><span class="special">)</span> <span class="special">=</span> <span class="keyword">default</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><a name="idm14753-bb"></a><span class="identifier">metadata_base</span><span class="special">(</span><a class="link" href="metadata_base.html" title="Class template metadata_base">metadata_base</a> <span class="special">&amp;&amp;</span> o<span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><a name="idm14757-bb"></a><span class="identifier">metadata_base</span><span class="special">(</span><span class="identifier">metadata_type</span> <span class="special">&amp;&amp;</span> o<span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><a class="link" href="metadata_base.html" title="Class template metadata_base">metadata_base</a> <span class="special">&amp;</span> <a name="idm14747-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="metadata_base.html" title="Class template metadata_base">metadata_base</a> <span class="special">&amp;</span><span class="special">)</span> <span class="special">=</span> <span class="keyword">default</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><a class="link" href="metadata_base.html" title="Class template metadata_base">metadata_base</a> <span class="special">&amp;</span> <a name="idm14760-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><a class="link" href="metadata_base.html" title="Class template metadata_base">metadata_base</a> <span class="special">&amp;&amp;</span> o<span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span></pre></li>
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idm45212146604976"></a><h3>
-<a name="idm45414524788064-bb"></a><code class="computeroutput">metadata_base</code> public member functions</h3>
+<a name="idm26928"></a><h3>
+<a name="idm14766-bb"></a><code class="computeroutput">metadata_base</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">metadata_type</span> <span class="special">&amp;</span> <a name="idm45414524787504-bb"></a><span class="identifier">metadata</span><span class="special">(</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>Returns reference to metadata. </li>
+<pre class="literallayout"><span class="identifier">metadata_type</span> <span class="special">&amp;</span> <a name="idm14767-bb"></a><span class="identifier">metadata</span><span class="special">(</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>Returns reference to metadata. </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">const</span> <span class="identifier">metadata_type</span> <span class="special">&amp;</span> <a name="idm45414524786080-bb"></a><span class="identifier">metadata</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>Returns reference to const metadata. </li>
-<li class="listitem"><pre class="literallayout"><span class="keyword">bool</span> <a name="idm45414524784656-bb"></a><span class="keyword">operator</span><span class="special">==</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="metadata_base.html" title="Class template metadata_base">metadata_base</a> <span class="special">&amp;</span> o<span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre></li>
-<li class="listitem"><pre class="literallayout"><span class="keyword">bool</span> <a name="idm45414524782400-bb"></a><span class="keyword">operator</span><span class="special">!=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="metadata_base.html" title="Class template metadata_base">metadata_base</a> <span class="special">&amp;</span> o<span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre></li>
+<pre class="literallayout"><span class="identifier">metadata_type</span> <span class="special">&amp;</span> <a name="idm14770-bb"></a><span class="identifier">metadata</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>Returns reference to mutable metadata from const axis. </li>
 </ol></div>
 </div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2016-2019 Hans
+<td align="right"><div class="copyright-footer">Copyright © 2016-2019 Hans
       Dembinski<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)

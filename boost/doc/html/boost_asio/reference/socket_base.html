@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>socket_base</title>
 <link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
@@ -27,13 +27,14 @@
 <a name="boost_asio.reference.socket_base"></a><a class="link" href="socket_base.html" title="socket_base">socket_base</a>
 </h3></div></div></div>
 <p>
-        The <a class="link" href="socket_base.html" title="socket_base"><code class="computeroutput">socket_base</code></a>
-        class is used as a base for the <a class="link" href="basic_stream_socket.html" title="basic_stream_socket"><code class="computeroutput">basic_stream_socket</code></a>
-        and <a class="link" href="basic_datagram_socket.html" title="basic_datagram_socket"><code class="computeroutput">basic_datagram_socket</code></a>
-        class templates so that we have a common place to define the shutdown_type
-        and enum.
+        <a class="indexterm" name="boost_asio.indexterm.socket_base"></a>
       </p>
-<pre class="programlisting">class socket_base
+<p>
+        The <a class="link" href="socket_base.html" title="socket_base"><code class="computeroutput"><span class="identifier">socket_base</span></code></a>
+        class is used as a base for the <a class="link" href="basic_stream_socket.html" title="basic_stream_socket"><code class="computeroutput"><span class="identifier">basic_stream_socket</span></code></a> and <a class="link" href="basic_datagram_socket.html" title="basic_datagram_socket"><code class="computeroutput"><span class="identifier">basic_datagram_socket</span></code></a> class templates
+        so that we have a common place to define the shutdown_type and enum.
+      </p>
+<pre class="programlisting"><span class="keyword">class</span> <span class="identifier">socket_base</span>
 </pre>
 <h5>
 <a name="boost_asio.reference.socket_base.h0"></a>
@@ -279,7 +280,7 @@
 <tbody><tr>
 <td>
                 <p>
-                  <a class="link" href="socket_base/_socket_base.html" title="socket_base::~socket_base"><span class="bold"><strong>~socket_base</strong></span></a>
+                  <a class="link" href="socket_base/_socket_base.html" title="socket_base::~socket_base"><span class="bold"><strong>~socket_base</strong></span></a> <span class="silver">[destructor]</span>
                 </p>
               </td>
 <td>
@@ -315,7 +316,7 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="socket_base/max_connections.html" title="socket_base::max_connections"><span class="bold"><strong>max_connections</strong></span></a>
+                  <a class="link" href="socket_base/max_connections.html" title="socket_base::max_connections"><span class="bold"><strong>max_connections</strong></span></a> <span class="silver">[static]</span>
                 </p>
               </td>
 <td>
@@ -328,7 +329,7 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="socket_base/max_listen_connections.html" title="socket_base::max_listen_connections"><span class="bold"><strong>max_listen_connections</strong></span></a>
+                  <a class="link" href="socket_base/max_listen_connections.html" title="socket_base::max_listen_connections"><span class="bold"><strong>max_listen_connections</strong></span></a> <span class="silver">[static]</span>
                 </p>
               </td>
 <td>
@@ -340,7 +341,7 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="socket_base/message_do_not_route.html" title="socket_base::message_do_not_route"><span class="bold"><strong>message_do_not_route</strong></span></a>
+                  <a class="link" href="socket_base/message_do_not_route.html" title="socket_base::message_do_not_route"><span class="bold"><strong>message_do_not_route</strong></span></a> <span class="silver">[static]</span>
                 </p>
               </td>
 <td>
@@ -352,7 +353,7 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="socket_base/message_end_of_record.html" title="socket_base::message_end_of_record"><span class="bold"><strong>message_end_of_record</strong></span></a>
+                  <a class="link" href="socket_base/message_end_of_record.html" title="socket_base::message_end_of_record"><span class="bold"><strong>message_end_of_record</strong></span></a> <span class="silver">[static]</span>
                 </p>
               </td>
 <td>
@@ -364,7 +365,7 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="socket_base/message_out_of_band.html" title="socket_base::message_out_of_band"><span class="bold"><strong>message_out_of_band</strong></span></a>
+                  <a class="link" href="socket_base/message_out_of_band.html" title="socket_base::message_out_of_band"><span class="bold"><strong>message_out_of_band</strong></span></a> <span class="silver">[static]</span>
                 </p>
               </td>
 <td>
@@ -376,7 +377,7 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="socket_base/message_peek.html" title="socket_base::message_peek"><span class="bold"><strong>message_peek</strong></span></a>
+                  <a class="link" href="socket_base/message_peek.html" title="socket_base::message_peek"><span class="bold"><strong>message_peek</strong></span></a> <span class="silver">[static]</span>
                 </p>
               </td>
 <td>
@@ -400,7 +401,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright © 2003-2022 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

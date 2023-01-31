@@ -1,12 +1,12 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>mutable_buffer</title>
 <link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../reference.html" title="Reference">
-<link rel="prev" href="make_work_guard/overload5.html" title="make_work_guard (5 of 5 overloads)">
+<link rel="prev" href="multiple_exceptions/what.html" title="multiple_exceptions::what">
 <link rel="next" href="mutable_buffer/data.html" title="mutable_buffer::data">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -20,16 +20,19 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="make_work_guard/overload5.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../boost_asio.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="mutable_buffer/data.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="multiple_exceptions/what.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../boost_asio.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="mutable_buffer/data.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="boost_asio.reference.mutable_buffer"></a><a class="link" href="mutable_buffer.html" title="mutable_buffer">mutable_buffer</a>
 </h3></div></div></div>
 <p>
+        <a class="indexterm" name="boost_asio.indexterm.mutable_buffer"></a>
+      </p>
+<p>
         Holds a buffer that can be modified.
       </p>
-<pre class="programlisting">class mutable_buffer
+<pre class="programlisting"><span class="keyword">class</span> <span class="identifier">mutable_buffer</span>
 </pre>
 <h5>
 <a name="boost_asio.reference.mutable_buffer.h0"></a>
@@ -68,12 +71,12 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="mutable_buffer/mutable_buffer.html" title="mutable_buffer::mutable_buffer"><span class="bold"><strong>mutable_buffer</strong></span></a>
+                  <a class="link" href="mutable_buffer/mutable_buffer.html" title="mutable_buffer::mutable_buffer"><span class="bold"><strong>mutable_buffer</strong></span></a> <span class="silver">[constructor]</span>
                 </p>
               </td>
 <td>
                 <p>
-                  Construct an empty buffer. <br> <span class="silver"> &#8212;</span><br> Construct a buffer to
+                  Construct an empty buffer. <br> <span class="silver"> —</span><br> Construct a buffer to
                   represent a given memory range.
                 </p>
               </td>
@@ -140,7 +143,7 @@
 </tr></tbody>
 </table></div>
 <p>
-        The <a class="link" href="mutable_buffer.html" title="mutable_buffer"><code class="computeroutput">mutable_buffer</code></a>
+        The <a class="link" href="mutable_buffer.html" title="mutable_buffer"><code class="computeroutput"><span class="identifier">mutable_buffer</span></code></a>
         class provides a safe representation of a buffer that can be modified. It
         does not own the underlying data, and so is cheap to copy or assign.
       </p>
@@ -150,16 +153,16 @@
         Buffer Contents</a>
       </h5>
 <p>
-        The contents of a buffer may be accessed using the <code class="computeroutput">data()</code> and
-        <code class="computeroutput">size()</code> member functions:
+        The contents of a buffer may be accessed using the <code class="computeroutput"><span class="identifier">data</span><span class="special">()</span></code> and <code class="computeroutput"><span class="identifier">size</span><span class="special">()</span></code> member functions:
       </p>
-<pre class="programlisting">boost::asio::mutable_buffer b1 = ...;
-std::size_t s1 = b1.size();
-unsigned char* p1 = static_cast&lt;unsigned char*&gt;(b1.data());
+<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">mutable_buffer</span> <span class="identifier">b1</span> <span class="special">=</span> <span class="special">...;</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">s1</span> <span class="special">=</span> <span class="identifier">b1</span><span class="special">.</span><span class="identifier">size</span><span class="special">();</span>
+<span class="keyword">unsigned</span> <span class="keyword">char</span><span class="special">*</span> <span class="identifier">p1</span> <span class="special">=</span> <span class="keyword">static_cast</span><span class="special">&lt;</span><span class="keyword">unsigned</span> <span class="keyword">char</span><span class="special">*&gt;(</span><span class="identifier">b1</span><span class="special">.</span><span class="identifier">data</span><span class="special">());</span>
 </pre>
 <p>
-        The <code class="computeroutput">data()</code> member function permits violations of type safety,
-        so uses of it in application code should be carefully considered.
+        The <code class="computeroutput"><span class="identifier">data</span><span class="special">()</span></code>
+        member function permits violations of type safety, so uses of it in application
+        code should be carefully considered.
       </p>
 <h5>
 <a name="boost_asio.reference.mutable_buffer.h3"></a>
@@ -174,7 +177,7 @@ unsigned char* p1 = static_cast&lt;unsigned char*&gt;(b1.data());
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright © 2003-2022 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
@@ -182,7 +185,7 @@ unsigned char* p1 = static_cast&lt;unsigned char*&gt;(b1.data());
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="make_work_guard/overload5.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../boost_asio.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="mutable_buffer/data.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="multiple_exceptions/what.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../boost_asio.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="mutable_buffer/data.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>
