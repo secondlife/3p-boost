@@ -144,7 +144,7 @@ last_file="$(mktemp -t build-cmd.XXXXXXXX)"
 trap "rm '$last_file'" EXIT
 # from here on, the only references to last_file will be from Python
 last_file="$(native "$last_file")"
-last_time="$(python -c "import os.path; print(int(os.path.getmtime(r'$last_file')))")"
+last_time="$(python -cu "import os.path; print(int(os.path.getmtime(r'$last_file')))")"
 start_time="$last_time"
 
 sep()
@@ -218,7 +218,7 @@ case "$AUTOBUILD_PLATFORM" in
         # https://www.boost.org/doc/libs/release/doc/html/stacktrace/configuration_and_build.html
         # This helps avoid macro collisions in consuming source files:
         # https://github.com/boostorg/stacktrace/issues/76#issuecomment-489347839
-        WINDOWS_BJAM_OPTIONS=("--toolset=$bjamtoolset" -j$(nproc)
+        WINDOWS_BJAM_OPTIONS=(-j$(nproc)
             --hash
             "include=$INCLUDE_PATH" "-sICU_PATH=$ICU_PATH"
             "-sZLIB_INCLUDE=$INCLUDE_PATH/zlib-ng"
