@@ -144,7 +144,7 @@ last_file="$(mktemp -t build-cmd.XXXXXXXX)"
 trap "rm '$last_file'" EXIT
 # from here on, the only references to last_file will be from Python
 last_file="$(native "$last_file")"
-last_time="$(python -cu "import os.path; print(int(os.path.getmtime(r'$last_file')))")"
+last_time="$(python -uc "import os.path; print(int(os.path.getmtime(r'$last_file')))")"
 start_time="$last_time"
 
 sep()
