@@ -2,23 +2,25 @@
 // parallel_grep.cpp
 // ~~~~~~~~~~~~~~~~~
 //
-// Copyright (c) 2003-2019 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+// Copyright (c) 2003-2022 Christopher M. Kohlhoff (chris at kohlhoff dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <boost/asio/detached.hpp>
 #include <boost/asio/dispatch.hpp>
 #include <boost/asio/post.hpp>
 #include <boost/asio/spawn.hpp>
 #include <boost/asio/strand.hpp>
 #include <boost/asio/thread_pool.hpp>
 #include <boost/thread/thread.hpp>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <fstream>
 #include <iostream>
 #include <string>
 
+using boost::asio::detached_t;
 using boost::asio::dispatch;
 using boost::asio::spawn;
 using boost::asio::strand;
@@ -74,8 +76,10 @@ int main(int argc, char* argv[])
     for (int argn = 2; argn < argc; ++argn)
     {
       std::string input_file = argv[argn];
-      spawn(pool, boost::bind(&search_file,
-            search_string, input_file, output_strand, _1));
+      spawn(pool,
+          boost::bind(&search_file, search_string,
+            input_file, output_strand, boost::placeholders::_1),
+          detached_t());
     }
 
     // Join the thread pool to wait for all the spawned tasks to complete.

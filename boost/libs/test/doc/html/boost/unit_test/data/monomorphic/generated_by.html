@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Class template generated_by</title>
 <link rel="stylesheet" href="../../../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
@@ -26,7 +26,7 @@
 <a name="boost.unit_test.data.monomorphic.generated_by"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2><span class="refentrytitle">Class template generated_by</span></h2>
-<p>boost::unit_test::data::monomorphic::generated_by &#8212; Generators interface. </p>
+<p>boost::unit_test::data::monomorphic::generated_by — Generators interface. </p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
 <div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../../../header/boost/test/data/monomorphic/generate_hpp.html" title="Header &lt;boost/test/data/monomorphic/generate.hpp&gt;">boost/test/data/monomorphic/generate.hpp</a>&gt;
@@ -42,25 +42,26 @@
 
   <span class="keyword">struct</span> <a class="link" href="generated_by/iterator.html" title="Struct iterator">iterator</a> <span class="special">{</span>
     <span class="comment">// <a class="link" href="generated_by/iterator.html#boost.unit_test.data.monomorphic.generated_by.iteratorconstruct-copy-destruct">construct/copy/destruct</a></span>
-    <span class="keyword">explicit</span> <a class="link" href="generated_by/iterator.html#idm46279114359904-bb"><span class="identifier">iterator</span></a><span class="special">(</span><span class="identifier">Generator</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+    <span class="keyword">explicit</span> <a class="link" href="generated_by/iterator.html#idm42970-bb"><span class="identifier">iterator</span></a><span class="special">(</span><span class="identifier">Generator</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 
-    <span class="comment">// <a class="link" href="generated_by/iterator.html#idm46279114362592-bb">public member functions</a></span>
-    <span class="identifier">sample</span> <span class="keyword">const</span>  <span class="special">&amp;</span> <a class="link" href="generated_by/iterator.html#idm46279114362032-bb"><span class="keyword">operator</span> <span class="special">*</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-    <span class="keyword">void</span> <a class="link" href="generated_by/iterator.html#idm46279114360912-bb"><span class="keyword">operator</span><span class="special">++</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+    <span class="comment">// <a class="link" href="generated_by/iterator.html#idm42965-bb">public member functions</a></span>
+    <span class="identifier">sample</span> <span class="keyword">const</span>  <span class="special">&amp;</span> <a class="link" href="generated_by/iterator.html#idm42966-bb"><span class="keyword">operator</span> <span class="special">*</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+    <span class="keyword">void</span> <a class="link" href="generated_by/iterator.html#idm42968-bb"><span class="keyword">operator</span><span class="special">++</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
   <span class="special">}</span><span class="special">;</span>
 
-  <span class="keyword">enum</span> <a name="boost.unit_test.data.monomorphic.generated_by.@8"></a>@8 <span class="special">{</span> arity = = 1 <span class="special">}</span><span class="special">;</span>
-
   <span class="comment">// <a class="link" href="generated_by.html#boost.unit_test.data.monomorphic.generated_byconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <span class="keyword">explicit</span> <a class="link" href="generated_by.html#idm46279114351872-bb"><span class="identifier">generated_by</span></a><span class="special">(</span><span class="identifier">Generator</span> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="generated_by.html#idm46279114350624-bb"><span class="identifier">generated_by</span></a><span class="special">(</span><a class="link" href="generated_by.html" title="Class template generated_by">generated_by</a> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">explicit</span> <a class="link" href="generated_by.html#idm42988-bb"><span class="identifier">generated_by</span></a><span class="special">(</span><span class="identifier">Generator</span> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="generated_by.html#idm42991-bb"><span class="identifier">generated_by</span></a><span class="special">(</span><a class="link" href="generated_by.html" title="Class template generated_by">generated_by</a> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="generated_by.html#idm46279114355712-bb">public member functions</a></span>
-  <a class="link" href="../size_t.html" title="Class size_t">data::size_t</a> <a class="link" href="generated_by.html#idm46279114355152-bb"><span class="identifier">size</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <a class="link" href="generated_by/iterator.html" title="Struct iterator">iterator</a> <a class="link" href="generated_by.html#idm46279114353600-bb"><span class="identifier">begin</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="generated_by.html#idm42979-bb">public member functions</a></span>
+  <a class="link" href="../size_t.html" title="Class size_t">data::size_t</a> <a class="link" href="generated_by.html#idm42980-bb"><span class="identifier">size</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <a class="link" href="generated_by/iterator.html" title="Struct iterator">iterator</a> <a class="link" href="generated_by.html#idm42984-bb"><span class="identifier">begin</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+
+  <span class="comment">// public data members</span>
+  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> <span class="identifier">arity</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idm45313893668816"></a><h2>Description</h2>
+<a name="idm44629"></a><h2>Description</h2>
 <p>This class implements the dataset concept over a generator. Examples of generators are:</p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem"><p><a class="link" href="xrange_t.html" title="Class template xrange_t">xrange_t</a></p></li>
@@ -78,31 +79,30 @@
 <p>
 </p>
 <div class="refsect2">
-<a name="idm45313893659376"></a><h3>
+<a name="idm44653"></a><h3>
 <a name="boost.unit_test.data.monomorphic.generated_byconstruct-copy-destruct"></a><code class="computeroutput">generated_by</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem"><pre class="literallayout"><span class="keyword">explicit</span> <a name="idm46279114351872-bb"></a><span class="identifier">generated_by</span><span class="special">(</span><span class="identifier">Generator</span> <span class="special">&amp;&amp;</span> G<span class="special">)</span><span class="special">;</span></pre></li>
-<li class="listitem"><pre class="literallayout"><a name="idm46279114350624-bb"></a><span class="identifier">generated_by</span><span class="special">(</span><a class="link" href="generated_by.html" title="Class template generated_by">generated_by</a> <span class="special">&amp;&amp;</span> rhs<span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">explicit</span> <a name="idm42988-bb"></a><span class="identifier">generated_by</span><span class="special">(</span><span class="identifier">Generator</span> <span class="special">&amp;&amp;</span> G<span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><a name="idm42991-bb"></a><span class="identifier">generated_by</span><span class="special">(</span><a class="link" href="generated_by.html" title="Class template generated_by">generated_by</a> <span class="special">&amp;&amp;</span> rhs<span class="special">)</span><span class="special">;</span></pre></li>
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idm45313893646064"></a><h3>
-<a name="idm46279114355712-bb"></a><code class="computeroutput">generated_by</code> public member functions</h3>
+<a name="idm44679"></a><h3>
+<a name="idm42979-bb"></a><code class="computeroutput">generated_by</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><a class="link" href="../size_t.html" title="Class size_t">data::size_t</a> <a name="idm46279114355152-bb"></a><span class="identifier">size</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Size of the underlying dataset. </li>
+<pre class="literallayout"><a class="link" href="../size_t.html" title="Class size_t">data::size_t</a> <a name="idm42980-bb"></a><span class="identifier">size</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Size of the underlying dataset. </li>
 <li class="listitem">
-<pre class="literallayout"><a class="link" href="generated_by/iterator.html" title="Struct iterator">iterator</a> <a name="idm46279114353600-bb"></a><span class="identifier">begin</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Iterator on the beginning of the dataset. </li>
+<pre class="literallayout"><a class="link" href="generated_by/iterator.html" title="Struct iterator">iterator</a> <a name="idm42984-bb"></a><span class="identifier">begin</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Iterator on the beginning of the dataset. </li>
 </ol></div>
 </div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2001-2019 Boost.Test
-      contributors<p>
+<td align="right"><div class="copyright-footer">Copyright © 2001-2022 Boost.Test contributors<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

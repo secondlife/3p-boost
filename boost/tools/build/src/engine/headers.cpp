@@ -6,7 +6,7 @@
 /*  This file is ALSO:
  *  Copyright 2001-2004 David Abrahams.
  *  Distributed under the Boost Software License, Version 1.0.
- *  (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
+ *  (See accompanying file LICENSE.txt or https://www.bfgroup.xyz/b2/LICENSE.txt)
  */
 
 /*
@@ -40,6 +40,9 @@
 #ifdef OPT_HEADER_CACHE_EXT
 # include "hcache.h"
 #endif
+
+#include <errno.h>
+#include <string.h>
 
 #ifndef OPT_HEADER_CACHE_EXT
 static LIST * headers1( LIST *, OBJECT * file, int rec, regexp * re[] );
@@ -138,14 +141,20 @@ LIST * headers1( LIST * l, OBJECT * file, int rec, regexp * re[] )
      */
     if ( re_macros == 0 )
     {
-        OBJECT * const re_str = object_new(
+        OBJECT * re_str = object_new(
             "#[ \t]*include[ \t]*([A-Za-z][A-Za-z0-9_]*).*$" );
         re_macros = regex_compile( re_str );
         object_free( re_str );
     }
 
     if ( !( f = fopen( object_str( file ), "r" ) ) )
+    {
+        /* No source files will be generated when -n flag is passed */
+        if ( !globs.noexec || errno != ENOENT )
+            err_printf( "[errno %d] failed to scan file '%s': %s",
+                errno, object_str( file ), strerror(errno) );
         return l;
+    }
 
     while ( fgets( buf, sizeof( buf ), f ) )
     {

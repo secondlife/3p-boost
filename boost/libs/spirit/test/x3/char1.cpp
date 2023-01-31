@@ -9,7 +9,6 @@
 
 #define BOOST_SPIRIT_X3_UNICODE
 
-#include <boost/detail/lightweight_test.hpp>
 #include <boost/spirit/home/x3.hpp>
 
 #include <boost/utility/string_view.hpp>
@@ -27,6 +26,14 @@ main()
 
     {
         using namespace boost::spirit::x3::ascii;
+
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(char_);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(char_('x'));
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(char_('a', 'z'));
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(~char_('x'));
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(~char_('a', 'z'));
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(~~char_('x'));
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(~~char_('a', 'z'));
 
         BOOST_TEST(test("x", 'x'));
         BOOST_TEST(test(L"x", L'x'));
@@ -76,6 +83,14 @@ main()
 
     {
         using namespace boost::spirit::x3::standard_wide;
+
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(char_);
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(char_(L'x'));
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(char_(L'a', L'z'));
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(~char_(L'x'));
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(~char_(L'a', L'z'));
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(~~char_(L'x'));
+        BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(~~char_(L'a', L'z'));
 
         BOOST_TEST(test(L"x", char_));
         BOOST_TEST(test(L"x", char_(L'x')));

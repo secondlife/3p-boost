@@ -1,6 +1,6 @@
 var classboost_1_1locale_1_1boundary_1_1boundary__indexing =
 [
-    [ "boundary_indexing", "classboost_1_1locale_1_1boundary_1_1boundary__indexing.html#a0e4c06efec1f1fca78bec34988aec881", null ],
-    [ "map", "classboost_1_1locale_1_1boundary_1_1boundary__indexing.html#ac971f4219181ee587844d2c74cca7ef4", null ],
-    [ "id", "classboost_1_1locale_1_1boundary_1_1boundary__indexing.html#aa7050fa0d55227034c80f811bc9ca97c", null ]
+    [ "boundary_indexing", "classboost_1_1locale_1_1boundary_1_1boundary__indexing.html#a251d097b8498d6dade6110b0829c8cf5", null ],
+    [ "map", "classboost_1_1locale_1_1boundary_1_1boundary__indexing.html#a32ef96e6ecaa0cb04bec0e91b3a9fd62", null ],
+    [ "id", "classboost_1_1locale_1_1boundary_1_1boundary__indexing.html#a6ec435e58e34f70046f62ac0314c1a58", null ]
 ];
