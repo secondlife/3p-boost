@@ -19,7 +19,7 @@ if [ -z "$AUTOBUILD" ] ; then
 fi
 
 # Libraries on which we depend - please keep alphabetized for maintenance
-BOOST_LIBS=(context date_time fiber filesystem iostreams program_options \
+BOOST_LIBS=(context date_time fiber filesystem iostreams program_options
             regex stacktrace system thread wave)
 
 # -d0 is quiet, "-d2 -d+4" allows compilation to be examined
@@ -209,7 +209,7 @@ case "$AUTOBUILD_PLATFORM" in
         fi
 
         # Windows build of viewer expects /Zc:wchar_t-, etc., from LL_BUILD_RELEASE.
-        # Without --abbreviate-paths, some compilations fail with:
+        # Without --hash, some compilations fail with:
         # failed to write output file 'some\long\path\something.rsp'!
         # Without /FS, some compilations fail with:
         # fatal error C1041: cannot open program database '...\vc120.pdb';
@@ -218,17 +218,17 @@ case "$AUTOBUILD_PLATFORM" in
         # https://www.boost.org/doc/libs/release/doc/html/stacktrace/configuration_and_build.html
         # This helps avoid macro collisions in consuming source files:
         # https://github.com/boostorg/stacktrace/issues/76#issuecomment-489347839
-        WINDOWS_BJAM_OPTIONS=("--toolset=$bjamtoolset" -j$(nproc) \
-            --abbreviate-paths 
-            "include=$INCLUDE_PATH" "-sICU_PATH=$ICU_PATH" \
-            "-sZLIB_INCLUDE=$INCLUDE_PATH/zlib-ng" \
-            cxxflags=/FS \
-            cxxflags=/DBOOST_STACKTRACE_LINK \
+        WINDOWS_BJAM_OPTIONS=("--toolset=$bjamtoolset" -j$(nproc)
+            --hash
+            "include=$INCLUDE_PATH" "-sICU_PATH=$ICU_PATH"
+            "-sZLIB_INCLUDE=$INCLUDE_PATH/zlib-ng"
+            cxxflags=/FS
+            cxxflags=/DBOOST_STACKTRACE_LINK
             "${BOOST_BJAM_OPTIONS[@]}")
 
-        RELEASE_BJAM_OPTIONS=("${WINDOWS_BJAM_OPTIONS[@]}" \
-            "-sZLIB_LIBPATH=$ZLIB_RELEASE_PATH" \
-            "-sZLIB_LIBRARY_PATH=$ZLIB_RELEASE_PATH" \
+        RELEASE_BJAM_OPTIONS=("${WINDOWS_BJAM_OPTIONS[@]}"
+            "-sZLIB_LIBPATH=$ZLIB_RELEASE_PATH"
+            "-sZLIB_LIBRARY_PATH=$ZLIB_RELEASE_PATH"
             "-sZLIB_NAME=zlib")
         sep "build"
         "${bjam}" link=static variant=release \
@@ -298,17 +298,17 @@ case "$AUTOBUILD_PLATFORM" in
         # many hundreds of pointless warnings.
         # Building Boost.Regex without --disable-icu causes the viewer link to
         # fail for lack of an ICU library.
-        DARWIN_BJAM_OPTIONS=("${BOOST_BJAM_OPTIONS[@]}" \
-            "include=${stage}/packages/include" \
-            "include=${stage}/packages/include/zlib-ng/" \
-            "-sZLIB_INCLUDE=${stage}/packages/include/zlib-ng/" \
-            cxxflags=-std=c++14 \
-            cxxflags=-Wno-c99-extensions cxxflags=-Wno-variadic-macros \
-            cxxflags=-Wno-unused-function cxxflags=-Wno-unused-const-variable \
-            cxxflags=-Wno-unused-local-typedef \
+        DARWIN_BJAM_OPTIONS=("${BOOST_BJAM_OPTIONS[@]}"
+            "include=${stage}/packages/include"
+            "include=${stage}/packages/include/zlib-ng/"
+            "-sZLIB_INCLUDE=${stage}/packages/include/zlib-ng/"
+            cxxflags=-std=c++14
+            cxxflags=-Wno-c99-extensions cxxflags=-Wno-variadic-macros
+            cxxflags=-Wno-unused-function cxxflags=-Wno-unused-const-variable
+            cxxflags=-Wno-unused-local-typedef
             --disable-icu)
 
-        RELEASE_BJAM_OPTIONS=("${DARWIN_BJAM_OPTIONS[@]}" \
+        RELEASE_BJAM_OPTIONS=("${DARWIN_BJAM_OPTIONS[@]}"
             "-sZLIB_LIBPATH=${stage}/packages/lib/release")
 
         sep "build"
@@ -363,10 +363,10 @@ case "$AUTOBUILD_PLATFORM" in
         sep "bootstrap"
         ./bootstrap.sh --prefix=$(pwd) --with-icu="${stage}"/packages/
 
-        RELEASE_BOOST_BJAM_OPTIONS=(toolset=gcc "include=$stage/packages/include/zlib-ng/" \
-            "-sZLIB_LIBPATH=$stage/packages/lib/release" \
-            "-sZLIB_INCLUDE=${stage}\/packages/include/zlib/" \
-            "${BOOST_BJAM_OPTIONS[@]}" \
+        RELEASE_BOOST_BJAM_OPTIONS=(toolset=gcc "include=$stage/packages/include/zlib-ng/"
+            "-sZLIB_LIBPATH=$stage/packages/lib/release"
+            "-sZLIB_INCLUDE=${stage}\/packages/include/zlib/"
+            "${BOOST_BJAM_OPTIONS[@]}"
             cxxflags=-std=c++11)
         sep "build"
         "${bjam}" variant=release --reconfigure \
