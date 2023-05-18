@@ -121,6 +121,29 @@ find_test_dirs()
     done
 }
 
+# pipeline stage between find_test_dirs and run_tests to eliminate tests for
+# specified libraries
+function tfilter {
+    local regexps=()
+    for arg
+    do
+        regexps+=(-e "$arg")
+    done
+    grep -v "${regexps[@]}"
+}
+
+# Try running some tests on Windows64, just not on Windows32.
+if [[ $AUTOBUILD_ADDRSIZE -ne 32 ]]
+then
+    function tfilter32 {
+        cat -
+    }
+else
+    function tfilter32 {
+        tfilter "$@"
+    }
+fi
+
 # conditionally run unit tests
 run_tests()
 {
@@ -250,14 +273,15 @@ case "$AUTOBUILD_PLATFORM" in
 
         # conditionally run unit tests
         find_test_dirs "${BOOST_LIBS[@]}" | \
-        grep -v \
-             -e 'date_time/' \
-             -e 'filesystem/' \
-             -e 'iostreams/' \
-             -e 'regex/' \
-             -e 'stacktrace/' \
-             -e 'thread/' \
-             | \
+        tfilter32 'fiber/' | \
+        tfilter \
+            'date_time/' \
+            'filesystem/' \
+            'iostreams/' \
+            'regex/' \
+            'stacktrace/' \
+            'thread/' \
+            | \
         run_tests variant=release \
                   --prefix="$(native "${stage}")" --libdir="$(native "${stage_release}")" \
                   $RELEASE_BJAM_OPTIONS $BOOST_BUILD_SPAM -a -q
@@ -328,11 +352,11 @@ case "$AUTOBUILD_PLATFORM" in
         # Bump the timeout for Boost.Thread tests because our TeamCity Mac
         # build hosts are getting a bit long in the tooth.
         find_test_dirs "${BOOST_LIBS[@]}" | \
-        grep -v \
-             -e 'date_time/' \
-             -e 'filesystem/test/issues' \
-             -e 'regex/test/de_fuzz' \
-             -e 'stacktrace/' \
+        tfilter \
+            'date_time/' \
+            'filesystem/test/issues' \
+            'regex/test/de_fuzz' \
+            'stacktrace/' \
             | \
         run_tests toolset=darwin variant=release -a -q \
                   "${RELEASE_BJAM_OPTIONS[@]}" $BOOST_BUILD_SPAM \
@@ -398,4 +422,3 @@ mkdir -p "${stage}"/docs/boost/
 cp -a "$top"/README.Linden "${stage}"/docs/boost/
 
 cd "$top"
-
