@@ -21,11 +21,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>743ab71d24b15c47bb961a51a714cbf4333778fb</string>
+              <string>68882c4ed76f5dd7d17b0fc6f9e5f56e0ac4f882</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-icu4c/releases/download/v4.8.2-dev3.g4a29740-4a29740/icu4c-darwin64-None.tar.zst</string>
+              <string>https://github.com/secondlife/3p-icu4c/releases/download/v4.8.1-bda4f49/icu4c-4.8.1-darwin64-bda4f49.tar.zst</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
@@ -35,11 +35,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>6061b4a61f1e438f1052cfa3e2bf4cb37b248762</string>
+              <string>8d38a9f3c56a7b8ddcac140a7a408c61f0f97cf8</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-icu4c/releases/download/v4.8.2-dev3.g4a29740-4a29740/icu4c-linux64-None.tar.zst</string>
+              <string>https://github.com/secondlife/3p-icu4c/releases/download/v4.8.1-bda4f49/icu4c-4.8.1-linux64-bda4f49.tar.zst</string>
             </map>
             <key>name</key>
             <string>linux64</string>
@@ -49,11 +49,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>0c031c22895e85eef94c555664fc082ceed81f37</string>
+              <string>63ac8a32f30361bbbc7c1a594749f6efa5c30235</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-icu4c/releases/download/v4.8.2-dev3.g4a29740-4a29740/icu4c-windows-None.tar.zst</string>
+              <string>https://github.com/secondlife/3p-icu4c/releases/download/v4.8.1-bda4f49/icu4c-4.8.1-windows-bda4f49.tar.zst</string>
             </map>
             <key>name</key>
             <string>windows</string>
@@ -63,18 +63,18 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>78fa4557f842322f61241d74dd086a0c83b7e82c</string>
+              <string>e1284b3f0ffdba99d0e78c1aab1144317d2efd7f</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-icu4c/releases/download/v4.8.2-dev3.g4a29740-4a29740/icu4c-windows64-None.tar.zst</string>
+              <string>https://github.com/secondlife/3p-icu4c/releases/download/v4.8.1-bda4f49/icu4c-4.8.1-windows64-bda4f49.tar.zst</string>
             </map>
             <key>name</key>
             <string>windows64</string>
           </map>
         </map>
         <key>version</key>
-        <string>None</string>
+        <string>4.8.1</string>
       </map>
       <key>zlib-ng</key>
       <map>
