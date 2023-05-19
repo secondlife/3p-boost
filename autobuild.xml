@@ -269,8 +269,8 @@
       </map>
       <key>source_directory</key>
       <string>boost</string>
-      <key>use_scm_version</key>
-      <boolean>true</boolean>
+      <key>version_file</key>
+      <string>version.txt</string>
     </map>
     <key>type</key>
     <string>autobuild</string>
