@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>basic_signal_set::basic_signal_set (6 of 8 overloads)</title>
 <link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
@@ -30,13 +30,13 @@
 <p>
             Construct a signal set and add two signals.
           </p>
-<pre class="programlisting">template&lt;
-    typename ExecutionContext&gt;
-basic_signal_set(
-    ExecutionContext &amp; context,
-    int signal_number_1,
-    int signal_number_2,
-    typename enable_if&lt; is_convertible&lt; ExecutionContext &amp;, execution_context &amp; &gt;::value &gt;::type *  = 0);
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span>
+    <span class="keyword">typename</span> <span class="identifier">ExecutionContext</span><span class="special">&gt;</span>
+<span class="identifier">basic_signal_set</span><span class="special">(</span>
+    <span class="identifier">ExecutionContext</span> <span class="special">&amp;</span> <span class="identifier">context</span><span class="special">,</span>
+    <span class="keyword">int</span> <span class="identifier">signal_number_1</span><span class="special">,</span>
+    <span class="keyword">int</span> <span class="identifier">signal_number_2</span><span class="special">,</span>
+    <span class="keyword">typename</span> <span class="identifier">constraint</span><span class="special">&lt;</span> <span class="identifier">is_convertible</span><span class="special">&lt;</span> <span class="identifier">ExecutionContext</span> <span class="special">&amp;,</span> <span class="identifier">execution_context</span> <span class="special">&amp;</span> <span class="special">&gt;::</span><span class="identifier">value</span><span class="special">,</span> <span class="identifier">defaulted_constraint</span> <span class="special">&gt;::</span><span class="identifier">type</span>  <span class="special">=</span> <span class="identifier">defaulted_constraint</span><span class="special">());</span>
 </pre>
 <p>
             This constructor creates a signal set and registers for two signals.
@@ -71,14 +71,14 @@ basic_signal_set(
 <p>
             This constructor is equivalent to performing:
           </p>
-<pre class="programlisting">boost::asio::signal_set signals(context);
-signals.add(signal_number_1);
-signals.add(signal_number_2);
+<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">signal_set</span> <span class="identifier">signals</span><span class="special">(</span><span class="identifier">context</span><span class="special">);</span>
+<span class="identifier">signals</span><span class="special">.</span><span class="identifier">add</span><span class="special">(</span><span class="identifier">signal_number_1</span><span class="special">);</span>
+<span class="identifier">signals</span><span class="special">.</span><span class="identifier">add</span><span class="special">(</span><span class="identifier">signal_number_2</span><span class="special">);</span>
 </pre>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright © 2003-2022 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

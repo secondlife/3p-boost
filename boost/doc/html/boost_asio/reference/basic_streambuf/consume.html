@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>basic_streambuf::consume</title>
 <link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
@@ -31,24 +31,26 @@
 Remove
           characters from the input sequence.
         </p>
-<pre class="programlisting">void consume(
-    std::size_t n);
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">consume</span><span class="special">(</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">n</span><span class="special">);</span>
 </pre>
 <p>
-          Removes <code class="computeroutput">n</code> characters from the beginning of the input sequence.
+          Removes <code class="computeroutput"><span class="identifier">n</span></code> characters from
+          the beginning of the input sequence.
         </p>
 <h6>
 <a name="boost_asio.reference.basic_streambuf.consume.h0"></a>
           <span class="phrase"><a name="boost_asio.reference.basic_streambuf.consume.remarks"></a></span><a class="link" href="consume.html#boost_asio.reference.basic_streambuf.consume.remarks">Remarks</a>
         </h6>
 <p>
-          If <code class="computeroutput">n</code> is greater than the size of the input sequence, the entire
-          input sequence is consumed and no error is issued.
+          If <code class="computeroutput"><span class="identifier">n</span></code> is greater than the
+          size of the input sequence, the entire input sequence is consumed and no
+          error is issued.
         </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright © 2003-2022 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

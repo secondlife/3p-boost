@@ -1,10 +1,10 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>buffer (with strategies)</title>
 <link rel="stylesheet" href="../../../../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
-<link rel="home" href="../../../../index.html" title="Chapter&#160;1.&#160;Geometry">
+<link rel="home" href="../../../../index.html" title="Chapter 1. Geometry">
 <link rel="up" href="../buffer.html" title="buffer">
 <link rel="prev" href="buffer_4.html" title="buffer">
 <link rel="next" href="return_buffer.html" title="return_buffer">
@@ -28,7 +28,7 @@
           (with strategies)</a>
 </h5></div></div></div>
 <p>
-            <a class="indexterm" name="idm46187008039696"></a>
+            <a class="indexterm" name="idm25049"></a>
 Calculates the buffer of a geometry.
           </p>
 <h6>
@@ -46,9 +46,9 @@ Calculates the buffer of a geometry.
           </h6>
 <p>
 </p>
-<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">GeometryIn</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">MultiPolygon</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">DistanceStrategy</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">SideStrategy</span><span class="special">,</span>
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">GeometryIn</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">GeometryOut</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">DistanceStrategy</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">SideStrategy</span><span class="special">,</span>
          <span class="keyword">typename</span> <span class="identifier">JoinStrategy</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">EndStrategy</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">PointStrategy</span><span class="special">&gt;</span>
-<span class="keyword">void</span> <span class="identifier">buffer</span><span class="special">(</span><span class="identifier">GeometryIn</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">geometry_in</span><span class="special">,</span> <span class="identifier">MultiPolygon</span> <span class="special">&amp;</span> <span class="identifier">geometry_out</span><span class="special">,</span> <span class="identifier">DistanceStrategy</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">distance_strategy</span><span class="special">,</span>
+<span class="keyword">void</span> <span class="identifier">buffer</span><span class="special">(</span><span class="identifier">GeometryIn</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">geometry_in</span><span class="special">,</span> <span class="identifier">GeometryOut</span> <span class="special">&amp;</span> <span class="identifier">geometry_out</span><span class="special">,</span> <span class="identifier">DistanceStrategy</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">distance_strategy</span><span class="special">,</span>
             <span class="identifier">SideStrategy</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">side_strategy</span><span class="special">,</span> <span class="identifier">JoinStrategy</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">join_strategy</span><span class="special">,</span> <span class="identifier">EndStrategy</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">end_strategy</span><span class="special">,</span>
             <span class="identifier">PointStrategy</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">point_strategy</span><span class="special">)</span></pre>
 <p>
@@ -112,12 +112,12 @@ Calculates the buffer of a geometry.
 <tr>
 <td>
                     <p>
-                      MultiPolygon &amp;
+                      GeometryOut &amp;
                     </p>
                   </td>
 <td>
                     <p>
-                      A type fulfilling the MultiPolygon Concept
+                      A type fulfilling the GeometryOut Concept
                     </p>
                   </td>
 <td>
@@ -127,8 +127,8 @@ Calculates the buffer of a geometry.
                   </td>
 <td>
                     <p>
-                      output multi polygon (or std:: collection of polygons), will
-                      contain a buffered version of the input geometry
+                      output geometry, e.g. multi polygon, will contain a buffered
+                      version of the input geometry
                     </p>
                   </td>
 </tr>
@@ -633,8 +633,8 @@ Calculates the buffer of a geometry.
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2019 Barend Gehrels, Bruno Lalande, Mateusz Loskot, Adam
-      Wulkiewicz, Oracle and/or its affiliates<p>
+<td align="right"><div class="copyright-footer">Copyright © 2009-2021 Barend Gehrels,
+      Bruno Lalande, Mateusz Loskot, Adam Wulkiewicz, Oracle and/or its affiliates<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

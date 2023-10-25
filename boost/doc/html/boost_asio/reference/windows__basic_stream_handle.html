@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>windows::basic_stream_handle</title>
 <link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
@@ -27,12 +27,15 @@
 <a name="boost_asio.reference.windows__basic_stream_handle"></a><a class="link" href="windows__basic_stream_handle.html" title="windows::basic_stream_handle">windows::basic_stream_handle</a>
 </h3></div></div></div>
 <p>
+        <a class="indexterm" name="boost_asio.indexterm.windows__basic_stream_handle"></a>
+      </p>
+<p>
         Provides stream-oriented handle functionality.
       </p>
-<pre class="programlisting">template&lt;
-    typename <a class="link" href="Executor1.html" title="Executor requirements">Executor</a> = executor&gt;
-class basic_stream_handle :
-  public windows::basic_overlapped_handle&lt; Executor &gt;
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span>
+    <span class="keyword">typename</span> <a class="link" href="Executor1.html" title="Executor requirements">Executor</a> <span class="special">=</span> <span class="identifier">any_io_executor</span><span class="special">&gt;</span>
+<span class="keyword">class</span> <span class="identifier">basic_stream_handle</span> <span class="special">:</span>
+  <span class="keyword">public</span> <span class="identifier">windows</span><span class="special">::</span><span class="identifier">basic_overlapped_handle</span><span class="special">&lt;</span> <span class="identifier">Executor</span> <span class="special">&gt;</span>
 </pre>
 <h5>
 <a name="boost_asio.reference.windows__basic_stream_handle.h0"></a>
@@ -168,14 +171,15 @@ class basic_stream_handle :
 <tr>
 <td>
                 <p>
-                  <a class="link" href="windows__basic_stream_handle/basic_stream_handle.html" title="windows::basic_stream_handle::basic_stream_handle"><span class="bold"><strong>basic_stream_handle</strong></span></a>
+                  <a class="link" href="windows__basic_stream_handle/basic_stream_handle.html" title="windows::basic_stream_handle::basic_stream_handle"><span class="bold"><strong>basic_stream_handle</strong></span></a> <span class="silver">[constructor]</span>
                 </p>
               </td>
 <td>
                 <p>
-                  Construct a stream handle without opening it. <br> <span class="silver"> &#8212;</span><br> Construct
-                  a stream handle on an existing native handle. <br> <span class="silver"> &#8212;</span><br> Move-construct
-                  a stream handle from another.
+                  Construct a stream handle without opening it. <br> <span class="silver"> —</span><br> Construct
+                  a stream handle on an existing native handle. <br> <span class="silver"> —</span><br> Move-construct
+                  a stream handle from another. <br> <span class="silver"> —</span><br> Move-construct a stream
+                  handle from a handle of another executor type.
                 </p>
               </td>
 </tr>
@@ -235,7 +239,7 @@ class basic_stream_handle :
               </td>
 <td>
                 <p>
-                  Get a reference to the lowest layer. <br> <span class="silver"> &#8212;</span><br> Get a const
+                  Get a reference to the lowest layer. <br> <span class="silver"> —</span><br> Get a const
                   reference to the lowest layer.
                 </p>
               </td>
@@ -260,7 +264,8 @@ class basic_stream_handle :
               </td>
 <td>
                 <p>
-                  Move-assign a stream handle from another.
+                  Move-assign a stream handle from another. <br> <span class="silver"> —</span><br> Move-assign
+                  a stream handle from a handle of another executor type.
                 </p>
               </td>
 </tr>
@@ -279,6 +284,18 @@ class basic_stream_handle :
 <tr>
 <td>
                 <p>
+                  <a class="link" href="windows__basic_stream_handle/release.html" title="windows::basic_stream_handle::release"><span class="bold"><strong>release</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Release ownership of the underlying native handle.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
                   <a class="link" href="windows__basic_stream_handle/write_some.html" title="windows::basic_stream_handle::write_some"><span class="bold"><strong>write_some</strong></span></a>
                 </p>
               </td>
@@ -290,44 +307,12 @@ class basic_stream_handle :
 </tr>
 </tbody>
 </table></div>
-<h5>
-<a name="boost_asio.reference.windows__basic_stream_handle.h2"></a>
-        <span class="phrase"><a name="boost_asio.reference.windows__basic_stream_handle.protected_data_members"></a></span><a class="link" href="windows__basic_stream_handle.html#boost_asio.reference.windows__basic_stream_handle.protected_data_members">Protected
-        Data Members</a>
-      </h5>
-<div class="informaltable"><table class="table">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>
-                <p>
-                  Name
-                </p>
-              </th>
-<th>
-                <p>
-                  Description
-                </p>
-              </th>
-</tr></thead>
-<tbody><tr>
-<td>
-                <p>
-                  <a class="link" href="windows__basic_stream_handle/impl_.html" title="windows::basic_stream_handle::impl_"><span class="bold"><strong>impl_</strong></span></a>
-                </p>
-              </td>
-<td>
-              </td>
-</tr></tbody>
-</table></div>
 <p>
-        The <a class="link" href="windows__basic_stream_handle.html" title="windows::basic_stream_handle"><code class="computeroutput">windows::basic_stream_handle</code></a>
-        class provides asynchronous and blocking stream-oriented handle functionality.
+        The <a class="link" href="windows__basic_stream_handle.html" title="windows::basic_stream_handle"><code class="computeroutput"><span class="identifier">windows</span><span class="special">::</span><span class="identifier">basic_stream_handle</span></code></a> class provides
+        asynchronous and blocking stream-oriented handle functionality.
       </p>
 <h5>
-<a name="boost_asio.reference.windows__basic_stream_handle.h3"></a>
+<a name="boost_asio.reference.windows__basic_stream_handle.h2"></a>
         <span class="phrase"><a name="boost_asio.reference.windows__basic_stream_handle.thread_safety"></a></span><a class="link" href="windows__basic_stream_handle.html#boost_asio.reference.windows__basic_stream_handle.thread_safety">Thread
         Safety</a>
       </h5>
@@ -338,7 +323,7 @@ class basic_stream_handle :
         <span class="emphasis"><em>Shared</em></span> <span class="emphasis"><em>objects:</em></span> Unsafe.
       </p>
 <h5>
-<a name="boost_asio.reference.windows__basic_stream_handle.h4"></a>
+<a name="boost_asio.reference.windows__basic_stream_handle.h3"></a>
         <span class="phrase"><a name="boost_asio.reference.windows__basic_stream_handle.requirements"></a></span><a class="link" href="windows__basic_stream_handle.html#boost_asio.reference.windows__basic_stream_handle.requirements">Requirements</a>
       </h5>
 <p>
@@ -350,7 +335,7 @@ class basic_stream_handle :
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright © 2003-2022 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

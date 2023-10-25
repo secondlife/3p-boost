@@ -26,8 +26,10 @@ add_executable (tests-beast-http
     empty_body.cpp
     error.cpp
     field.cpp
+    field_compiles.cpp
     fields.cpp
     file_body.cpp
+    message_generator.cpp
     message.cpp
     parser.cpp
     read.cpp
@@ -50,3 +52,8 @@ target_link_libraries(tests-beast-http
     )
 
 set_property(TARGET tests-beast-http PROPERTY FOLDER "tests")
+
+#
+# Individual tests
+#
+#build_individual_tests(tests-beast-http LIBS lib-asio lib-asio-ssl lib-beast lib-test)

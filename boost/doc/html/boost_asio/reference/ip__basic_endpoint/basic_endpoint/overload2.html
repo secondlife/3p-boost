@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>ip::basic_endpoint::basic_endpoint (2 of 5 overloads)</title>
 <link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
@@ -32,9 +32,9 @@
             order. The IP address will be the any address (i.e. INADDR_ANY or in6addr_any).
             This constructor would typically be used for accepting new connections.
           </p>
-<pre class="programlisting">basic_endpoint(
-    const InternetProtocol &amp; internet_protocol,
-    unsigned short port_num);
+<pre class="programlisting"><span class="identifier">basic_endpoint</span><span class="special">(</span>
+    <span class="keyword">const</span> <span class="identifier">InternetProtocol</span> <span class="special">&amp;</span> <span class="identifier">internet_protocol</span><span class="special">,</span>
+    <span class="identifier">port_type</span> <span class="identifier">port_num</span><span class="special">);</span>
 </pre>
 <h6>
 <a name="boost_asio.reference.ip__basic_endpoint.basic_endpoint.overload2.h0"></a>
@@ -43,17 +43,17 @@
 <p>
             To initialise an IPv4 TCP endpoint for port 1234, use:
           </p>
-<pre class="programlisting">boost::asio::ip::tcp::endpoint ep(boost::asio::ip::tcp::v4(), 1234);
+<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">endpoint</span> <span class="identifier">ep</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">v4</span><span class="special">(),</span> <span class="number">1234</span><span class="special">);</span>
 </pre>
 <p>
             To specify an IPv6 UDP endpoint for port 9876, use:
           </p>
-<pre class="programlisting">boost::asio::ip::udp::endpoint ep(boost::asio::ip::udp::v6(), 9876);
+<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">udp</span><span class="special">::</span><span class="identifier">endpoint</span> <span class="identifier">ep</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">udp</span><span class="special">::</span><span class="identifier">v6</span><span class="special">(),</span> <span class="number">9876</span><span class="special">);</span>
 </pre>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright © 2003-2022 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

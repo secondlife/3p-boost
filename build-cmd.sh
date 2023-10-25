@@ -19,10 +19,11 @@ if [ -z "$AUTOBUILD" ] ; then
 fi
 
 # Libraries on which we depend - please keep alphabetized for maintenance
-BOOST_LIBS=(context date_time fiber filesystem iostreams program_options \
+BOOST_LIBS=(context date_time fiber filesystem iostreams program_options
             regex stacktrace system thread wave)
 
-BOOST_BUILD_SPAM="-d2 -d+4"             # -d0 is quiet, "-d2 -d+4" allows compilation to be examined
+# -d0 is quiet, "-d2 -d+4" allows compilation to be examined
+BOOST_BUILD_SPAM="-d0"
 
 top="$(pwd)"
 cd "$BOOST_SOURCE_DIR"
@@ -60,11 +61,12 @@ source_environment_tempfile="$stage/source_environment.sh"
 BOOST_BJAM_OPTIONS="address-model=$AUTOBUILD_ADDRSIZE architecture=x86 --layout=tagged -sNO_BZIP2=1 \
                     ${BOOST_LIBS[*]/#/--with-}"
 
+
 # Turn these into a bash array: it's important that all of cxxflags (which
 # we're about to add) go into a single array entry.
 BOOST_BJAM_OPTIONS=($BOOST_BJAM_OPTIONS)
 # Append cxxflags as a single entry containing all of LL_BUILD_RELEASE.
-BOOST_BJAM_OPTIONS[${#BOOST_BJAM_OPTIONS[*]}]="cxxflags=$LL_BUILD_RELEASE"
+BOOST_BJAM_OPTIONS+=("cxxflags=$LL_BUILD_RELEASE")
 
 stage_lib="${stage}"/lib
 stage_release="${stage_lib}"/release
@@ -119,6 +121,29 @@ find_test_dirs()
     done
 }
 
+# pipeline stage between find_test_dirs and run_tests to eliminate tests for
+# specified libraries
+function tfilter {
+    local regexps=()
+    for arg
+    do
+        regexps+=(-e "$arg")
+    done
+    grep -v "${regexps[@]}"
+}
+
+# Try running some tests on Windows64, just not on Windows32.
+if [[ $AUTOBUILD_ADDRSIZE -ne 32 ]]
+then
+    function tfilter32 {
+        cat -
+    }
+else
+    function tfilter32 {
+        tfilter "$@"
+    }
+fi
+
 # conditionally run unit tests
 run_tests()
 {
@@ -142,29 +167,12 @@ last_file="$(mktemp -t build-cmd.XXXXXXXX)"
 trap "rm '$last_file'" EXIT
 # from here on, the only references to last_file will be from Python
 last_file="$(native "$last_file")"
-last_time="$(python -c "import os.path; print(int(os.path.getmtime(r'$last_file')))")"
+last_time="$(python -uc "import os.path; print(int(os.path.getmtime(r'$last_file')))")"
 start_time="$last_time"
 
 sep()
 {
-    python -c "
-from __future__ import print_function
-import os
-import sys
-import time
-start = $start_time
-last_file = r'$last_file'
-last = int(os.path.getmtime(last_file))
-now = int(time.time())
-os.utime(last_file, (now, now))
-def since(baseline, now):
-    duration = now - baseline
-    rest, secs = divmod(duration, 60)
-    hours, mins = divmod(rest, 60)
-    return '%2d:%02d:%02d' % (hours, mins, secs)
-print('((((( %s )))))' % since(last, now), file=sys.stderr)
-print(since(start, now), ' $* '.center(72, '='), file=sys.stderr)
-"
+    python "$(native "$top")/timestamp.py" "$start_time" "$last_file" "$@"
 }
 
 # bjam doesn't support a -sICU_LIBPATH to point to the location
@@ -185,25 +193,37 @@ case "$AUTOBUILD_PLATFORM" in
         ZLIB_RELEASE_PATH="$(native "${stage}"/packages/lib/release)"
         ICU_PATH="$(native "${stage}"/packages)"
 
-        case "$AUTOBUILD_VSVER" in
-            120)
-                bootstrapver="vc12"
-                bjamtoolset="msvc-12.0"
-                ;;
-            150)
-                bootstrapver="vc141"
-                bjamtoolset="msvc-14.1"
-                ;;
-            *)
-                echo "Unrecognized AUTOBUILD_VSVER='$AUTOBUILD_VSVER'" 1>&2 ; exit 1
-                ;;
-        esac
+        if [[ -z "$AUTOBUILD_WIN_VSTOOLSET" ]]
+        then
+            # lifted from autobuild_tool_source_environment.py
+            declare -A toolsets=(
+                ["14"]=v140
+                ["15"]=v141
+                ["16"]=v142
+                ["17"]=v143
+            )
+            AUTOBUILD_WIN_VSTOOLSET="${toolsets[${AUTOBUILD_VSVER:0:2}]}"
+            if [[ -z "$AUTOBUILD_WIN_VSTOOLSET" ]]
+            then
+                echo "Can't guess AUTOBUILD_WIN_VSTOOLSET from AUTOBUILD_VSVER='$AUTOBUILD_VSVER'" >&2
+                exit 1
+            fi
+        fi
+
+        # e.g. "v141", want just "141"
+        toolset="${AUTOBUILD_WIN_VSTOOLSET#v}"
+        # e.g. "vc14"
+        bootstrapver="vc${toolset%0}"
+        # e.g. "msvc-14.1"
+        bjamtoolset="msvc-${toolset:0:2}.${toolset:2}"
 
         sep "bootstrap"
         # Odd things go wrong with the .bat files:  branch targets
         # not recognized, file tests incorrect.  Inexplicable but
         # dropping 'echo on' into the .bat files seems to help.
-        cmd.exe /C bootstrap.bat "$bootstrapver" || echo bootstrap failed 1>&2
+##        cmd.exe /C bootstrap.bat "$bootstrapver" || echo bootstrap failed 1>&2
+        # Try letting bootstrap.bat infer the tooset version.
+        cmd.exe /C bootstrap.bat msvc || echo bootstrap failed 1>&2
         # Failure of this bootstrap.bat file may or may not produce nonzero rc
         # -- check for the program it should have built.
         if [ ! -x "$bjam.exe" ]
@@ -212,7 +232,7 @@ case "$AUTOBUILD_PLATFORM" in
         fi
 
         # Windows build of viewer expects /Zc:wchar_t-, etc., from LL_BUILD_RELEASE.
-        # Without --abbreviate-paths, some compilations fail with:
+        # Without --hash, some compilations fail with:
         # failed to write output file 'some\long\path\something.rsp'!
         # Without /FS, some compilations fail with:
         # fatal error C1041: cannot open program database '...\vc120.pdb';
@@ -221,17 +241,17 @@ case "$AUTOBUILD_PLATFORM" in
         # https://www.boost.org/doc/libs/release/doc/html/stacktrace/configuration_and_build.html
         # This helps avoid macro collisions in consuming source files:
         # https://github.com/boostorg/stacktrace/issues/76#issuecomment-489347839
-        WINDOWS_BJAM_OPTIONS=("--toolset=$bjamtoolset" -j2 \
-            --abbreviate-paths 
-            "include=$INCLUDE_PATH" "-sICU_PATH=$ICU_PATH" \
-            "-sZLIB_INCLUDE=$INCLUDE_PATH/zlib-ng" \
-            cxxflags=/FS \
-            cxxflags=/DBOOST_STACKTRACE_LINK \
+        WINDOWS_BJAM_OPTIONS=(-j$(nproc)
+            --hash
+            "include=$INCLUDE_PATH" "-sICU_PATH=$ICU_PATH"
+            "-sZLIB_INCLUDE=$INCLUDE_PATH/zlib-ng"
+            cxxflags=/FS
+            cxxflags=/DBOOST_STACKTRACE_LINK
             "${BOOST_BJAM_OPTIONS[@]}")
 
-        RELEASE_BJAM_OPTIONS=("${WINDOWS_BJAM_OPTIONS[@]}" \
-            "-sZLIB_LIBPATH=$ZLIB_RELEASE_PATH" \
-            "-sZLIB_LIBRARY_PATH=$ZLIB_RELEASE_PATH" \
+        RELEASE_BJAM_OPTIONS=("${WINDOWS_BJAM_OPTIONS[@]}"
+            "-sZLIB_LIBPATH=$ZLIB_RELEASE_PATH"
+            "-sZLIB_LIBRARY_PATH=$ZLIB_RELEASE_PATH"
             "-sZLIB_NAME=zlib")
         sep "build"
         "${bjam}" link=static variant=release \
@@ -253,14 +273,15 @@ case "$AUTOBUILD_PLATFORM" in
 
         # conditionally run unit tests
         find_test_dirs "${BOOST_LIBS[@]}" | \
-        grep -v \
-             -e 'date_time/' \
-             -e 'filesystem/' \
-             -e 'iostreams/' \
-             -e 'regex/' \
-             -e 'stacktrace/' \
-             -e 'thread/' \
-             | \
+        tfilter32 'fiber/' | \
+        tfilter \
+            'date_time/' \
+            'filesystem/' \
+            'iostreams/' \
+            'regex/' \
+            'stacktrace/' \
+            'thread/' \
+            | \
         run_tests variant=release \
                   --prefix="$(native "${stage}")" --libdir="$(native "${stage_release}")" \
                   $RELEASE_BJAM_OPTIONS $BOOST_BUILD_SPAM -a -q
@@ -301,17 +322,17 @@ case "$AUTOBUILD_PLATFORM" in
         # many hundreds of pointless warnings.
         # Building Boost.Regex without --disable-icu causes the viewer link to
         # fail for lack of an ICU library.
-        DARWIN_BJAM_OPTIONS=("${BOOST_BJAM_OPTIONS[@]}" \
-            "include=${stage}/packages/include" \
-            "include=${stage}/packages/include/zlib-ng/" \
-            "-sZLIB_INCLUDE=${stage}/packages/include/zlib-ng/" \
-            cxxflags=-std=c++14 \
-            cxxflags=-Wno-c99-extensions cxxflags=-Wno-variadic-macros \
-            cxxflags=-Wno-unused-function cxxflags=-Wno-unused-const-variable \
-            cxxflags=-Wno-unused-local-typedef \
+        DARWIN_BJAM_OPTIONS=("${BOOST_BJAM_OPTIONS[@]}"
+            "include=${stage}/packages/include"
+            "include=${stage}/packages/include/zlib-ng/"
+            "-sZLIB_INCLUDE=${stage}/packages/include/zlib-ng/"
+            cxxflags=-std=c++14
+            cxxflags=-Wno-c99-extensions cxxflags=-Wno-variadic-macros
+            cxxflags=-Wno-unused-function cxxflags=-Wno-unused-const-variable
+            cxxflags=-Wno-unused-local-typedef
             --disable-icu)
 
-        RELEASE_BJAM_OPTIONS=("${DARWIN_BJAM_OPTIONS[@]}" \
+        RELEASE_BJAM_OPTIONS=("${DARWIN_BJAM_OPTIONS[@]}"
             "-sZLIB_LIBPATH=${stage}/packages/lib/release")
 
         sep "build"
@@ -331,11 +352,11 @@ case "$AUTOBUILD_PLATFORM" in
         # Bump the timeout for Boost.Thread tests because our TeamCity Mac
         # build hosts are getting a bit long in the tooth.
         find_test_dirs "${BOOST_LIBS[@]}" | \
-        grep -v \
-             -e 'date_time/' \
-             -e 'filesystem/test/issues' \
-             -e 'regex/test/de_fuzz' \
-             -e 'stacktrace/' \
+        tfilter \
+            'date_time/' \
+            'filesystem/test/issues' \
+            'regex/test/de_fuzz' \
+            'stacktrace/' \
             | \
         run_tests toolset=darwin variant=release -a -q \
                   "${RELEASE_BJAM_OPTIONS[@]}" $BOOST_BUILD_SPAM \
@@ -366,10 +387,10 @@ case "$AUTOBUILD_PLATFORM" in
         sep "bootstrap"
         ./bootstrap.sh --prefix=$(pwd) --with-icu="${stage}"/packages/
 
-        RELEASE_BOOST_BJAM_OPTIONS=(toolset=gcc "include=$stage/packages/include/zlib-ng/" \
-            "-sZLIB_LIBPATH=$stage/packages/lib/release" \
-            "-sZLIB_INCLUDE=${stage}\/packages/include/zlib/" \
-            "${BOOST_BJAM_OPTIONS[@]}" \
+        RELEASE_BOOST_BJAM_OPTIONS=(toolset=gcc "include=$stage/packages/include/zlib-ng/"
+            "-sZLIB_LIBPATH=$stage/packages/lib/release"
+            "-sZLIB_INCLUDE=${stage}\/packages/include/zlib/"
+            "${BOOST_BJAM_OPTIONS[@]}"
             cxxflags=-std=c++11)
         sep "build"
         "${bjam}" variant=release --reconfigure \
@@ -401,3 +422,4 @@ mkdir -p "${stage}"/docs/boost/
 cp -a "$top"/README.Linden "${stage}"/docs/boost/
 
 cd "$top"
+

@@ -1,11 +1,11 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Contract Programming Overview</title>
 <link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
-<link rel="home" href="../index.html" title="Chapter&#160;1.&#160;Boost.Contract 1.0.0">
-<link rel="up" href="../index.html" title="Chapter&#160;1.&#160;Boost.Contract 1.0.0">
+<link rel="home" href="../index.html" title="Chapter 1. Boost.Contract 1.0.0">
+<link rel="up" href="../index.html" title="Chapter 1. Boost.Contract 1.0.0">
 <link rel="prev" href="getting_started.html" title="Getting Started">
 <link rel="next" href="tutorial.html" title="Tutorial">
 </head>
@@ -48,11 +48,11 @@
       Summary</a></span></dt>
 </dl></div>
 <div class="blockquote"><blockquote class="blockquote"><p>
-        <span class="emphasis"><em><span class="quote">&#8220;<span class="quote">It is absurd to make elaborate security checks on debugging
+        <span class="emphasis"><em><span class="quote">“<span class="quote">It is absurd to make elaborate security checks on debugging
         runs, when no trust is put in the results, and then remove them in production
         runs, when an erroneous result could be expensive or disastrous. What would
         we think of a sailing enthusiast who wears his life-jacket when training
-        on dry land but takes it off as soon as he goes to sea?</span>&#8221;</span></em></span>
+        on dry land but takes it off as soon as he goes to sea?</span>”</span></em></span>
       </p></blockquote></div>
 <div class="blockquote"><blockquote class="blockquote"><p>
         <span class="emphasis"><em>-- Charles Antony Richard Hoare (see <a class="link" href="bibliography.html#Hoare73_anchor">[Hoare73]</a>)</em></span>
@@ -165,7 +165,7 @@
           variable needs to be used by this library implementation. This library
           will automatically protect such a global variable from race conditions
           in multi-threated programs, but this will effectively introduce a global
-          lock in the program (the <code class="computeroutput"><a class="link" href="../BOOST_CO_idm45394999743888.html" title="Macro BOOST_CONTRACT_DISABLE_THREADS">BOOST_CONTRACT_DISABLE_THREADS</a></code>
+          lock in the program (the <code class="computeroutput"><a class="link" href="../BOOST_CONTRACT_DI_idm34640.html" title="Macro BOOST_CONTRACT_DISABLE_THREADS">BOOST_CONTRACT_DISABLE_THREADS</a></code>
           macro can be defined to disable this global lock but at the risk of incurring
           in race conditions). <a href="#ftn.boost_contract.contract_programming_overview.assertions.f3" class="footnote" name="boost_contract.contract_programming_overview.assertions.f3"><sup class="footnote">[9]</sup></a>
         </p></td></tr>
@@ -240,7 +240,7 @@
       </h5>
 <p>
         The main use of contract programming is to improve software quality. <a class="link" href="bibliography.html#Meyer97_anchor">[Meyer97]</a> discusses how contract programming
-        can be used as the basic tool to write <span class="quote">&#8220;<span class="quote">correct</span>&#8221;</span> software.
+        can be used as the basic tool to write <span class="quote">“<span class="quote">correct</span>”</span> software.
         <a class="link" href="bibliography.html#Stroustrup94_anchor">[Stroustrup94]</a> discusses the key
         importance of class invariants plus advantages and disadvantages of preconditions
         and postconditions.
@@ -403,7 +403,7 @@
 <p>
         This approach is usually reasonable because in well-tested production code,
         validating the function body implementation using postconditions is rarely
-        needed since the function has shown itself to be <span class="quote">&#8220;<span class="quote">correct</span>&#8221;</span> during
+        needed since the function has shown itself to be <span class="quote">“<span class="quote">correct</span>”</span> during
         testing. On the other hand, checking function arguments using preconditions
         is always needed because of changes that can be made to the calling code
         (without having to necessarily re-test and re-release the called code). Furthermore,
@@ -496,7 +496,7 @@
       </p>
 <p>
         A call to the overriding public function with a contract executes the following
-        steps (see <code class="computeroutput"><a class="link" href="../boost/contract/public_f_idm45394998885120.html" title="Function template public_function">boost::contract::public_function</a></code>):
+        steps (see <code class="computeroutput"><a class="link" href="../boost/contract/public_function_idm36700.html" title="Function template public_function">boost::contract::public_function</a></code>):
       </p>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
@@ -592,7 +592,7 @@
 <p>
         A call to a non-static public function with a contract (that does not override
         functions from any of its public base classes) executes the following steps
-        (see <code class="computeroutput"><a class="link" href="../boost/contract/public_f_idm45394998885120.html" title="Function template public_function">boost::contract::public_function</a></code>):
+        (see <code class="computeroutput"><a class="link" href="../boost/contract/public_function_idm36700.html" title="Function template public_function">boost::contract::public_function</a></code>):
       </p>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
@@ -639,7 +639,7 @@
       </h5>
 <p>
         A call to a static public function with a contract executes the following
-        steps (see <code class="computeroutput"><a class="link" href="../boost/contract/public_f_idm45394998885120.html" title="Function template public_function">boost::contract::public_function</a></code>):
+        steps (see <code class="computeroutput"><a class="link" href="../boost/contract/public_function_idm36700.html" title="Function template public_function">boost::contract::public_function</a></code>):
       </p>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
@@ -1029,8 +1029,8 @@
                   <code class="computeroutput"><span class="identifier">invariant</span></code>, <code class="computeroutput"><span class="identifier">static_invariant</span></code>, and <code class="computeroutput"><span class="identifier">base_types</span></code>. The last three specifiers
                   appear in user code so their names can be referred to or changed
                   using <code class="computeroutput"><a class="link" href="../BOOST_CONTRACT_INVARIANT.html" title="Macro BOOST_CONTRACT_INVARIANT">BOOST_CONTRACT_INVARIANT</a></code>,
-                  <code class="computeroutput"><a class="link" href="../BOOST_CO_idm45394998621472.html" title="Macro BOOST_CONTRACT_STATIC_INVARIANT">BOOST_CONTRACT_STATIC_INVARIANT</a></code>,
-                  and <code class="computeroutput"><a class="link" href="../BOOST_CO_idm45394999732400.html" title="Macro BOOST_CONTRACT_BASES_TYPEDEF">BOOST_CONTRACT_BASES_TYPEDEF</a></code>
+                  <code class="computeroutput"><a class="link" href="../BOOST_CONTRACT_ST_idm37315.html" title="Macro BOOST_CONTRACT_STATIC_INVARIANT">BOOST_CONTRACT_STATIC_INVARIANT</a></code>,
+                  and <code class="computeroutput"><a class="link" href="../BOOST_CONTRACT_BA_idm34666.html" title="Macro BOOST_CONTRACT_BASES_TYPEDEF">BOOST_CONTRACT_BASES_TYPEDEF</a></code>
                   macros respectively to avoid name clashes.
                 </p>
               </td>
@@ -1434,11 +1434,11 @@
               </td>
 <td>
                 <p>
-                  Yes, but use <code class="computeroutput"><a class="link" href="../BOOST_CO_idm45394999685184.html" title="Macro BOOST_CONTRACT_PRECONDITIONS_DISABLE_NO_ASSERTION">BOOST_CONTRACT_PRECONDITIONS_DISABLE_NO_ASSERTION</a></code>
+                  Yes, but use <code class="computeroutput"><a class="link" href="../BOOST_CONTRACT_PR_idm34776.html" title="Macro BOOST_CONTRACT_PRECONDITIONS_DISABLE_NO_ASSERTION">BOOST_CONTRACT_PRECONDITIONS_DISABLE_NO_ASSERTION</a></code>
                   to disable no assertion while checking preconditions (see also
-                  <code class="computeroutput"><a class="link" href="../BOOST_CO_idm45394999679376.html" title="Macro BOOST_CONTRACT_ALL_DISABLE_NO_ASSERTION">BOOST_CONTRACT_ALL_DISABLE_NO_ASSERTION</a></code>).
+                  <code class="computeroutput"><a class="link" href="../BOOST_CONTRACT_AL_idm34788.html" title="Macro BOOST_CONTRACT_ALL_DISABLE_NO_ASSERTION">BOOST_CONTRACT_ALL_DISABLE_NO_ASSERTION</a></code>).
                   <a href="#ftn.boost_contract.contract_programming_overview.feature_summary.f1" class="footnote" name="boost_contract.contract_programming_overview.feature_summary.f1"><sup class="footnote">[b]</sup></a> (In multi-threaded programs this introduces a global
-                  lock, see <code class="computeroutput"><a class="link" href="../BOOST_CO_idm45394999743888.html" title="Macro BOOST_CONTRACT_DISABLE_THREADS">BOOST_CONTRACT_DISABLE_THREADS</a></code>.)
+                  lock, see <code class="computeroutput"><a class="link" href="../BOOST_CONTRACT_DI_idm34640.html" title="Macro BOOST_CONTRACT_DISABLE_THREADS">BOOST_CONTRACT_DISABLE_THREADS</a></code>.)
                 </p>
               </td>
 <td>
@@ -1504,11 +1504,11 @@
 <td>
                 <p>
                   Yes, contract checking can be skipped at run-time by defining combinations
-                  of the <code class="computeroutput"><a class="link" href="../BOOST_CO_idm45394999662416.html" title="Macro BOOST_CONTRACT_NO_PRECONDITIONS">BOOST_CONTRACT_NO_PRECONDITIONS</a></code>,
-                  <code class="computeroutput"><a class="link" href="../BOOST_CO_idm45394999656032.html" title="Macro BOOST_CONTRACT_NO_POSTCONDITIONS">BOOST_CONTRACT_NO_POSTCONDITIONS</a></code>,
-                  <code class="computeroutput"><a class="link" href="../BOOST_CO_idm45394999622032.html" title="Macro BOOST_CONTRACT_NO_INVARIANTS">BOOST_CONTRACT_NO_INVARIANTS</a></code>,
-                  <code class="computeroutput"><a class="link" href="../BOOST_CO_idm45394999637264.html" title="Macro BOOST_CONTRACT_NO_ENTRY_INVARIANTS">BOOST_CONTRACT_NO_ENTRY_INVARIANTS</a></code>,
-                  and <code class="computeroutput"><a class="link" href="../BOOST_CO_idm45394999629648.html" title="Macro BOOST_CONTRACT_NO_EXIT_INVARIANTS">BOOST_CONTRACT_NO_EXIT_INVARIANTS</a></code>
+                  of the <code class="computeroutput"><a class="link" href="../BOOST_CONTRACT_NO_idm34826.html" title="Macro BOOST_CONTRACT_NO_PRECONDITIONS">BOOST_CONTRACT_NO_PRECONDITIONS</a></code>,
+                  <code class="computeroutput"><a class="link" href="../BOOST_CONTRACT_NO_idm34839.html" title="Macro BOOST_CONTRACT_NO_POSTCONDITIONS">BOOST_CONTRACT_NO_POSTCONDITIONS</a></code>,
+                  <code class="computeroutput"><a class="link" href="../BOOST_CONTRACT_NO_idm34911.html" title="Macro BOOST_CONTRACT_NO_INVARIANTS">BOOST_CONTRACT_NO_INVARIANTS</a></code>,
+                  <code class="computeroutput"><a class="link" href="../BOOST_CONTRACT_NO_idm34879.html" title="Macro BOOST_CONTRACT_NO_ENTRY_INVARIANTS">BOOST_CONTRACT_NO_ENTRY_INVARIANTS</a></code>,
+                  and <code class="computeroutput"><a class="link" href="../BOOST_CONTRACT_NO_idm34895.html" title="Macro BOOST_CONTRACT_NO_EXIT_INVARIANTS">BOOST_CONTRACT_NO_EXIT_INVARIANTS</a></code>
                   macros (completely removing contract code from compiled object
                   code is also possible but requires using macros as shown in <a class="link" href="extras.html#boost_contract.extras.disable_contract_compilation__macro_interface_" title="Disable Contract Compilation (Macro Interface)">Disable
                   Contract Compilation</a>).
@@ -1612,7 +1612,7 @@
                     does) makes it possible to have infinite recursion while checking
                     preconditions. Therefore, this library by default disables assertion
                     checking also while checking preconditions (like Eiffel does),
-                    but it also provides the <code class="computeroutput"><a class="link" href="../BOOST_CO_idm45394999685184.html" title="Macro BOOST_CONTRACT_PRECONDITIONS_DISABLE_NO_ASSERTION">BOOST_CONTRACT_PRECONDITIONS_DISABLE_NO_ASSERTION</a></code>
+                    but it also provides the <code class="computeroutput"><a class="link" href="../BOOST_CONTRACT_PR_idm34776.html" title="Macro BOOST_CONTRACT_PRECONDITIONS_DISABLE_NO_ASSERTION">BOOST_CONTRACT_PRECONDITIONS_DISABLE_NO_ASSERTION</a></code>
                     configuration macro so users can change this behaviour to match
                     <a class="link" href="bibliography.html#N1962_anchor">[N1962]</a> if needed.
                   </p></div>
@@ -1963,7 +1963,7 @@
               other references listed in the <a class="link" href="bibliography.html" title="Bibliography">Bibliography</a>.
             </p></div>
 <div id="ftn.boost_contract.contract_programming_overview.assertions.f3" class="footnote"><p><a href="#boost_contract.contract_programming_overview.assertions.f3" class="para"><sup class="para">[9] </sup></a>
-            <span class="bold"><strong>Rationale:</strong></span> <code class="computeroutput"><a class="link" href="../BOOST_CO_idm45394999743888.html" title="Macro BOOST_CONTRACT_DISABLE_THREADS">BOOST_CONTRACT_DISABLE_THREADS</a></code>
+            <span class="bold"><strong>Rationale:</strong></span> <code class="computeroutput"><a class="link" href="../BOOST_CONTRACT_DI_idm34640.html" title="Macro BOOST_CONTRACT_DISABLE_THREADS">BOOST_CONTRACT_DISABLE_THREADS</a></code>
             is named after <code class="computeroutput"><span class="identifier">BOOST_DISABLE_THREADS</span></code>.
           </p></div>
 <div id="ftn.boost_contract.contract_programming_overview.benefits_and_costs.f0" class="footnote"><p><a href="#boost_contract.contract_programming_overview.benefits_and_costs.f0" class="para"><sup class="para">[10] </sup></a>
@@ -2131,7 +2131,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2008-2019 Lorenzo Caminiti<p>
+<td align="right"><div class="copyright-footer">Copyright © 2008-2019 Lorenzo Caminiti<p>
         Distributed under the Boost Software License, Version 1.0 (see accompanying
         file LICENSE_1_0.txt or a copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
