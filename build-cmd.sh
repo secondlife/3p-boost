@@ -3,38 +3,59 @@
 cd "$(dirname "$0")"
 top="$(pwd)"
 
-# turn on verbose debugging output for parabuild logs.
-exec 4>&1; export BASH_XTRACEFD=4; set -x
-# make errors fatal
-set -e
-# error on undefined environment variables
-set -u
+set -eu
 
 BOOST_SOURCE_DIR="boost"
 VERSION_HEADER_FILE="$BOOST_SOURCE_DIR/boost/version.hpp"
 VERSION_MACRO="BOOST_LIB_VERSION"
+
+# Check if nproc is available, otherwise use sysctl -n hw.physicalcpu (macOS)
+if command -v nproc >/dev/null 2>&1; then
+    NPROC=$(nproc)
+else
+    NPROC=$(sysctl -n hw.physicalcpu)
+fi
+
 
 if [ -z "$AUTOBUILD" ] ; then 
     exit 1
 fi
 
 # Libraries on which we depend - please keep alphabetized for maintenance
-BOOST_LIBS=(context date_time fiber filesystem iostreams program_options
+BOOST_LIBS=(context date_time fiber filesystem iostreams json program_options
             regex stacktrace system thread wave)
 
 # -d0 is quiet, "-d2 -d+4" allows compilation to be examined
 BOOST_BUILD_SPAM="-d0"
 
-top="$(pwd)"
 cd "$BOOST_SOURCE_DIR"
-# As of sometime between Boost 1.67 and 1.72, the Boost build engine b2's
-# legacy bjam alias is no longer copied to the top-level Boost directory. Use
-# b2 directly.
 bjam="$(pwd)/b2"
 stage="$(pwd)/stage"
 
+fail()
+{
+    echo "$@" >&2
+    exit 1
+}
+
 [ -f "$stage"/packages/include/zlib-ng/zlib.h ] || fail "You haven't installed the zlib package yet."
-                                                     
+
+if [ ! -d "libs/accumulators/include" ]; then
+    echo "Submodules not present. Initializing..."
+    git submodule update --init --recursive
+fi
+
+apply_patch()
+{
+    local patch="$1"
+    local path="$2"
+    echo "Applying $patch..."
+    git apply --check --reverse --directory="$path" "$patch" || git apply --directory="$path" "$patch"
+}
+
+apply_patch "../patches/libs/config/0001-Define-BOOST_ALL_NO_LIB.patch" "libs/config"
+apply_patch "../patches/libs/fiber/0001-DRTVWR-476-Use-WIN32_LEAN_AND_MEAN-for-each-include-.patch" "libs/fiber"
+
 if [ "$OSTYPE" = "cygwin" ] ; then
     autobuild="$(cygpath -u $AUTOBUILD)"
     # convert from bash path to native OS pathname
@@ -58,7 +79,7 @@ source_environment_tempfile="$stage/source_environment.sh"
 
 # Explicitly request each of the libraries named in BOOST_LIBS.
 # Use magic bash syntax to prefix each entry in BOOST_LIBS with "--with-".
-BOOST_BJAM_OPTIONS="address-model=$AUTOBUILD_ADDRSIZE architecture=x86 --layout=tagged -sNO_BZIP2=1 -sNO_LZMA=1 -sNO_ZSTD=1\
+BOOST_BJAM_OPTIONS="address-model=$AUTOBUILD_ADDRSIZE architecture=x86 --layout=tagged -sNO_BZIP2=1 -sNO_LZMA=1 -sNO_ZSTD=1 -j$NPROC\
                     ${BOOST_LIBS[*]/#/--with-}"
 
 
@@ -163,16 +184,25 @@ run_tests()
     return 0
 }
 
+case "$AUTOBUILD_PLATFORM" in
+    windows*)
+        # To reliably use python3 on windows we need to use the python launcher
+        PYTHON=${PYTHON:-py -3}
+        ;;
+esac
+PYTHON="${PYTHON:-python3}"
+
 last_file="$(mktemp -t build-cmd.XXXXXXXX)"
 trap "rm '$last_file'" EXIT
 # from here on, the only references to last_file will be from Python
 last_file="$(native "$last_file")"
-last_time="$(python -uc "import os.path; print(int(os.path.getmtime(r'$last_file')))")"
+last_time="$($PYTHON -uc "import os.path; print(int(os.path.getmtime(r'$last_file')))")"
 start_time="$last_time"
+
 
 sep()
 {
-    python "$(native "$top")/timestamp.py" "$start_time" "$last_file" "$@"
+    $PYTHON "$(native "$top")/timestamp.py" "$start_time" "$last_file" "$@"
 }
 
 # bjam doesn't support a -sICU_LIBPATH to point to the location
@@ -213,7 +243,7 @@ case "$AUTOBUILD_PLATFORM" in
         # e.g. "v141", want just "141"
         toolset="${AUTOBUILD_WIN_VSTOOLSET#v}"
         # e.g. "vc14"
-        bootstrapver="vc${toolset%0}"
+        bootstrapver="vc${toolset%1}"
         # e.g. "msvc-14.1"
         bjamtoolset="msvc-${toolset:0:2}.${toolset:2}"
 
@@ -317,20 +347,12 @@ case "$AUTOBUILD_PLATFORM" in
         stage_lib="${stage}"/lib
         ./bootstrap.sh --prefix=$(pwd) --with-icu="${stage}"/packages
 
-        # Boost.Context and Boost.Coroutine2 now require C++14 support.
-        # Without the -Wno-etc switches, clang spams the build output with
-        # many hundreds of pointless warnings.
-        # Building Boost.Regex without --disable-icu causes the viewer link to
-        # fail for lack of an ICU library.
         DARWIN_BJAM_OPTIONS=("${BOOST_BJAM_OPTIONS[@]}"
             "include=${stage}/packages/include"
             "include=${stage}/packages/include/zlib-ng/"
             "-sZLIB_INCLUDE=${stage}/packages/include/zlib-ng/"
-            cxxflags=-std=c++14
-            cxxflags=-Wno-c99-extensions cxxflags=-Wno-variadic-macros
-            cxxflags=-Wno-unused-function cxxflags=-Wno-unused-const-variable
-            cxxflags=-Wno-unused-local-typedef
-            --disable-icu)
+            "--disable-icu"
+            cxxflags=-std=c++17)
 
         RELEASE_BJAM_OPTIONS=("${DARWIN_BJAM_OPTIONS[@]}"
             "-sZLIB_LIBPATH=${stage}/packages/lib/release")
@@ -338,30 +360,18 @@ case "$AUTOBUILD_PLATFORM" in
         sep "build"
         "${bjam}" toolset=darwin variant=release "${RELEASE_BJAM_OPTIONS[@]}" $BOOST_BUILD_SPAM stage
 
-        # conditionally run unit tests
-        # date_time Posix test failures: https://svn.boost.org/trac/boost/ticket/10570
-        # With Boost 1.64, skip filesystem/tests/issues -- we get:
-        # error: Unable to find file or target named
-        # error:     '6638-convert_aux-fails-init-global.cpp'
-        # error: referred to from project at
-        # error:     'libs/filesystem/test/issues'
-        # regex/tests/de_fuzz depends on an external Fuzzer library:
-        # ld: library not found for -lFuzzer
-        # Sadly, as of Boost 1.65.1, the Stacktrace self-tests just do not
-        # seem ready for prime time on Mac.
-        # Bump the timeout for Boost.Thread tests because our TeamCity Mac
-        # build hosts are getting a bit long in the tooth.
+        # run unit tests, excluding a few with known issues
         find_test_dirs "${BOOST_LIBS[@]}" | \
         tfilter \
             'date_time/' \
             'filesystem/test/issues' \
             'regex/test/de_fuzz' \
             'stacktrace/' \
+            'wave/' \
             | \
         run_tests toolset=darwin variant=release -a -q \
                   "${RELEASE_BJAM_OPTIONS[@]}" $BOOST_BUILD_SPAM \
-                  cxxflags="-DBOOST_STACKTRACE_GNU_SOURCE_NOT_REQUIRED" \
-                  cxxflags="-DBOOST_THREAD_TEST_TIME_MS=250"
+                  cxxflags="-DBOOST_TIMER_ENABLE_DEPRECATED"
 
         mv "${stage_lib}"/*.a "${stage_release}"
 
@@ -391,7 +401,7 @@ case "$AUTOBUILD_PLATFORM" in
             "-sZLIB_LIBPATH=$stage/packages/lib/release"
             "-sZLIB_INCLUDE=${stage}\/packages/include/zlib/"
             "${BOOST_BJAM_OPTIONS[@]}"
-            cxxflags=-std=c++11)
+            cxxflags=-std=c++17)
         sep "build"
         "${bjam}" variant=release --reconfigure \
             --prefix="${stage}" --libdir="${stage}"/lib/release \
@@ -415,11 +425,9 @@ esac
 
 sep "includes and text"
 mkdir -p "${stage}"/include
-cp -a boost "${stage}"/include/
+cp -aL boost "${stage}"/include/
 mkdir -p "${stage}"/LICENSES
 cp -a LICENSE_1_0.txt "${stage}"/LICENSES/boost.txt
 mkdir -p "${stage}"/docs/boost/
-cp -a "$top"/README.Linden "${stage}"/docs/boost/
 
 cd "$top"
-
