@@ -19,7 +19,7 @@ if [ -z "$AUTOBUILD" ] ; then
 fi
 
 # Libraries on which we depend - please keep alphabetized for maintenance
-BOOST_LIBS=(context date_time fiber filesystem iostreams program_options
+BOOST_LIBS=(context date_time fiber filesystem json iostreams program_options
             regex stacktrace system thread wave)
 
 # -d0 is quiet, "-d2 -d+4" allows compilation to be examined
