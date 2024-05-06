@@ -1,0 +1,42 @@
+From e4a8aad1795d06bda50e6645596042d0aa9ff0c1 Mon Sep 17 00:00:00 2001
+From: Nat Goodspeed <nat@lindenlab.com>
+Date: Mon Dec 16 10:27:36 2019 -0500
+Subject: [PATCH] DRTVWR-476: Use WIN32_LEAN_AND_MEAN for each #include
+ <windows.h>.
+
+Without that, windows.h eventually #includes winsock.h, which collides with
+winsock2.h, used elsewhere in our #include labyrinth. The symptom is a
+shocking number of macro redefinition fatal warnings in Microsoft headers we
+don't control.
+---
+ include/boost/fiber/detail/cpu_relax.hpp | 1 +
+ include/boost/fiber/detail/futex.hpp     | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/include/boost/fiber/detail/cpu_relax.hpp b/include/boost/fiber/detail/cpu_relax.hpp
+index f79d0ed..8b74cac 100644
+--- a/include/boost/fiber/detail/cpu_relax.hpp
++++ b/include/boost/fiber/detail/cpu_relax.hpp
+@@ -16,6 +16,7 @@
+ #include <boost/fiber/detail/config.hpp>
+ 
+ #if BOOST_COMP_MSVC || BOOST_COMP_MSVC_EMULATED
++#define WIN32_LEAN_AND_MEAN
+ # include <windows.h>
+ #endif
+ 
+diff --git a/include/boost/fiber/detail/futex.hpp b/include/boost/fiber/detail/futex.hpp
+index d0353e9..50b17ff 100644
+--- a/include/boost/fiber/detail/futex.hpp
++++ b/include/boost/fiber/detail/futex.hpp
+@@ -22,6 +22,7 @@ extern "C" {
+ #include <sys/syscall.h>
+ }
+ #elif BOOST_OS_WINDOWS
++#define WIN32_LEAN_AND_MEAN
+ #include <windows.h>
+ #endif
+ 
+-- 
+2.44.0
+

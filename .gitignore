@@ -1,4 +1,1 @@
-boost/bin.v2
-boost/stage
-boost/tools/build
-.DS_Store
+*.tar.bz2

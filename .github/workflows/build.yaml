@@ -1,24 +1,29 @@
 name: Build
-on: [push]
+on:
+  pull_request:
+  push:
+    branches: [main]
+    tags: ["v*"]
 jobs:
   build:
     strategy:
       matrix:
-        os: [windows-2022, macos-11, ubuntu-22.04]
-        addrsize: ["64"]
-        include:
-          - os: windows-2022
-            addrsize: "32"
+        os: [windows-large, macos-13-large, ubuntu-22.04]
     runs-on: ${{ matrix.os }}
     steps:
+      - name: Disable autocrlf
+        shell: bash
+        if: runner.os == 'Windows'
+        run: git config --global core.autocrlf input
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
       - uses: secondlife/action-autobuild@v3
         with:
-          addrsize: ${{ matrix.addrsize }}
+          checkout: false
   release:
     needs: build
     runs-on: [ubuntu-latest]
     if: startsWith(github.ref, 'refs/tags/v')
     steps:
-      - uses: secondlife/action-autobuild-release@v1
-        with:
-          public: true
+      - uses: secondlife/action-autobuild-release@v3
