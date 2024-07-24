@@ -23,7 +23,7 @@ fi
 
 # Libraries on which we depend - please keep alphabetized for maintenance
 BOOST_LIBS=(context date_time fiber filesystem iostreams json program_options
-            regex stacktrace system thread wave)
+            regex stacktrace system thread url wave)
 
 # -d0 is quiet, "-d2 -d+4" allows compilation to be examined
 BOOST_BUILD_SPAM="-d0"
