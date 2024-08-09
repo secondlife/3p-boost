@@ -11,16 +11,7 @@ jobs:
         os: [windows-large, macos-13-large, ubuntu-22.04]
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Disable autocrlf
-        shell: bash
-        if: runner.os == 'Windows'
-        run: git config --global core.autocrlf input
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-      - uses: secondlife/action-autobuild@v3
-        with:
-          checkout: false
+      - uses: secondlife/action-autobuild@v4
   release:
     needs: build
     runs-on: [ubuntu-latest]
