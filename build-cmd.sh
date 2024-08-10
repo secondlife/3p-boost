@@ -50,13 +50,13 @@ apply_patch()
     local patch="$1"
     local path="$2"
     echo "Applying $patch..."
-    git apply --check --reverse --directory="$path" "$patch" || git apply --directory="$path" "$patch"
+    git apply --check --directory="$path" "$patch" || git apply --directory="$path" "$patch"
 }
 
 apply_patch "../patches/libs/config/0001-Define-BOOST_ALL_NO_LIB.patch" "libs/config"
 apply_patch "../patches/libs/fiber/0001-DRTVWR-476-Use-WIN32_LEAN_AND_MEAN-for-each-include-.patch" "libs/fiber"
 
-if [ "$OSTYPE" = "cygwin" ] ; then
+if [[ "$OSTYPE" == "cygwin" || "$OSTYPE" == "msys" ]] ; then
     autobuild="$(cygpath -u $AUTOBUILD)"
     # convert from bash path to native OS pathname
     native()
@@ -87,7 +87,17 @@ BOOST_BJAM_OPTIONS="address-model=$AUTOBUILD_ADDRSIZE architecture=x86 --layout=
 # we're about to add) go into a single array entry.
 BOOST_BJAM_OPTIONS=($BOOST_BJAM_OPTIONS)
 # Append cxxflags as a single entry containing all of LL_BUILD_RELEASE.
-BOOST_BJAM_OPTIONS+=("cxxflags=$LL_BUILD_RELEASE")
+
+case "$AUTOBUILD_PLATFORM" in
+    windows*)
+        BOOST_BJAM_OPTIONS+=("cxxflags=$(replace_switch /Zi /Z7 $LL_BUILD_RELEASE)")
+    ;;
+    *)
+        BOOST_BJAM_OPTIONS+=("cxxflags=$LL_BUILD_RELEASE")
+    ;;
+esac
+
+
 
 stage_lib="${stage}"/lib
 stage_release="${stage_lib}"/release
@@ -335,6 +345,9 @@ case "$AUTOBUILD_PLATFORM" in
         ;;
 
     darwin*)
+        # deploy target
+        export MACOSX_DEPLOYMENT_TARGET=${LL_BUILD_DARWIN_DEPLOY_TARGET}
+
         # Force zlib static linkage by moving .dylibs out of the way
         trap restore_dylibs EXIT
         for dylib in "${stage}"/packages/lib/{debug,release}/*.dylib; do
