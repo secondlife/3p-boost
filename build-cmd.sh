@@ -50,7 +50,7 @@ apply_patch()
     local patch="$1"
     local path="$2"
     echo "Applying $patch..."
-    git apply --check --directory="$path" "$patch" || git apply --directory="$path" "$patch"
+    git apply --check --reverse --directory="$path" "$patch" || git apply --directory="$path" "$patch"
 }
 
 apply_patch "../patches/libs/config/0001-Define-BOOST_ALL_NO_LIB.patch" "libs/config"
