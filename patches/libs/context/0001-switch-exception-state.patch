@@ -1,0 +1,65 @@
+diff --git a/include/boost/context/fiber_fcontext.hpp b/include/boost/context/fiber_fcontext.hpp
+index a2760cb..3d445bf 100644
+--- a/include/boost/context/fiber_fcontext.hpp
++++ b/include/boost/context/fiber_fcontext.hpp
+@@ -13,6 +13,7 @@
+ #include <cstddef>
+ #include <cstdint>
+ #include <cstdlib>
++#include <cxxabi.h>
+ #include <exception>
+ #include <functional>
+ #include <memory>
+@@ -60,6 +61,25 @@
+ # pragma warning(disable: 4702)
+ #endif
+ 
++namespace __cxxabiv1 {
++struct __cxa_eh_globals {
++    void *       caughtExceptions;
++    unsigned int uncaughtExceptions;
++};
++
++class manage_exception_state {
++public:
++    manage_exception_state() {
++        exception_state_ = *__cxa_get_globals();
++    }
++    ~manage_exception_state() {
++        *__cxa_get_globals() = exception_state_;
++    }
++private:
++    __cxa_eh_globals exception_state_;
++};
++} // namespace __cxxabiv1
++
+ namespace boost {
+ namespace context {
+ namespace detail {
+@@ -248,7 +268,9 @@ fcontext_t create_fiber2( preallocated palloc, StackAlloc && salloc, Fn && fn) {
+     return jump_fcontext( fctx, record).fctx;
+ }
+ 
+-}
++using __cxxabiv1::manage_exception_state;
++
++} // namespace detail
+ 
+ class fiber {
+ private:
+@@ -323,6 +345,7 @@ public:
+ 
+     fiber resume() && {
+         BOOST_ASSERT( nullptr != fctx_);
++        detail::manage_exception_state exstate;
+         return { detail::jump_fcontext(
+ #if defined(BOOST_NO_CXX14_STD_EXCHANGE)
+                     detail::exchange( fctx_, nullptr),
+@@ -335,6 +358,7 @@ public:
+     template< typename Fn >
+     fiber resume_with( Fn && fn) && {
+         BOOST_ASSERT( nullptr != fctx_);
++        detail::manage_exception_state exstate;
+         auto p = std::forward< Fn >( fn);
+         return { detail::ontop_fcontext(
+ #if defined(BOOST_NO_CXX14_STD_EXCHANGE)
