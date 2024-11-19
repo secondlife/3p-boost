@@ -435,7 +435,7 @@ case "$AUTOBUILD_PLATFORM" in
             btest="$(basename "$test")"
             testo="/tmp/$btest"
             sep "$btest"
-            if c++ -I. -o "$testo" "$test"
+            if c++ -I. -o "$testo" "$test" "${stage_release}"/*
             then
                 "$testo"
                 rm "$testo"
