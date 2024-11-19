@@ -50,7 +50,11 @@ apply_patch()
     local patch="$1"
     local path="$2"
     echo "Applying $patch..."
-    git apply --check --reverse --directory="$path" "$patch" || git apply --directory="$path" "$patch"
+    if ! git apply --check --reverse --directory="$path" "$patch" || git apply --directory="$path" "$patch"
+    then
+        echo "==================== $path ===================="
+        git -C "$path" diff
+    fi
 }
 
 apply_patch "../patches/libs/config/0001-Define-BOOST_ALL_NO_LIB.patch" "libs/config"
@@ -425,6 +429,18 @@ case "$AUTOBUILD_PLATFORM" in
 
         sep "clean"
         "${bjam}" --clean
+
+        for test in "$top"/tests/*.cpp
+        do
+            btest="$(basename "$test")"
+            testo="/tmp/$btest"
+            sep "$btest"
+            if c++ -I. -o "$testo" "$test"
+            then
+                "$testo"
+                rm "$testo"
+            fi
+        done
 
         # populate version_file
         sep "version"
