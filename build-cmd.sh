@@ -50,16 +50,26 @@ apply_patch()
     local patch="$1"
     local path="$2"
     echo "Applying $patch..."
-    if ! git apply --check --reverse --directory="$path" "$patch" || git apply --directory="$path" "$patch"
-    then
-        echo "==================== $path ===================="
-        git -C "$path" diff
-    fi
+    git apply --check --reverse --directory="$path" "$patch" || git apply --directory="$path" "$patch"
 }
 
 apply_patch "../patches/libs/config/0001-Define-BOOST_ALL_NO_LIB.patch" "libs/config"
+if [[ $? -ne 0 ]]
+then
+    nl -b a libs/config/include/boost/config/user.hpp
+fi
 apply_patch "../patches/libs/context/0001-switch-exception-state.patch" "libs/context"
+if [[ $? -ne 0 ]]
+then
+    nl -b a libs/context/include/boost/context/fiber_fcontext.hpp
+fi
 apply_patch "../patches/libs/fiber/0001-DRTVWR-476-Use-WIN32_LEAN_AND_MEAN-for-each-include-.patch" "libs/fiber"
+if [[ $? -ne 0 ]]
+then
+    nl -b a libs/fiber/include/boost/fiber/detail/cpu_relax.hpp
+    echo "----"
+    nl -b a libs/fiber/include/boost/fiber/detail/futex.hpp
+fi
 
 if [[ "$OSTYPE" == "cygwin" || "$OSTYPE" == "msys" ]] ; then
     autobuild="$(cygpath -u $AUTOBUILD)"
