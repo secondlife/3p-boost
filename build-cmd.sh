@@ -17,7 +17,7 @@ else
 fi
 
 
-if [ -z "$AUTOBUILD" ] ; then 
+if [ -z "$AUTOBUILD" ] ; then
     exit 1
 fi
 
@@ -79,7 +79,7 @@ source_environment_tempfile="$stage/source_environment.sh"
 
 # Explicitly request each of the libraries named in BOOST_LIBS.
 # Use magic bash syntax to prefix each entry in BOOST_LIBS with "--with-".
-BOOST_BJAM_OPTIONS="address-model=$AUTOBUILD_ADDRSIZE architecture=x86 --layout=tagged -sNO_BZIP2=1 -sNO_LZMA=1 -sNO_ZSTD=1 -j$NPROC\
+BOOST_BJAM_OPTIONS="address-model=$AUTOBUILD_ADDRSIZE cxxstd=20 --layout=tagged -sNO_BZIP2=1 -sNO_LZMA=1 -sNO_ZSTD=1 -j$AUTOBUILD_CPU_COUNT\
                     ${BOOST_LIBS[*]/#/--with-}"
 
 
@@ -215,23 +215,11 @@ sep()
     $PYTHON "$(native "$top")/timestamp.py" "$start_time" "$last_file" "$@"
 }
 
-# bjam doesn't support a -sICU_LIBPATH to point to the location
-# of the icu libraries like it does for zlib. Instead, it expects
-# the library files to be immediately in the ./lib directory
-# and the headers to be in the ./include directory and doesn't
-# provide a way to work around this. Because of this, we break
-# the standard packaging layout, with the debug library files
-# in ./lib/debug and the release in ./lib/release and instead
-# only package the release build of icu4c in the ./lib directory.
-# If a way to work around this is found, uncomment the
-# corresponding blocks in the icu4c build and fix it here.
-
 case "$AUTOBUILD_PLATFORM" in
 
     windows*)
         INCLUDE_PATH="$(native "${stage}"/packages/include)"
         ZLIB_RELEASE_PATH="$(native "${stage}"/packages/lib/release)"
-        ICU_PATH="$(native "${stage}"/packages)"
 
         if [[ -z "$AUTOBUILD_WIN_VSTOOLSET" ]]
         then
@@ -281,12 +269,13 @@ case "$AUTOBUILD_PLATFORM" in
         # https://www.boost.org/doc/libs/release/doc/html/stacktrace/configuration_and_build.html
         # This helps avoid macro collisions in consuming source files:
         # https://github.com/boostorg/stacktrace/issues/76#issuecomment-489347839
-        WINDOWS_BJAM_OPTIONS=(-j$(nproc)
+        WINDOWS_BJAM_OPTIONS=(
             --hash
-            "include=$INCLUDE_PATH" "-sICU_PATH=$ICU_PATH"
+            "include=$INCLUDE_PATH"
             "-sZLIB_INCLUDE=$INCLUDE_PATH/zlib-ng"
             cxxflags=/FS
             cxxflags=/DBOOST_STACKTRACE_LINK
+            architecture=x86
             "${BOOST_BJAM_OPTIONS[@]}")
 
         RELEASE_BJAM_OPTIONS=("${WINDOWS_BJAM_OPTIONS[@]}"
@@ -358,20 +347,24 @@ case "$AUTOBUILD_PLATFORM" in
 
         sep "bootstrap"
         stage_lib="${stage}"/lib
-        ./bootstrap.sh --prefix=$(pwd) --with-icu="${stage}"/packages
+        ./bootstrap.sh --prefix=$(pwd)
 
         DARWIN_BJAM_OPTIONS=("${BOOST_BJAM_OPTIONS[@]}"
             "include=${stage}/packages/include"
             "include=${stage}/packages/include/zlib-ng/"
             "-sZLIB_INCLUDE=${stage}/packages/include/zlib-ng/"
             "--disable-icu"
-            cxxflags=-std=c++17)
+            "-sZLIB_LIBPATH=${stage}/packages/lib/release"
+            toolset=clang-darwin)
 
-        RELEASE_BJAM_OPTIONS=("${DARWIN_BJAM_OPTIONS[@]}"
-            "-sZLIB_LIBPATH=${stage}/packages/lib/release")
+        ARM64_OPTIONS=("${DARWIN_BJAM_OPTIONS[@]}" target-os=darwin abi=aapcs binary-format=mach-o address-model=64 architecture=arm \
+            cxxflags="-arch arm64" cflags="-arch arm64" linkflags="-arch arm64")
 
-        sep "build"
-        "${bjam}" toolset=darwin variant=release "${RELEASE_BJAM_OPTIONS[@]}" $BOOST_BUILD_SPAM stage
+        X86_OPTIONS=("${DARWIN_BJAM_OPTIONS[@]}" target-os=darwin abi=sysv binary-format=mach-o address-model=64 architecture=x86 \
+            "cxxflags=-arch x86_64" "cflags=-arch x86_64" linkflags="-arch x86_64")
+
+        sep "build_x86_64"
+        "${bjam}" toolset=clang-darwin variant=release "${X86_OPTIONS[@]}" $BOOST_BUILD_SPAM --stagedir="$stage/release_x86_64" stage
 
         # run unit tests, excluding a few with known issues
         find_test_dirs "${BOOST_LIBS[@]}" | \
@@ -382,11 +375,47 @@ case "$AUTOBUILD_PLATFORM" in
             'stacktrace/' \
             'wave/' \
             | \
-        run_tests toolset=darwin variant=release -a -q \
-                  "${RELEASE_BJAM_OPTIONS[@]}" $BOOST_BUILD_SPAM \
+        run_tests toolset=clang-darwin variant=release -a -q \
+                  "${X86_OPTIONS[@]}" $BOOST_BUILD_SPAM \
                   cxxflags="-DBOOST_TIMER_ENABLE_DEPRECATED"
 
-        mv "${stage_lib}"/*.a "${stage_release}"
+        rm -r bin.v2/
+
+        sep "build_arm64"
+        "${bjam}" toolset=clang-darwin variant=release "${ARM64_OPTIONS[@]}" $BOOST_BUILD_SPAM --stagedir="$stage/release_arm64" stage
+
+        # run unit tests, excluding a few with known issues
+        find_test_dirs "${BOOST_LIBS[@]}" | \
+        tfilter \
+            'date_time/' \
+            'filesystem/test/issues' \
+            'regex/test/de_fuzz' \
+            'stacktrace/' \
+            'wave/' \
+            | \
+        run_tests toolset=clang-darwin variant=release -a -q \
+                  "${ARM64_OPTIONS[@]}" $BOOST_BUILD_SPAM \
+                  cxxflags="-DBOOST_TIMER_ENABLE_DEPRECATED"
+
+        # create release universal libs
+        lipo -create -output ${stage_release}/libboost_atomic-mt.a ${stage}/release_x86_64/lib/libboost_atomic-mt-x64.a ${stage}/release_arm64/lib/libboost_atomic-mt-a64.a
+        lipo -create -output ${stage_release}/libboost_chrono-mt.a ${stage}/release_x86_64/lib/libboost_chrono-mt-x64.a ${stage}/release_arm64/lib/libboost_chrono-mt-a64.a
+        lipo -create -output ${stage_release}/libboost_container-mt.a ${stage}/release_x86_64/lib/libboost_container-mt-x64.a ${stage}/release_arm64/lib/libboost_container-mt-a64.a
+        lipo -create -output ${stage_release}/libboost_context-mt.a ${stage}/release_x86_64/lib/libboost_context-mt-x64.a ${stage}/release_arm64/lib/libboost_context-mt-a64.a
+        lipo -create -output ${stage_release}/libboost_date_time-mt.a ${stage}/release_x86_64/lib/libboost_date_time-mt-x64.a ${stage}/release_arm64/lib/libboost_date_time-mt-a64.a
+        lipo -create -output ${stage_release}/libboost_fiber-mt.a ${stage}/release_x86_64/lib/libboost_fiber-mt-x64.a ${stage}/release_arm64/lib/libboost_fiber-mt-a64.a
+        lipo -create -output ${stage_release}/libboost_filesystem-mt.a ${stage}/release_x86_64/lib/libboost_filesystem-mt-x64.a ${stage}/release_arm64/lib/libboost_filesystem-mt-a64.a
+        lipo -create -output ${stage_release}/libboost_iostreams-mt.a ${stage}/release_x86_64/lib/libboost_iostreams-mt-x64.a ${stage}/release_arm64/lib/libboost_iostreams-mt-a64.a
+        lipo -create -output ${stage_release}/libboost_json-mt.a ${stage}/release_x86_64/lib/libboost_json-mt-x64.a ${stage}/release_arm64/lib/libboost_json-mt-a64.a
+        lipo -create -output ${stage_release}/libboost_program_options-mt.a ${stage}/release_x86_64/lib/libboost_program_options-mt-x64.a ${stage}/release_arm64/lib/libboost_program_options-mt-a64.a
+        lipo -create -output ${stage_release}/libboost_regex-mt.a ${stage}/release_x86_64/lib/libboost_regex-mt-x64.a ${stage}/release_arm64/lib/libboost_regex-mt-a64.a
+        lipo -create -output ${stage_release}/libboost_stacktrace_addr2line-mt.a ${stage}/release_x86_64/lib/libboost_stacktrace_addr2line-mt-x64.a ${stage}/release_arm64/lib/libboost_stacktrace_addr2line-mt-a64.a
+        lipo -create -output ${stage_release}/libboost_stacktrace_basic-mt.a ${stage}/release_x86_64/lib/libboost_stacktrace_basic-mt-x64.a ${stage}/release_arm64/lib/libboost_stacktrace_basic-mt-a64.a
+        lipo -create -output ${stage_release}/libboost_stacktrace_noop-mt.a ${stage}/release_x86_64/lib/libboost_stacktrace_noop-mt-x64.a ${stage}/release_arm64/lib/libboost_stacktrace_noop-mt-a64.a
+        lipo -create -output ${stage_release}/libboost_system-mt.a ${stage}/release_x86_64/lib/libboost_system-mt-x64.a ${stage}/release_arm64/lib/libboost_system-mt-a64.a
+        lipo -create -output ${stage_release}/libboost_thread-mt.a ${stage}/release_x86_64/lib/libboost_thread-mt-x64.a ${stage}/release_arm64/lib/libboost_thread-mt-a64.a
+        lipo -create -output ${stage_release}/libboost_url-mt.a ${stage}/release_x86_64/lib/libboost_url-mt-x64.a ${stage}/release_arm64/lib/libboost_url-mt-a64.a
+        lipo -create -output ${stage_release}/libboost_wave-mt.a ${stage}/release_x86_64/lib/libboost_wave-mt-x64.a ${stage}/release_arm64/lib/libboost_wave-mt-a64.a
 
         # populate version_file
         sep "version"
@@ -408,13 +437,12 @@ case "$AUTOBUILD_PLATFORM" in
         done
 
         sep "bootstrap"
-        ./bootstrap.sh --prefix=$(pwd) --with-icu="${stage}"/packages/
+        ./bootstrap.sh --prefix=$(pwd)
 
-        RELEASE_BOOST_BJAM_OPTIONS=(toolset=gcc "include=$stage/packages/include/zlib-ng/"
+        RELEASE_BOOST_BJAM_OPTIONS=(toolset=gcc architecture=x86 "include=$stage/packages/include/zlib-ng/"
             "-sZLIB_LIBPATH=$stage/packages/lib/release"
             "-sZLIB_INCLUDE=${stage}\/packages/include/zlib/"
-            "${BOOST_BJAM_OPTIONS[@]}"
-            cxxflags=-std=c++17)
+            "${BOOST_BJAM_OPTIONS[@]}")
         sep "build"
         "${bjam}" variant=release --reconfigure \
             --prefix="${stage}" --libdir="${stage}"/lib/release \
