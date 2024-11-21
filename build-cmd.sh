@@ -352,8 +352,10 @@ fi # =========================================================================
             testo="$TEMP/$btest.obj"
             testx="$TEMP/$btest.exe"
             sep "$btest"
-            if cl /EHsc /I. /Fo"$(native "$testo")" /Fe"$(native "$testx")" "$(native "$test")" \
-                  /link /libpath:"$(native "${stage_release}")"
+            if cl \
+               /DBOOST_USE_WINFIB \
+               /EHsc /I. /Fo"$(native "$testo")" /Fe"$(native "$testx")" "$(native "$test")" \
+               /link /libpath:"$(native "${stage_release}")"
             then
                 "$testx"
                 rm "$testo" "$testx"
