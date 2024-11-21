@@ -50,18 +50,14 @@ apply_patch()
     local patch="$1"
     local path="$2"
     echo "Applying $patch..."
-    git apply --check --reverse --directory="$path" "$patch" || git apply --directory="$path" "$patch"
+    git apply --check --reverse --directory="$path" "$patch" 2>/dev/null || \
+        git apply --directory="$path" "$patch"
 }
 
 apply_patch "../patches/libs/config/0001-Define-BOOST_ALL_NO_LIB.patch" "libs/config"
 if [[ $? -ne 0 ]]
 then
     nl -b a libs/config/include/boost/config/user.hpp
-fi
-apply_patch "../patches/libs/context/0001-switch-exception-state.patch" "libs/context"
-if [[ $? -ne 0 ]]
-then
-    nl -b a libs/context/include/boost/context/fiber_fcontext.hpp
 fi
 apply_patch "../patches/libs/fiber/0001-DRTVWR-476-Use-WIN32_LEAN_AND_MEAN-for-each-include-.patch" "libs/fiber"
 if [[ $? -ne 0 ]]
@@ -414,6 +410,13 @@ case "$AUTOBUILD_PLATFORM" in
         ;;
 
     linux*)
+        # patch is specific to libstdc++
+        apply_patch "../patches/libs/context/0001-switch-exception-state.patch" "libs/context"
+        if [[ $? -ne 0 ]]
+        then
+            nl -b a libs/context/include/boost/context/fiber_fcontext.hpp
+        fi
+
         # Force static linkage to libz by moving .sos out of the way
         trap restore_sos EXIT
         for solib in "${stage}"/packages/lib/debug/libz.so* "${stage}"/packages/lib/release/libz.so*; do
