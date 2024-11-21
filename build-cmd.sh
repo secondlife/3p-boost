@@ -352,7 +352,7 @@ fi # =========================================================================
             testo="$TEMP/$btest.obj"
             testx="$TEMP/$btest.exe"
             sep "$btest"
-            if cl /EHsc /Fo"$(native "$testo")" /Fe"$(native "$testx")" "$(native "$test")" \
+            if cl /EHsc /I. /Fo"$(native "$testo")" /Fe"$(native "$testx")" "$(native "$test")" \
                   /link /libpath "$(native "${stage_release}")"
             then
                 "$testx"
