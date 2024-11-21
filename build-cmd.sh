@@ -298,6 +298,7 @@ case "$AUTOBUILD_PLATFORM" in
             "-sZLIB_INCLUDE=$INCLUDE_PATH/zlib-ng"
             cxxflags=/FS
             cxxflags=/DBOOST_STACKTRACE_LINK
+            cxxflags=/DBOOST_USE_WINFIB
             "${BOOST_BJAM_OPTIONS[@]}")
 
         RELEASE_BJAM_OPTIONS=("${WINDOWS_BJAM_OPTIONS[@]}"
@@ -305,7 +306,7 @@ case "$AUTOBUILD_PLATFORM" in
             "-sZLIB_LIBRARY_PATH=$ZLIB_RELEASE_PATH"
             "-sZLIB_NAME=zlib")
         sep "build"
-        "${bjam}" link=static variant=release \
+        "${bjam}" link=static variant=release context-impl=winfib \
             --prefix="$(native "${stage}")" --libdir="$(native "${stage_release}")" \
             "${RELEASE_BJAM_OPTIONS[@]}" $BOOST_BUILD_SPAM stage
 
