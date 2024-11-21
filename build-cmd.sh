@@ -306,9 +306,11 @@ case "$AUTOBUILD_PLATFORM" in
             "-sZLIB_LIBRARY_PATH=$ZLIB_RELEASE_PATH"
             "-sZLIB_NAME=zlib")
         sep "build"
+        set -x
         "${bjam}" link=static variant=release context-impl=winfib \
             --prefix="$(native "${stage}")" --libdir="$(native "${stage_release}")" \
             "${RELEASE_BJAM_OPTIONS[@]}" $BOOST_BUILD_SPAM stage
+        set +x
 
         # Constraining Windows unit tests to link=static produces unit-test
         # link errors. While it may be possible to edit the test/Jamfile.v2
@@ -353,6 +355,7 @@ fi # =========================================================================
             testo="$TEMP/$btest.obj"
             testx="$TEMP/$btest.exe"
             sep "$btest"
+            set -x
             if cl \
                /DBOOST_USE_WINFIB \
                /EHsc /I. /Fo"$(native "$testo")" /Fe"$(native "$testx")" "$(native "$test")" \
@@ -361,6 +364,7 @@ fi # =========================================================================
                 "$testx"
                 rm "$testo" "$testx"
             fi
+            set +x
         done
 
         sep "version"
