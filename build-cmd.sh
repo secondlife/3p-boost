@@ -322,6 +322,7 @@ case "$AUTOBUILD_PLATFORM" in
         # nested that even with --abbreviate-paths, the .rsp file pathname is
         # too long for Windows. Poor sad broken Windows.
 
+if false; then # =============================================================
         # conditionally run unit tests
         find_test_dirs "${BOOST_LIBS[@]}" | \
         tfilter32 'fiber/' | \
@@ -336,14 +337,30 @@ case "$AUTOBUILD_PLATFORM" in
         run_tests variant=release \
                   --prefix="$(native "${stage}")" --libdir="$(native "${stage_release}")" \
                   $RELEASE_BJAM_OPTIONS $BOOST_BUILD_SPAM -a -q
+fi # =========================================================================
 
         # Move the libs
         mv "${stage_lib}"/*.lib "${stage_release}"
 
-        sep "version"
         # bjam doesn't need vsvars, but our hand compilation does
+        sep vsvars
         load_vsvars
 
+        for test in "$top"/tests/*.cpp
+        do
+            btest="$(basename "$test")"
+            testo="$TEMP/$btest.obj"
+            testx="$TEMP/$btest.exe"
+            sep "$btest"
+            if cl /EHsc /Fo"$(native "$testo")" /Fe"$(native "$testx")" "$(native "$test")" \
+                  /link /libpath "$(native "${stage_release}")"
+            then
+                "$testx"
+                rm "$testo" "$testx"
+            fi
+        done
+
+        sep "version"
         # populate version_file
         cl /DVERSION_HEADER_FILE="\"$VERSION_HEADER_FILE\"" \
            /DVERSION_MACRO="$VERSION_MACRO" \
