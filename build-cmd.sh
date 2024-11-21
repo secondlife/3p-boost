@@ -340,11 +340,7 @@ if false; then # =============================================================
 fi # =========================================================================
 
         # Move the libs
-        echo "stage=$stage"
-        echo "stage_lib=$stage_lib"
-        echo "stage_release=$stage_release"
-        echo "native stage_release=$(native "${stage_release}")"
-        mv -v "${stage_lib}"/*.lib "${stage_release}"
+        mv "${stage_lib}"/*.lib "${stage_release}"
 
         # bjam doesn't need vsvars, but our hand compilation does
         sep vsvars
@@ -357,7 +353,7 @@ fi # =========================================================================
             testx="$TEMP/$btest.exe"
             sep "$btest"
             if cl /EHsc /I. /Fo"$(native "$testo")" /Fe"$(native "$testx")" "$(native "$test")" \
-                  /link /libpath "$(native "${stage_release}")"
+                  /link /libpath:"$(native "${stage_release}")"
             then
                 "$testx"
                 rm "$testo" "$testx"
