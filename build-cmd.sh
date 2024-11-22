@@ -363,6 +363,9 @@ fi # =========================================================================
             then
                 "$testx"
                 rm "$testo" "$testx"
+            else
+                echo "libraries in ${stage_release}:"
+                ls -l "${stage_release}"
             fi
             set +x
         done
