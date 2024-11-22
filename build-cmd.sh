@@ -355,12 +355,13 @@ fi # =========================================================================
             testo="$TEMP/$btest.obj"
             testx="$TEMP/$btest.exe"
             sep "$btest"
-            set -x
-            if cl \
-               /DBOOST_USE_WINFIB $(replace_switch /Zi /Z7 $LL_BUILD_RELEASE) \
+            compile=(cl \
+               /DBOOST_USE_WINFIB /EHsc $(replace_switch /Zi /Z7 $LL_BUILD_RELEASE) \
                /I. /Fo"$(native "$testo")" /Fe"$(native "$testx")" "$(native "$test")" \
                "$(native "${stage_release}/libboost_context-mt-x64.lib")" \
-               /link /libpath:"$(native "${stage_release}")"
+               /link /libpath:"$(native "${stage_release}")")
+            echo "${compile[*]}"
+            if "${compile[@]}"
             then
                 "$testx"
                 rm "$testo" "$testx"
@@ -368,7 +369,6 @@ fi # =========================================================================
                 echo "libraries in ${stage_release}:"
                 ls -l "${stage_release}"
             fi
-            set +x
         done
 
         sep "version"
