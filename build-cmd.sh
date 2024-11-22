@@ -357,8 +357,8 @@ fi # =========================================================================
             sep "$btest"
             set -x
             if cl \
-               /DBOOST_USE_WINFIB \
-               /EHsc /I. /Fo"$(native "$testo")" /Fe"$(native "$testx")" "$(native "$test")" \
+               /DBOOST_USE_WINFIB "$(replace_switch /Zi /Z7 $LL_BUILD_RELEASE)" \
+               /I. /Fo"$(native "$testo")" /Fe"$(native "$testx")" "$(native "$test")" \
                "$(native "${stage_release}/libboost_context-mt-x64.lib")" \
                /link /libpath:"$(native "${stage_release}")"
             then
