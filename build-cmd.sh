@@ -54,17 +54,11 @@ apply_patch()
         git apply --directory="$path" "$patch"
 }
 
-# ----------------------------------------------------------------------------
-# For exception test linking, skip this patch: we DO want to be able to link
-# the correct libraries automatically.
-if false; then
 apply_patch "../patches/libs/config/0001-Define-BOOST_ALL_NO_LIB.patch" "libs/config"
 if [[ $? -ne 0 ]]
 then
     nl -b a libs/config/include/boost/config/user.hpp
 fi
-fi
-# ----------------------------------------------------------------------------
 apply_patch "../patches/libs/fiber/0001-DRTVWR-476-Use-WIN32_LEAN_AND_MEAN-for-each-include-.patch" "libs/fiber"
 if [[ $? -ne 0 ]]
 then
@@ -365,6 +359,7 @@ fi # =========================================================================
             if cl \
                /DBOOST_USE_WINFIB \
                /EHsc /I. /Fo"$(native "$testo")" /Fe"$(native "$testx")" "$(native "$test")" \
+               "$(native "${stage_release}/libboost_context-mt-x64.lib")" \
                /link /libpath:"$(native "${stage_release}")"
             then
                 "$testx"
