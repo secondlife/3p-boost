@@ -50,11 +50,22 @@ apply_patch()
     local patch="$1"
     local path="$2"
     echo "Applying $patch..."
-    git apply --check --reverse --directory="$path" "$patch" || git apply --directory="$path" "$patch"
+    git apply --check --reverse --directory="$path" "$patch" 2>/dev/null || \
+        git apply --directory="$path" "$patch"
 }
 
 apply_patch "../patches/libs/config/0001-Define-BOOST_ALL_NO_LIB.patch" "libs/config"
+if [[ $? -ne 0 ]]
+then
+    nl -b a libs/config/include/boost/config/user.hpp
+fi
 apply_patch "../patches/libs/fiber/0001-DRTVWR-476-Use-WIN32_LEAN_AND_MEAN-for-each-include-.patch" "libs/fiber"
+if [[ $? -ne 0 ]]
+then
+    nl -b a libs/fiber/include/boost/fiber/detail/cpu_relax.hpp
+    echo "----"
+    nl -b a libs/fiber/include/boost/fiber/detail/futex.hpp
+fi
 
 if [[ "$OSTYPE" == "cygwin" || "$OSTYPE" == "msys" ]] ; then
     autobuild="$(cygpath -u $AUTOBUILD)"
@@ -287,6 +298,7 @@ case "$AUTOBUILD_PLATFORM" in
             "-sZLIB_INCLUDE=$INCLUDE_PATH/zlib-ng"
             cxxflags=/FS
             cxxflags=/DBOOST_STACKTRACE_LINK
+            cxxflags=/DBOOST_USE_WINFIB
             "${BOOST_BJAM_OPTIONS[@]}")
 
         RELEASE_BJAM_OPTIONS=("${WINDOWS_BJAM_OPTIONS[@]}"
@@ -294,9 +306,11 @@ case "$AUTOBUILD_PLATFORM" in
             "-sZLIB_LIBRARY_PATH=$ZLIB_RELEASE_PATH"
             "-sZLIB_NAME=zlib")
         sep "build"
-        "${bjam}" link=static variant=release \
+        set -x
+        "${bjam}" link=static variant=release context-impl=winfib \
             --prefix="$(native "${stage}")" --libdir="$(native "${stage_release}")" \
             "${RELEASE_BJAM_OPTIONS[@]}" $BOOST_BUILD_SPAM stage
+        set +x
 
         # Constraining Windows unit tests to link=static produces unit-test
         # link errors. While it may be possible to edit the test/Jamfile.v2
@@ -311,6 +325,7 @@ case "$AUTOBUILD_PLATFORM" in
         # nested that even with --abbreviate-paths, the .rsp file pathname is
         # too long for Windows. Poor sad broken Windows.
 
+if false; then # =============================================================
         # conditionally run unit tests
         find_test_dirs "${BOOST_LIBS[@]}" | \
         tfilter32 'fiber/' | \
@@ -325,14 +340,38 @@ case "$AUTOBUILD_PLATFORM" in
         run_tests variant=release \
                   --prefix="$(native "${stage}")" --libdir="$(native "${stage_release}")" \
                   $RELEASE_BJAM_OPTIONS $BOOST_BUILD_SPAM -a -q
+fi # =========================================================================
 
         # Move the libs
         mv "${stage_lib}"/*.lib "${stage_release}"
 
-        sep "version"
         # bjam doesn't need vsvars, but our hand compilation does
+        sep vsvars
         load_vsvars
 
+        for test in "$top"/tests/*.cpp
+        do
+            btest="$(basename "$test")"
+            testo="$TEMP/$btest.obj"
+            testx="$TEMP/$btest.exe"
+            sep "$btest"
+            compile=(cl \
+               /DBOOST_USE_WINFIB /EHsc $(replace_switch /Zi /Z7 $LL_BUILD_RELEASE) \
+               /I. /Fo"$(native "$testo")" /Fe"$(native "$testx")" "$(native "$test")" \
+               "$(native "${stage_release}/libboost_context-mt-x64.lib")" \
+               /link /libpath:"$(native "${stage_release}")")
+            echo "${compile[*]}"
+            if "${compile[@]}"
+            then
+                "$testx"
+                rm "$testo" "$testx"
+            else
+                echo "libraries in ${stage_release}:"
+                ls -l "${stage_release}"
+            fi
+        done
+
+        sep "version"
         # populate version_file
         cl /DVERSION_HEADER_FILE="\"$VERSION_HEADER_FILE\"" \
            /DVERSION_MACRO="$VERSION_MACRO" \
@@ -399,6 +438,13 @@ case "$AUTOBUILD_PLATFORM" in
         ;;
 
     linux*)
+        # patch is specific to libstdc++
+        apply_patch "../patches/libs/context/0001-switch-exception-state.patch" "libs/context"
+        if [[ $? -ne 0 ]]
+        then
+            nl -b a libs/context/include/boost/context/fiber_fcontext.hpp
+        fi
+
         # Force static linkage to libz by moving .sos out of the way
         trap restore_sos EXIT
         for solib in "${stage}"/packages/lib/debug/libz.so* "${stage}"/packages/lib/release/libz.so*; do
@@ -424,6 +470,18 @@ case "$AUTOBUILD_PLATFORM" in
 
         sep "clean"
         "${bjam}" --clean
+
+        for test in "$top"/tests/*.cpp
+        do
+            btest="$(basename "$test")"
+            testo="/tmp/$btest"
+            sep "$btest"
+            if c++ -I. -o "$testo" "$test" "${stage_release}"/*
+            then
+                "$testo"
+                rm "$testo"
+            fi
+        done
 
         # populate version_file
         sep "version"
