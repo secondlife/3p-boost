@@ -16,11 +16,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>3a6593c71c59ace76d1349483759fcde4b719a76</string>
+              <string>4d437afc7fc3988cf0c78ed05853a211cc6bf8b8</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-zlib-ng/releases/download/v2.2.1-r2/zlib_ng-2.2.1-r2-darwin64-10324415171.tar.zst</string>
+              <string>https://github.com/secondlife/3p-zlib-ng/releases/download/v2.2.2-r1/zlib_ng-2.2.2-dev0.gcaa101e.d20241120-darwin64-11943461931.tar.zst</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
@@ -30,11 +30,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>fbadeb0b8c771cb06c0055c9fab6d40c6764dacd</string>
+              <string>70c1d8728b85481bd42904c1213ed50264e77be1</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-zlib-ng/releases/download/v2.2.1-r2/zlib_ng-2.2.1-r2-linux64-10324415171.tar.zst</string>
+              <string>https://github.com/secondlife/3p-zlib-ng/releases/download/v2.2.2-r1/zlib_ng-2.2.2-dev0.gcaa101e.d20241120-linux64-11943461931.tar.zst</string>
             </map>
             <key>name</key>
             <string>linux64</string>
@@ -58,11 +58,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>0094031715662be626f5106ff6c814f4fc3dacfa</string>
+              <string>f98c30b20120511ecceab8bf1b5eba048b10aade</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-zlib-ng/releases/download/v2.2.1-r2/zlib_ng-2.2.1-r2-windows64-10324415171.tar.zst</string>
+              <string>https://github.com/secondlife/3p-zlib-ng/releases/download/v2.2.2-r1/zlib_ng-2.2.2-dev0.gcaa101e.d20241120-windows64-11943461931.tar.zst</string>
             </map>
             <key>name</key>
             <string>windows64</string>
@@ -75,7 +75,7 @@
         <key>copyright</key>
         <string>Copyright (C) 1995-2013 Jean-loup Gailly and Mark Adler</string>
         <key>version</key>
-        <string>2.2.1-r2</string>
+        <string>2.2.2-dev0.gcaa101e.d20241120</string>
         <key>name</key>
         <string>zlib-ng</string>
         <key>canonical_repo</key>
