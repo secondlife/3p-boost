@@ -346,7 +346,6 @@ fi # =========================================================================
         mv "${stage_lib}"/*.lib "${stage_release}"
 
         # bjam doesn't need vsvars, but our hand compilation does
-        sep vsvars
         load_vsvars
 
         for test in "$top"/tests/*.cpp
