@@ -8,8 +8,7 @@ jobs:
   build:
     strategy:
       matrix:
-##      os: [windows-large, ubuntu-22.04]
-        os: [ubuntu-22.04]
+        os: [windows-large, ubuntu-22.04]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: secondlife/action-autobuild@v5
