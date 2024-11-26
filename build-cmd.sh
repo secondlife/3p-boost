@@ -446,6 +446,19 @@ fi # =========================================================================
         lipo -create -output ${stage_release}/libboost_url-mt.a ${stage}/release_x86_64/lib/libboost_url-mt-x64.a ${stage}/release_arm64/lib/libboost_url-mt-a64.a
         lipo -create -output ${stage_release}/libboost_wave-mt.a ${stage}/release_x86_64/lib/libboost_wave-mt-x64.a ${stage}/release_arm64/lib/libboost_wave-mt-a64.a
 
+        for test in "$top"/tests/*.cpp
+        do
+            btest="$(basename "$test")"
+            testo="/tmp/$btest"
+            sep "$btest"
+            if c++ -std=c++20 -arch x86_64 \
+                   -I. -o "$testo" "$test" "${stage_release}"/*
+            then
+                "$testo" || true
+                rm "$testo"
+            fi
+        done
+
         # populate version_file
         sep "version"
         cc -DVERSION_HEADER_FILE="\"$VERSION_HEADER_FILE\"" \
