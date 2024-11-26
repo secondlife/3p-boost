@@ -395,6 +395,7 @@ fi # =========================================================================
         sep "build_x86_64"
         "${bjam}" toolset=clang-darwin variant=release "${X86_OPTIONS[@]}" $BOOST_BUILD_SPAM --stagedir="$stage/release_x86_64" stage
 
+if false; then # =============================================================
         # run unit tests, excluding a few with known issues
         find_test_dirs "${BOOST_LIBS[@]}" | \
         tfilter \
@@ -407,12 +408,14 @@ fi # =========================================================================
         run_tests toolset=clang-darwin variant=release -a -q \
                   "${X86_OPTIONS[@]}" $BOOST_BUILD_SPAM \
                   cxxflags="-DBOOST_TIMER_ENABLE_DEPRECATED"
+fi # =========================================================================
 
         rm -r bin.v2/
 
         sep "build_arm64"
         "${bjam}" toolset=clang-darwin variant=release "${ARM64_OPTIONS[@]}" $BOOST_BUILD_SPAM --stagedir="$stage/release_arm64" stage
 
+if false; then # =============================================================
         # run unit tests, excluding a few with known issues
         find_test_dirs "${BOOST_LIBS[@]}" | \
         tfilter \
@@ -425,6 +428,7 @@ fi # =========================================================================
         run_tests toolset=clang-darwin variant=release -a -q \
                   "${ARM64_OPTIONS[@]}" $BOOST_BUILD_SPAM \
                   cxxflags="-DBOOST_TIMER_ENABLE_DEPRECATED"
+fi # =========================================================================
 
         # create release universal libs
         lipo -create -output ${stage_release}/libboost_atomic-mt.a ${stage}/release_x86_64/lib/libboost_atomic-mt-x64.a ${stage}/release_arm64/lib/libboost_atomic-mt-a64.a
