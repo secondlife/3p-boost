@@ -430,26 +430,6 @@ if false; then # =============================================================
                   cxxflags="-DBOOST_TIMER_ENABLE_DEPRECATED"
 fi # =========================================================================
 
-        # create release universal libs
-        lipo -create -output ${stage_release}/libboost_atomic-mt.a ${stage}/release_x86_64/lib/libboost_atomic-mt-x64.a ${stage}/release_arm64/lib/libboost_atomic-mt-a64.a
-        lipo -create -output ${stage_release}/libboost_chrono-mt.a ${stage}/release_x86_64/lib/libboost_chrono-mt-x64.a ${stage}/release_arm64/lib/libboost_chrono-mt-a64.a
-        lipo -create -output ${stage_release}/libboost_container-mt.a ${stage}/release_x86_64/lib/libboost_container-mt-x64.a ${stage}/release_arm64/lib/libboost_container-mt-a64.a
-        lipo -create -output ${stage_release}/libboost_context-mt.a ${stage}/release_x86_64/lib/libboost_context-mt-x64.a ${stage}/release_arm64/lib/libboost_context-mt-a64.a
-        lipo -create -output ${stage_release}/libboost_date_time-mt.a ${stage}/release_x86_64/lib/libboost_date_time-mt-x64.a ${stage}/release_arm64/lib/libboost_date_time-mt-a64.a
-        lipo -create -output ${stage_release}/libboost_fiber-mt.a ${stage}/release_x86_64/lib/libboost_fiber-mt-x64.a ${stage}/release_arm64/lib/libboost_fiber-mt-a64.a
-        lipo -create -output ${stage_release}/libboost_filesystem-mt.a ${stage}/release_x86_64/lib/libboost_filesystem-mt-x64.a ${stage}/release_arm64/lib/libboost_filesystem-mt-a64.a
-        lipo -create -output ${stage_release}/libboost_iostreams-mt.a ${stage}/release_x86_64/lib/libboost_iostreams-mt-x64.a ${stage}/release_arm64/lib/libboost_iostreams-mt-a64.a
-        lipo -create -output ${stage_release}/libboost_json-mt.a ${stage}/release_x86_64/lib/libboost_json-mt-x64.a ${stage}/release_arm64/lib/libboost_json-mt-a64.a
-        lipo -create -output ${stage_release}/libboost_program_options-mt.a ${stage}/release_x86_64/lib/libboost_program_options-mt-x64.a ${stage}/release_arm64/lib/libboost_program_options-mt-a64.a
-        lipo -create -output ${stage_release}/libboost_regex-mt.a ${stage}/release_x86_64/lib/libboost_regex-mt-x64.a ${stage}/release_arm64/lib/libboost_regex-mt-a64.a
-        lipo -create -output ${stage_release}/libboost_stacktrace_addr2line-mt.a ${stage}/release_x86_64/lib/libboost_stacktrace_addr2line-mt-x64.a ${stage}/release_arm64/lib/libboost_stacktrace_addr2line-mt-a64.a
-        lipo -create -output ${stage_release}/libboost_stacktrace_basic-mt.a ${stage}/release_x86_64/lib/libboost_stacktrace_basic-mt-x64.a ${stage}/release_arm64/lib/libboost_stacktrace_basic-mt-a64.a
-        lipo -create -output ${stage_release}/libboost_stacktrace_noop-mt.a ${stage}/release_x86_64/lib/libboost_stacktrace_noop-mt-x64.a ${stage}/release_arm64/lib/libboost_stacktrace_noop-mt-a64.a
-        lipo -create -output ${stage_release}/libboost_system-mt.a ${stage}/release_x86_64/lib/libboost_system-mt-x64.a ${stage}/release_arm64/lib/libboost_system-mt-a64.a
-        lipo -create -output ${stage_release}/libboost_thread-mt.a ${stage}/release_x86_64/lib/libboost_thread-mt-x64.a ${stage}/release_arm64/lib/libboost_thread-mt-a64.a
-        lipo -create -output ${stage_release}/libboost_url-mt.a ${stage}/release_x86_64/lib/libboost_url-mt-x64.a ${stage}/release_arm64/lib/libboost_url-mt-a64.a
-        lipo -create -output ${stage_release}/libboost_wave-mt.a ${stage}/release_x86_64/lib/libboost_wave-mt-x64.a ${stage}/release_arm64/lib/libboost_wave-mt-a64.a
-
         for test in "$top"/tests/*.cpp
         do
             btest="$(basename "$test")"
@@ -462,6 +442,46 @@ fi # =========================================================================
                 rm "$testo"
             fi
         done
+
+        # create release universal libs
+        # (why is this list different than BOOST_LIBS?)
+        libs=(atomic chrono container context date_time fiber filesystem
+              iostreams json program_options regex stacktrace_addr2line
+              stacktrace_basic stacktrace_noop system thread url wave)
+        found=()
+        amissing=()
+        xmissing=()
+        adir="${stage}/release_arm64/lib"
+        xdir="${stage}/release_x86_64/lib"
+        for lib in "${libs[@]}"
+        do
+            xlib="$xdir/libboost_$lib-mt-x64.a"
+            alib="$adir/libboost_$lib-mt-a64.a"
+            if [[ -f "$xlib" && -f "$alib" ]]
+            then
+                found+=("$lib")
+                lipo -create -output "${stage_release}/libboost_$lib-mt.a" "$xlib" "$alib"
+            else
+                if [[ ! -f "$alib" ]]
+                then
+                    amissing+=("$lib")
+                fi
+                if [[ ! -f "$xlib" ]]
+                then
+                    xmissing+=("$lib")
+                fi
+            fi
+        done
+        if [[ ${#amissing[@]} -gt 0 ]]
+        then
+            echo "Missing from $adir: ${amissing[*]}"
+            ls "$adir"
+        fi
+        if [[ ${#xmissing[@]} -gt 0 ]]
+        then
+            echo "Missing from $xdir: ${xmissing[*]}"
+            ls "$xdir"
+        fi
 
         # populate version_file
         sep "version"
