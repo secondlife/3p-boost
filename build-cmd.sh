@@ -430,19 +430,7 @@ if false; then # =============================================================
                   cxxflags="-DBOOST_TIMER_ENABLE_DEPRECATED"
 fi # =========================================================================
 
-        for test in "$top"/tests/*.cpp
-        do
-            btest="$(basename "$test")"
-            testo="/tmp/$btest"
-            sep "$btest"
-            if c++ -std=c++20 -arch x86_64 \
-                   -I. -o "$testo" "$test" "${stage_release}"/*
-            then
-                "$testo" || true
-                rm "$testo"
-            fi
-        done
-
+        sep "lipo"
         # create release universal libs
         # (why is this list different than BOOST_LIBS?)
         libs=(atomic chrono container context date_time fiber filesystem
@@ -482,6 +470,19 @@ fi # =========================================================================
             echo "Missing from $xdir: ${xmissing[*]}"
             ls "$xdir"
         fi
+
+        for test in "$top"/tests/*.cpp
+        do
+            btest="$(basename "$test")"
+            testo="/tmp/$btest"
+            sep "$btest"
+            if c++ -std=c++20 -arch x86_64 \
+                   -I. -o "$testo" "$test" "${stage_release}"/*
+            then
+                "$testo" || true
+                rm "$testo"
+            fi
+        done
 
         # populate version_file
         sep "version"
