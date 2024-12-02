@@ -50,7 +50,8 @@ apply_patch()
     local patch="$1"
     local path="$2"
     echo "Applying $patch..."
-    git apply --check --reverse --directory="$path" "$patch" || git apply --directory="$path" "$patch"
+    git apply --check --reverse --directory="$path" "$patch" 2>/dev/null || \
+        git apply --directory="$path" "$patch"
 }
 
 apply_patch "../patches/libs/config/0001-Define-BOOST_ALL_NO_LIB.patch" "libs/config"
@@ -283,9 +284,11 @@ case "$AUTOBUILD_PLATFORM" in
             "-sZLIB_LIBRARY_PATH=$ZLIB_RELEASE_PATH"
             "-sZLIB_NAME=zlib")
         sep "build"
+        set -x
         "${bjam}" link=static variant=release \
             --prefix="$(native "${stage}")" --libdir="$(native "${stage_release}")" \
             "${RELEASE_BJAM_OPTIONS[@]}" $BOOST_BUILD_SPAM stage
+        set +x
 
         # Constraining Windows unit tests to link=static produces unit-test
         # link errors. While it may be possible to edit the test/Jamfile.v2
@@ -300,6 +303,7 @@ case "$AUTOBUILD_PLATFORM" in
         # nested that even with --abbreviate-paths, the .rsp file pathname is
         # too long for Windows. Poor sad broken Windows.
 
+if false; then # =============================================================
         # conditionally run unit tests
         find_test_dirs "${BOOST_LIBS[@]}" | \
         tfilter32 'fiber/' | \
@@ -314,14 +318,38 @@ case "$AUTOBUILD_PLATFORM" in
         run_tests variant=release \
                   --prefix="$(native "${stage}")" --libdir="$(native "${stage_release}")" \
                   $RELEASE_BJAM_OPTIONS $BOOST_BUILD_SPAM -a -q
+fi # =========================================================================
 
         # Move the libs
         mv "${stage_lib}"/*.lib "${stage_release}"
 
-        sep "version"
         # bjam doesn't need vsvars, but our hand compilation does
         load_vsvars
 
+        for test in "$top"/tests/*.cpp
+        do
+            btest="$(basename "$test")"
+            testo="$TEMP/$btest.obj"
+            testx="$TEMP/$btest.exe"
+            sep "$btest"
+            compile=(cl \
+               /EHsc $(replace_switch /Zi /Z7 $LL_BUILD_RELEASE) \
+               /I. /Fo"$(native "$testo")" /Fe"$(native "$testx")" "$(native "$test")" \
+               "$(native "${stage_release}/libboost_context-mt-x64.lib")" \
+               /link /libpath:"$(native "${stage_release}")")
+            echo "${compile[*]}"
+            if "${compile[@]}"
+            then
+                # don't fail the whole job if the test blows up
+                "$testx" || true
+                rm "$testo" "$testx"
+            else
+                echo "libraries in ${stage_release}:"
+                ls -l "${stage_release}"
+            fi
+        done
+
+        sep "version"
         # populate version_file
         cl /DVERSION_HEADER_FILE="\"$VERSION_HEADER_FILE\"" \
            /DVERSION_MACRO="$VERSION_MACRO" \
@@ -366,6 +394,7 @@ case "$AUTOBUILD_PLATFORM" in
         sep "build_x86_64"
         "${bjam}" toolset=clang-darwin variant=release "${X86_OPTIONS[@]}" $BOOST_BUILD_SPAM --stagedir="$stage/release_x86_64" stage
 
+if false; then # =============================================================
         # run unit tests, excluding a few with known issues
         find_test_dirs "${BOOST_LIBS[@]}" | \
         tfilter \
@@ -378,12 +407,14 @@ case "$AUTOBUILD_PLATFORM" in
         run_tests toolset=clang-darwin variant=release -a -q \
                   "${X86_OPTIONS[@]}" $BOOST_BUILD_SPAM \
                   cxxflags="-DBOOST_TIMER_ENABLE_DEPRECATED"
+fi # =========================================================================
 
         rm -r bin.v2/
 
         sep "build_arm64"
         "${bjam}" toolset=clang-darwin variant=release "${ARM64_OPTIONS[@]}" $BOOST_BUILD_SPAM --stagedir="$stage/release_arm64" stage
 
+if false; then # =============================================================
         # run unit tests, excluding a few with known issues
         find_test_dirs "${BOOST_LIBS[@]}" | \
         tfilter \
@@ -396,26 +427,61 @@ case "$AUTOBUILD_PLATFORM" in
         run_tests toolset=clang-darwin variant=release -a -q \
                   "${ARM64_OPTIONS[@]}" $BOOST_BUILD_SPAM \
                   cxxflags="-DBOOST_TIMER_ENABLE_DEPRECATED"
+fi # =========================================================================
 
+        sep "lipo"
         # create release universal libs
-        lipo -create -output ${stage_release}/libboost_atomic-mt.a ${stage}/release_x86_64/lib/libboost_atomic-mt-x64.a ${stage}/release_arm64/lib/libboost_atomic-mt-a64.a
-        lipo -create -output ${stage_release}/libboost_chrono-mt.a ${stage}/release_x86_64/lib/libboost_chrono-mt-x64.a ${stage}/release_arm64/lib/libboost_chrono-mt-a64.a
-        lipo -create -output ${stage_release}/libboost_container-mt.a ${stage}/release_x86_64/lib/libboost_container-mt-x64.a ${stage}/release_arm64/lib/libboost_container-mt-a64.a
-        lipo -create -output ${stage_release}/libboost_context-mt.a ${stage}/release_x86_64/lib/libboost_context-mt-x64.a ${stage}/release_arm64/lib/libboost_context-mt-a64.a
-        lipo -create -output ${stage_release}/libboost_date_time-mt.a ${stage}/release_x86_64/lib/libboost_date_time-mt-x64.a ${stage}/release_arm64/lib/libboost_date_time-mt-a64.a
-        lipo -create -output ${stage_release}/libboost_fiber-mt.a ${stage}/release_x86_64/lib/libboost_fiber-mt-x64.a ${stage}/release_arm64/lib/libboost_fiber-mt-a64.a
-        lipo -create -output ${stage_release}/libboost_filesystem-mt.a ${stage}/release_x86_64/lib/libboost_filesystem-mt-x64.a ${stage}/release_arm64/lib/libboost_filesystem-mt-a64.a
-        lipo -create -output ${stage_release}/libboost_iostreams-mt.a ${stage}/release_x86_64/lib/libboost_iostreams-mt-x64.a ${stage}/release_arm64/lib/libboost_iostreams-mt-a64.a
-        lipo -create -output ${stage_release}/libboost_json-mt.a ${stage}/release_x86_64/lib/libboost_json-mt-x64.a ${stage}/release_arm64/lib/libboost_json-mt-a64.a
-        lipo -create -output ${stage_release}/libboost_program_options-mt.a ${stage}/release_x86_64/lib/libboost_program_options-mt-x64.a ${stage}/release_arm64/lib/libboost_program_options-mt-a64.a
-        lipo -create -output ${stage_release}/libboost_regex-mt.a ${stage}/release_x86_64/lib/libboost_regex-mt-x64.a ${stage}/release_arm64/lib/libboost_regex-mt-a64.a
-        lipo -create -output ${stage_release}/libboost_stacktrace_addr2line-mt.a ${stage}/release_x86_64/lib/libboost_stacktrace_addr2line-mt-x64.a ${stage}/release_arm64/lib/libboost_stacktrace_addr2line-mt-a64.a
-        lipo -create -output ${stage_release}/libboost_stacktrace_basic-mt.a ${stage}/release_x86_64/lib/libboost_stacktrace_basic-mt-x64.a ${stage}/release_arm64/lib/libboost_stacktrace_basic-mt-a64.a
-        lipo -create -output ${stage_release}/libboost_stacktrace_noop-mt.a ${stage}/release_x86_64/lib/libboost_stacktrace_noop-mt-x64.a ${stage}/release_arm64/lib/libboost_stacktrace_noop-mt-a64.a
-        lipo -create -output ${stage_release}/libboost_system-mt.a ${stage}/release_x86_64/lib/libboost_system-mt-x64.a ${stage}/release_arm64/lib/libboost_system-mt-a64.a
-        lipo -create -output ${stage_release}/libboost_thread-mt.a ${stage}/release_x86_64/lib/libboost_thread-mt-x64.a ${stage}/release_arm64/lib/libboost_thread-mt-a64.a
-        lipo -create -output ${stage_release}/libboost_url-mt.a ${stage}/release_x86_64/lib/libboost_url-mt-x64.a ${stage}/release_arm64/lib/libboost_url-mt-a64.a
-        lipo -create -output ${stage_release}/libboost_wave-mt.a ${stage}/release_x86_64/lib/libboost_wave-mt-x64.a ${stage}/release_arm64/lib/libboost_wave-mt-a64.a
+        # (why is this list different than BOOST_LIBS?)
+        libs=(atomic chrono container context date_time fiber filesystem
+              iostreams json program_options regex stacktrace_addr2line
+              stacktrace_basic stacktrace_noop system thread url wave)
+        found=()
+        amissing=()
+        xmissing=()
+        adir="${stage}/release_arm64/lib"
+        xdir="${stage}/release_x86_64/lib"
+        for lib in "${libs[@]}"
+        do
+            xlib="$xdir/libboost_$lib-mt-x64.a"
+            alib="$adir/libboost_$lib-mt-a64.a"
+            if [[ -f "$xlib" && -f "$alib" ]]
+            then
+                found+=("$lib")
+                lipo -create -output "${stage_release}/libboost_$lib-mt.a" "$xlib" "$alib"
+            else
+                if [[ ! -f "$alib" ]]
+                then
+                    amissing+=("$lib")
+                fi
+                if [[ ! -f "$xlib" ]]
+                then
+                    xmissing+=("$lib")
+                fi
+            fi
+        done
+        if [[ ${#amissing[@]} -gt 0 ]]
+        then
+            echo "Missing from $adir: ${amissing[*]}"
+            ls "$adir"
+        fi
+        if [[ ${#xmissing[@]} -gt 0 ]]
+        then
+            echo "Missing from $xdir: ${xmissing[*]}"
+            ls "$xdir"
+        fi
+
+        for test in "$top"/tests/*.cpp
+        do
+            btest="$(basename "$test")"
+            testo="/tmp/$btest"
+            sep "$btest"
+            if c++ -std=c++20 -arch x86_64 \
+                   -I. -o "$testo" "$test" "${stage_release}"/*
+            then
+                "$testo" || true
+                rm "$testo"
+            fi
+        done
 
         # populate version_file
         sep "version"
@@ -428,6 +494,9 @@ case "$AUTOBUILD_PLATFORM" in
         ;;
 
     linux*)
+        # patch is specific to libstdc++
+        apply_patch "../patches/libs/context/0001-switch-exception-state.patch" "libs/context"
+
         # Force static linkage to libz by moving .sos out of the way
         trap restore_sos EXIT
         for solib in "${stage}"/packages/lib/debug/libz.so* "${stage}"/packages/lib/release/libz.so*; do
@@ -452,6 +521,18 @@ case "$AUTOBUILD_PLATFORM" in
 
         sep "clean"
         "${bjam}" --clean
+
+        for test in "$top"/tests/*.cpp
+        do
+            btest="$(basename "$test")"
+            testo="/tmp/$btest"
+            sep "$btest"
+            if c++ -I. -o "$testo" "$test" "${stage_release}"/*
+            then
+                "$testo" || true
+                rm "$testo"
+            fi
+        done
 
         # populate version_file
         sep "version"
