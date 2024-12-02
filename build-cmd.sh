@@ -276,7 +276,6 @@ case "$AUTOBUILD_PLATFORM" in
             "-sZLIB_INCLUDE=$INCLUDE_PATH/zlib-ng"
             cxxflags=/FS
             cxxflags=/DBOOST_STACKTRACE_LINK
-            cxxflags=/DBOOST_USE_WINFIB
             architecture=x86
             "${BOOST_BJAM_OPTIONS[@]}")
 
@@ -286,7 +285,7 @@ case "$AUTOBUILD_PLATFORM" in
             "-sZLIB_NAME=zlib")
         sep "build"
         set -x
-        "${bjam}" link=static variant=release context-impl=winfib \
+        "${bjam}" link=static variant=release \
             --prefix="$(native "${stage}")" --libdir="$(native "${stage_release}")" \
             "${RELEASE_BJAM_OPTIONS[@]}" $BOOST_BUILD_SPAM stage
         set +x
@@ -334,7 +333,7 @@ fi # =========================================================================
             testx="$TEMP/$btest.exe"
             sep "$btest"
             compile=(cl \
-               /DBOOST_USE_WINFIB /EHsc $(replace_switch /Zi /Z7 $LL_BUILD_RELEASE) \
+               /EHsc $(replace_switch /Zi /Z7 $LL_BUILD_RELEASE) \
                /I. /Fo"$(native "$testo")" /Fe"$(native "$testx")" "$(native "$test")" \
                "$(native "${stage_release}/libboost_context-mt-x64.lib")" \
                /link /libpath:"$(native "${stage_release}")")
