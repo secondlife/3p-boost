@@ -1,19 +1,26 @@
 diff --git a/include/boost/context/fiber_fcontext.hpp b/include/boost/context/fiber_fcontext.hpp
-index a2760cb..3d445bf 100644
+index 55c96d1..93ee385 100644
 --- a/include/boost/context/fiber_fcontext.hpp
 +++ b/include/boost/context/fiber_fcontext.hpp
-@@ -13,6 +13,7 @@
- #include <cstddef>
- #include <cstdint>
- #include <cstdlib>
-+#include <cxxabi.h>
- #include <exception>
- #include <functional>
- #include <memory>
-@@ -60,6 +61,25 @@
+@@ -63,6 +63,51 @@
  # pragma warning(disable: 4702)
  #endif
  
++#if ! (defined(__GLIBCPP__) || defined(__GLIBCXX__))
++namespace boost {
++namespace context {
++namespace detail {
++
++// manage_exception_state is a dummy struct unless we have specific support
++struct manage_exception_state {};
++
++} // namespace detail
++} // namespace context
++} // namespace boost
++
++#else // libstdc++
++#include <cxxabi.h>
++
 +namespace __cxxabiv1 {
 +struct __cxa_eh_globals {
 +    void *       caughtExceptions;
@@ -33,21 +40,30 @@ index a2760cb..3d445bf 100644
 +};
 +} // namespace __cxxabiv1
 +
++namespace boost {
++namespace context {
++namespace detail {
++
++using __cxxabiv1::manage_exception_state;
++
++} // namespace detail
++} // namespace context
++} // namespace boost
++#endif // __GLIBCPP__ or __GLIBCXX__
++
  namespace boost {
  namespace context {
  namespace detail {
-@@ -248,7 +268,9 @@ fcontext_t create_fiber2( preallocated palloc, StackAlloc && salloc, Fn && fn) {
+@@ -251,7 +296,7 @@ fcontext_t create_fiber2( preallocated palloc, StackAlloc && salloc, Fn && fn) {
      return jump_fcontext( fctx, record).fctx;
  }
  
 -}
-+using __cxxabiv1::manage_exception_state;
-+
 +} // namespace detail
  
  class fiber {
  private:
-@@ -323,6 +345,7 @@ public:
+@@ -326,6 +371,7 @@ public:
  
      fiber resume() && {
          BOOST_ASSERT( nullptr != fctx_);
@@ -55,7 +71,7 @@ index a2760cb..3d445bf 100644
          return { detail::jump_fcontext(
  #if defined(BOOST_NO_CXX14_STD_EXCHANGE)
                      detail::exchange( fctx_, nullptr),
-@@ -335,6 +358,7 @@ public:
+@@ -338,6 +384,7 @@ public:
      template< typename Fn >
      fiber resume_with( Fn && fn) && {
          BOOST_ASSERT( nullptr != fctx_);
