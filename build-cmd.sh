@@ -22,8 +22,9 @@ if [ -z "$AUTOBUILD" ] ; then
 fi
 
 # Libraries on which we depend - please keep alphabetized for maintenance
-BOOST_LIBS=(context date_time fiber filesystem iostreams json program_options
-            regex stacktrace system thread url wave)
+##BOOST_LIBS=(context date_time fiber filesystem iostreams json program_options
+##            regex stacktrace system thread url wave)
+BOOST_LIBS=(context)
 
 # -d0 is quiet, "-d2 -d+4" allows compilation to be examined
 BOOST_BUILD_SPAM="-d0"
@@ -65,6 +66,8 @@ if [[ "$OSTYPE" == "cygwin" || "$OSTYPE" == "msys" ]] ; then
     {
         cygpath -w "$@"
     }
+    # Try exception test programs using 32-bit Boost.Context.
+    export AUTOBUILD_ADDRSIZE="32"
 else
     autobuild="$AUTOBUILD"
     # no pathname conversion needed
@@ -278,6 +281,7 @@ case "$AUTOBUILD_PLATFORM" in
             cxxflags=/FS
             cxxflags=/DBOOST_STACKTRACE_LINK
             architecture=x86
+            address-model=32
             "${BOOST_BJAM_OPTIONS[@]}")
 
         RELEASE_BJAM_OPTIONS=("${WINDOWS_BJAM_OPTIONS[@]}"
@@ -329,14 +333,14 @@ fi # =========================================================================
 
         for test in "$top"/tests/*.cpp
         do
-            btest="$(basename "$test")"
+            btest="$(basename "$test" .cpp)"
             testo="$TEMP/$btest.obj"
             testx="$TEMP/$btest.exe"
             sep "$btest"
             compile=(cl \
                /EHsc $(replace_switch /Zi /Z7 $LL_BUILD_RELEASE) \
                /I. /Fo"$(native "$testo")" /Fe"$(native "$testx")" "$(native "$test")" \
-               "$(native "${stage_release}/libboost_context-mt-x64.lib")" \
+               "$(native "${stage_release}/libboost_context-mt-x32.lib")" \
                /link /libpath:"$(native "${stage_release}")")
             echo "${compile[*]}"
             if "${compile[@]}"
@@ -473,7 +477,7 @@ fi # =========================================================================
 
         for test in "$top"/tests/*.cpp
         do
-            btest="$(basename "$test")"
+            btest="$(basename "$test" .cpp)"
             testo="/tmp/$btest"
             sep "$btest"
             if c++ -std=c++20 -arch x86_64 \
@@ -522,7 +526,7 @@ fi # =========================================================================
 
         for test in "$top"/tests/*.cpp
         do
-            btest="$(basename "$test")"
+            btest="$(basename "$test" .cpp)"
             testo="/tmp/$btest"
             sep "$btest"
             if c++ -I. -o "$testo" "$test" "${stage_release}"/*
