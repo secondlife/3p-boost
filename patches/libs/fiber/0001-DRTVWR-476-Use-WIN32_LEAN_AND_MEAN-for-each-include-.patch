@@ -29,8 +29,8 @@ diff --git a/include/boost/fiber/detail/futex.hpp b/include/boost/fiber/detail/f
 index d0353e9..50b17ff 100644
 --- a/include/boost/fiber/detail/futex.hpp
 +++ b/include/boost/fiber/detail/futex.hpp
-@@ -22,6 +22,7 @@ extern "C" {
- #include <sys/syscall.h>
+@@ -25,6 +25,7 @@ extern "C" {
+ #include <sys/futex.h>
  }
  #elif BOOST_OS_WINDOWS
 +#define WIN32_LEAN_AND_MEAN
