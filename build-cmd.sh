@@ -38,8 +38,6 @@ fail()
     exit 1
 }
 
-[ -f "$stage"/packages/include/zlib-ng/zlib.h ] || fail "You haven't installed the zlib package yet."
-
 if [ ! -d "libs/accumulators/include" ]; then
     echo "Submodules not present. Initializing..."
     git submodule update --init --recursive
