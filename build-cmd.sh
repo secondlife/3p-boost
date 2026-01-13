@@ -49,8 +49,15 @@ apply_patch()
 {
     local patch="$1"
     local path="$2"
+
+    # Fix paths for windows
+    if [[ "$OSTYPE" == "cygwin" || "$OSTYPE" == "msys" ]] ; then
+        patch="$(cygpath -m $patch)"
+        path="$(cygpath -m $path)"
+    fi
+
     echo "Applying $patch..."
-    git apply --check --reverse --directory="$path" "$patch" || git apply --directory="$path" "$patch"
+    git apply --check --reverse --directory="$path" "$patch" 2>/dev/null || git apply --directory="$path" "$patch"
 }
 
 apply_patch "../patches/libs/config/0001-Define-BOOST_ALL_NO_LIB.patch" "libs/config"
